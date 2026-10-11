@@ -142,3 +142,19 @@ body.light-theme .secondary{background:#ece8de;color:var(--text)}
   .ring-wrap{grid-template-columns:90px 1fr 42px}.ring span{right:-50px;width:42px}
   .calendar{gap:5px}
 }
+
+/* v4.6 More tab */
+.more-intro{padding:4px 2px 8px}
+.more-section{padding:0;overflow:hidden;background:transparent}
+.more-section>summary{list-style:none;cursor:pointer;padding:15px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--card);border-radius:13px}
+.more-section>summary::-webkit-details-marker{display:none}
+.more-section>summary:after{content:'+';margin-left:auto;color:var(--muted);font-size:17px}
+.more-section[open]>summary:after{content:'–';color:var(--accent-strong)}
+.more-section[open]>summary{border-bottom-left-radius:0;border-bottom-right-radius:0;border-bottom:1px solid var(--border)}
+.more-body{padding:10px 0 0}
+.more-body>.card{margin:0 0 10px;border-radius:11px;background:var(--surface-soft)}
+.more-section>summary .muted{font-size:10px;white-space:nowrap}
+@media(max-width:620px){
+  .more-section>summary{align-items:flex-start}
+  .more-section>summary .muted{white-space:normal;text-align:right;max-width:46%}
+}
