@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#111827">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=5.2">
+  <link rel="stylesheet" href="styles.css?v=5.3">
   <title>Project Uhuru</title>
 </head>
 <body>
@@ -72,23 +72,7 @@
         <label class="check"><input type="checkbox" id="officeStairs"> <span>Office stairs -1 → 5 at normal pace (if applicable)</span></label>
         <p class="muted">The step goal contributes proportionally to daily completion. 4,000/8,000 = 50%; 8,000+ = 100%. Recovery still overrides the number when needed.</p>
       </div>
-      <div class="card" id="checkinCard">
-        <h2>Quick check-in</h2>
-        <div class="grid2">
-          <label>Sleep (h)<input id="sleep" type="number" step="0.1" min="0"></label>
-          <label>Morning body weight (kg)<input id="weight" type="number" step="0.1" min="0"></label>
-          <label>Energy 1–10<input id="energy" type="number" min="1" max="10"></label>
-          <label>Calories burned (Health app)<input id="caloriesBurned" type="number" min="0" placeholder="Optional, end of day"></label>
-          <label>Daily steps<input id="healthSteps" type="number" min="0" placeholder="Optional, end of day"></label>
-          <label>Resting HR (bpm)<input id="restingHr" type="number" min="0" placeholder="Optional"></label>
-          <label>Leg soreness 0–10<input id="soreness" type="number" min="0" max="10"></label>
-          <label>Shin pain 0–10<input id="shin" type="number" min="0" max="10"></label>
-          <label>Knee/Achilles/foot pain 0–10<input id="jointPain" type="number" min="0" max="10"></label>
-        </div>
-        <label>Notes<textarea id="notes" placeholder="Work stress, unusual fatigue, niggle, anything relevant..."></textarea></label>
-        <button id="saveCheckin">Save check-in</button>
-      </div>
-    </section>
+      <div class="card" id="checkinCard"></div>\n    </section>
 
 
     <section id="dashboard" class="tab">
@@ -265,6 +249,6 @@
 
   </main>
 
-  <script src="app.js?v=5.2"></script>
-</body>
+  <script src="app.js?v=5.3"></script>
+  <div id="toast" class="snackbar" role="status" aria-live="polite"></div>\n</body>
 </html>
