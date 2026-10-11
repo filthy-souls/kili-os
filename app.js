@@ -1,5 +1,6 @@
 
 const KEY="kili2026data_v2", SYNC_KEY="projectUhuruSyncKey", API="/.netlify/functions/uhuru-data";
+const LOCAL_PREVIEW=["localhost","127.0.0.1"].includes(location.hostname);
 let plan=null, data={version:2,settings:{stepGoal:8000,themeMode:"auto"},checks:{},daily:{},workouts:[],scheduleState:{globalShiftDays:0,actions:[]}},dirty=false,syncing=false,timer=null;
 const $=id=>document.getElementById(id);
 const todayISO=()=>new Date().toLocaleDateString("en-CA");
@@ -11,7 +12,25 @@ function cache(){localStorage.setItem(KEY,JSON.stringify(data))}
 function getKey(){return localStorage.getItem(SYNC_KEY)||""}
 function setSync(kind,label,detail){const mini=$("syncMini");if(mini)mini.className="sync-mini "+kind;if($("syncMiniText"))$("syncMiniText").textContent=label;const d=$("syncDetail");if(d&&detail!==undefined)d.textContent=detail}
 async function remote(method,body){const headers={"Content-Type":"application/json"};if(getKey())headers["x-uhuru-key"]=getKey();const r=await fetch(API,{method:method,headers,body:body?JSON.stringify(body):undefined,cache:"no-store"});let j={};try{j=await r.json()}catch(e){}if(!r.ok)throw new Error(j.error||("HTTP "+r.status));return j}
-async function pull(){if(syncing||!navigator.onLine)return;syncing=true;setSync("syncing","Syncing…","Pulling GitHub state");try{const r=await remote("GET");if(r.state&&!dirty){data=normalize(r.state);cache();renderAll()}setSync("ok","Synced","GitHub is authoritative")}catch(e){setSync("error","Sync error",e.message)}finally{syncing=false}}
+async function pull(){
+  if(syncing||!navigator.onLine)return;
+  syncing=true;
+  setSync("syncing",LOCAL_PREVIEW?"Loading preview…":"Syncing…",LOCAL_PREVIEW?"Loading repository seed data":"Pulling GitHub state");
+  try{
+    let state=null;
+    if(LOCAL_PREVIEW){
+      const r=await fetch("data/state.json?v=4.4",{cache:"no-store"});
+      if(!r.ok)throw new Error("Local seed data unavailable");
+      state=await r.json();
+    }else{
+      const r=await remote("GET");
+      state=r.state;
+    }
+    if(state&&!dirty){data=normalize(state);cache();renderAll()}
+    setSync("ok",LOCAL_PREVIEW?"Local preview":"Synced",LOCAL_PREVIEW?"Loaded data/state.json from develop":"GitHub is authoritative");
+  }catch(e){setSync("error",LOCAL_PREVIEW?"Preview data error":"Sync error",e.message)}
+  finally{syncing=false}
+}
 async function push(force){if(syncing||!navigator.onLine||(!dirty&&!force))return;if(!getKey()){setSync("error","Write key needed","Open Safety → App connection and enter the key once.");return;}syncing=true;setSync("syncing","Syncing…","Saving to GitHub");try{await remote("PUT",{state:data,message:"Uhuru data update "+new Date().toISOString()});dirty=false;cache();setSync("ok","Synced","Latest changes committed to GitHub")}catch(e){setSync("error","Sync error",e.message)}finally{syncing=false}}
 function save(){cache();dirty=true;setSync(navigator.onLine?"syncing":"offline",navigator.onLine?"Pending sync…":"Offline — pending","");clearTimeout(timer);timer=setTimeout(()=>push(false),900)}
 function weekFor(date){return plan.weeks.find(w=>date>=w.start&&date<=w.end)}
@@ -19,6 +38,7 @@ function basePlan(date){const pre=(plan.preWeekend||[]).find(x=>x.date===date);i
 function actions(){return (data.scheduleState.actions||[]).filter(a=>!a.undone)}
 function effectivePlan(date){const incoming=[...actions()].reverse().find(a=>a.type==="move-skip"&&a.to===date);if(incoming){const p=basePlan(incoming.from);return p?Object.assign({},p,{rescheduled:true,rescheduledFrom:incoming.from}):null}const away=[...actions()].reverse().find(a=>a.type==="move-skip"&&a.from===date);if(away)return {title:"Skipped / Recovery Day",phase:"",items:["No scheduled workout today","Easy walking only if comfortable","Do not make up this session later"]};const skip=[...actions()].reverse().find(a=>a.type==="skip"&&a.date===date);if(skip)return {title:"Skipped / Recovery Day",phase:"",items:["No scheduled workout today","Resume normal schedule tomorrow"]};return basePlan(date)}
 function isTraining(p){if(!p)return false;const t=(p.title||"").toLowerCase();return !(t.includes("rest")||t.includes("recovery")||t.includes("easy walk"))}
+function isHikePlan(p){if(!p)return false;const t=((p.title||"")+" "+((p.items||[]).join(" "))).toLowerCase();return t.includes("sljeme")||t.includes("long hike")||t.includes("second hike")}
 function completion(date){
   const p=effectivePlan(date),st=data.daily[date]||{},checks=st.checks||{},items=(p&&p.items)||[];
   const done=Object.values(checks).filter(Boolean).length,checkScore=items.length?Math.min(1,done/items.length):1;
@@ -31,7 +51,6 @@ function renderToday(){const date=todayISO(),p=effectivePlan(date),st=data.daily
 function renderSteps(){const date=todayISO(),st=data.daily[date]||{},goal=Math.max(1000,Number(data.settings.stepGoal)||8000),v=Number(st.dailySteps)||0,p=Math.min(100,Math.round(v/goal*100));$("dailySteps").value=v||"";$("stepCountLabel").textContent=v.toLocaleString();$("stepGoalLabel").textContent=goal.toLocaleString();$("stepPct").textContent=p+"%";$("stepRing").style.setProperty("--p",p);$("stepGoalSetting").value=goal}
 function renderTomorrowPreview(){const p=effectivePlan(addDate(todayISO(),1));$("tomorrowPreview").innerHTML=p?"<b>"+p.title+"</b><p class='muted'>"+(p.items||[]).slice(0,2).join(" • ")+"</p>":"<span class='muted'>No scheduled session</span>"}
 function rangeDates(s,e){const out=[];let d=s;while(d<=e){out.push(d);d=addDate(d,1)}return out}
-function rangeDates(a,b){const out=[];let d=a;while(d<=b){out.push(d);d=addDate(d,1)}return out}
 function renderDashboard(){
   const today=todayISO(),todayPct=completion(today);
   $("todayPct").textContent=todayPct+"%";$("todayRing").style.setProperty("--p",todayPct);
@@ -77,5 +96,5 @@ function exportData(){const b=new Blob([JSON.stringify(data,null,2)],{type:"appl
 function importData(file){const r=new FileReader();r.onload=()=>{try{data=normalize(JSON.parse(r.result));save();renderAll()}catch(e){alert("Invalid file")}};r.readAsText(file)}
 function applyTheme(){const mode=data.settings.themeMode||"auto",h=new Date().getHours(),actual=mode==="auto"?(h>=6&&h<18?"light":"dark"):mode;document.body.classList.toggle("light-theme",actual==="light");if($("themeMode"))$("themeMode").value=mode}
 function initTabs(){document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button,.tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.tab).classList.add("active")})}
-window.addEventListener("load",async()=>{plan=await fetch("plan.json?v=4.3",{cache:"no-store"}).then(r=>r.json());loadLocal();initTabs();$("logDate").value=todayISO();renderAll();$("dailySteps").oninput=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].dailySteps=Math.max(0,+e.target.value||0);save();renderSteps();renderDashboard()};$("officeStairs").onchange=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].officeStairs=e.target.checked;save()};$("saveCheckin").onclick=saveCheckin;$("saveWorkout").onclick=saveWorkout;$("moveSkipBtn").onclick=moveToday;$("skipTodayBtn").onclick=skipToday;$("undoPostponeBtn").onclick=undoLast;$("shiftAllBtn").onclick=shiftAll;$("gen3").onclick=()=>generateSummary(3,"3-DAY CHECK-IN");$("genWeek").onclick=()=>generateSummary(7,"SUNDAY / 7-DAY CHECK-IN");$("copySummary").onclick=()=>navigator.clipboard.writeText($("summaryText").value);$("shareSummary").onclick=async()=>{if(navigator.share)await navigator.share({title:"Kili training update",text:$("summaryText").value});else navigator.clipboard.writeText($("summaryText").value)};$("exportData").onclick=exportData;$("importData").onchange=e=>e.target.files[0]&&importData(e.target.files[0]);$("saveGoals").onclick=()=>{data.settings.stepGoal=Math.max(1000,+$("stepGoalSetting").value||8000);save();renderAll()};$("themeMode").onchange=e=>{data.settings.themeMode=e.target.value;save();applyTheme()};if($("saveSyncKey"))$("saveSyncKey").onclick=()=>{const v=$("syncKey").value.trim();if(v)localStorage.setItem(SYNC_KEY,v);$("syncKey").value="";dirty?push(true):pull()};if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js?v=4.3").then(r=>r.update()).catch(()=>{});pull();setInterval(()=>{if(!dirty)pull()},15*60*1000)});
+window.addEventListener("load",async()=>{plan=await fetch("plan.json?v=4.4",{cache:"no-store"}).then(r=>r.json());loadLocal();if(LOCAL_PREVIEW){try{const seed=await fetch("data/state.json?v=4.4",{cache:"no-store"}).then(r=>r.json());data=normalize(seed);cache()}catch(e){}}initTabs();$("logDate").value=todayISO();renderAll();$("dailySteps").oninput=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].dailySteps=Math.max(0,+e.target.value||0);save();renderSteps();renderDashboard()};$("officeStairs").onchange=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].officeStairs=e.target.checked;save()};$("saveCheckin").onclick=saveCheckin;$("saveWorkout").onclick=saveWorkout;$("moveSkipBtn").onclick=moveToday;$("skipTodayBtn").onclick=skipToday;$("undoPostponeBtn").onclick=undoLast;$("shiftAllBtn").onclick=shiftAll;$("gen3").onclick=()=>generateSummary(3,"3-DAY CHECK-IN");$("genWeek").onclick=()=>generateSummary(7,"SUNDAY / 7-DAY CHECK-IN");$("copySummary").onclick=()=>navigator.clipboard.writeText($("summaryText").value);$("shareSummary").onclick=async()=>{if(navigator.share)await navigator.share({title:"Kili training update",text:$("summaryText").value});else navigator.clipboard.writeText($("summaryText").value)};$("exportData").onclick=exportData;$("importData").onchange=e=>e.target.files[0]&&importData(e.target.files[0]);$("saveGoals").onclick=()=>{data.settings.stepGoal=Math.max(1000,+$("stepGoalSetting").value||8000);save();renderAll()};$("themeMode").onchange=e=>{data.settings.themeMode=e.target.value;save();applyTheme()};if($("saveSyncKey"))$("saveSyncKey").onclick=()=>{const v=$("syncKey").value.trim();if(v)localStorage.setItem(SYNC_KEY,v);$("syncKey").value="";dirty?push(true):pull()};if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js?v=4.4").then(r=>r.update()).catch(()=>{});pull();setInterval(()=>{if(!dirty)pull()},15*60*1000)});
 window.addEventListener("online",()=>dirty?push(true):pull());window.addEventListener("offline",()=>setSync("offline","Offline","Changes cached locally"));
