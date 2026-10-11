@@ -426,6 +426,25 @@ test('Tapping an older calendar date shows only recorded activity for that day',
   expect(errors).toEqual([]);
 });
 
+test('Material 3 tokens drive controls, typography and navigation', async ({page},testInfo) => {
+  test.skip(testInfo.project.name!=='desktop');
+  const errors=await boot(page);
+  await page.locator('#previewPhone').click();
+  const px=async(sel,prop)=>await page.locator(sel).first().evaluate((el,p)=>getComputedStyle(el)[p],prop);
+  expect(px('header h1','fontSize')).resolves.toBe('28px');
+  expect(px('.today-title','fontSize')).resolves.toBe('24px');
+  expect(px('h2','fontSize')).resolves.toBe('22px');
+  expect(px('.check','fontSize')).resolves.toBe('14px');
+  expect(px('.schedule-options button','borderRadius')).resolves.toBe('999px');
+  expect(px('.tabs','position')).resolves.toBe('fixed');
+  const cb=page.locator('#todayChecks input[type="checkbox"]').first();
+  const box=await cb.boundingBox();
+  expect(Math.round(box.width)).toBe(18);
+  expect(Math.round(box.height)).toBe(18);
+  expect(await cb.evaluate(el=>getComputedStyle(el).borderRadius)).toBe('2px');
+  expect(errors).toEqual([]);
+});
+
 test('Checklist controls align with text and typography weights stay restrained', async ({page},testInfo) => {
   test.skip(testInfo.project.name!=='desktop');
   const errors=await boot(page);
@@ -433,14 +452,14 @@ test('Checklist controls align with text and typography weights stay restrained'
   const check=page.locator('#todayChecks .check').first();
   const box=await check.locator('input[type="checkbox"]').boundingBox();
   const textBox=await check.locator('span').boundingBox();
-  expect(Math.round(box.width)).toBe(20);
-  expect(Math.round(box.height)).toBe(20);
-  expect(Math.abs(box.y-textBox.y)).toBeLessThanOrEqual(3);
+  expect(Math.round(box.width)).toBe(18);
+  expect(Math.round(box.height)).toBe(18);
+  expect(Math.abs((box.y+box.height/2)-(textBox.y+textBox.height/2))).toBeLessThanOrEqual(4);
   const weight=async sel=>Number(await page.locator(sel).first().evaluate(el=>getComputedStyle(el).fontWeight));
   expect(await weight('#todayChecks .check')).toBe(400);
   expect(await weight('.schedule-options button')).toBeLessThanOrEqual(600);
   expect(await weight('h2')).toBeLessThanOrEqual(600);
-  expect(await weight('.today-title')).toBeLessThanOrEqual(650);
+  expect(await weight('.today-title')).toBeLessThanOrEqual(500);
   expect(errors).toEqual([]);
 });
 
