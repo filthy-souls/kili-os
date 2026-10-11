@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#111827">
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css?v=4.0">
+  <title>Project Uhuru</title>
+</head>
+<body>
+  <header>
+    <div>
+      <div class="eyebrow">PROJECT UHURU • KILIMANJARO • 14 DEC 2026</div>
+      <h1>Project Uhuru</h1>
+      <p id="phaseLine"></p>
+    </div>
+    <button id="installBtn" class="ghost hidden">Install</button>
+  </header>
+
+  <nav class="tabs">
+    <button data-tab="today" class="active">Today</button>
+    <button data-tab="dashboard">Progress</button>
+    <button data-tab="plan">Plan</button>
+    <button data-tab="log">Log</button>
+    <button data-tab="summary">Summary</button>
+    <button data-tab="safety">Safety</button>
+  </nav>
+
+  <main>
+    <section id="today" class="tab active">
+      <div class="mission-card">
+        <div>
+          <div class="mission-kicker">SUMMIT MISSION</div>
+          <div class="mission-title">5,895 m</div>
+          <div class="mission-sub">Train steady. Build capacity. Arrive fresh.</div><div class="weekend-rule">Weekend hiking rule: Sljeme only • Sat/Sun only</div>
+        </div>
+        <div class="mission-badge">UHURU</div>
+      </div>
+      <div id="todayCard"></div>
+
+      <div class="card reschedule-card">
+        <h2>Schedule control</h2>
+        <div id="scheduleWarning"></div>
+        <p class="muted" id="rescheduleStatus"></p>
+        <div class="schedule-options">
+          <button id="shiftAllBtn">Shift entire schedule +1 day</button>
+          <button id="moveSkipBtn" class="secondary">Move today → tomorrow & skip tomorrow</button>
+          <button id="skipTodayBtn" class="secondary">Skip today</button>
+          <button id="undoPostponeBtn" class="secondary hidden">Undo last change</button>
+        </div>
+      </div>
+      <div class="card tomorrow-card">
+        <h2>Tomorrow</h2>
+        <div id="tomorrowPreview"></div>
+      </div>
+
+      <div class="card">
+        <h2>Daily movement</h2>
+        <div class="goal-row">
+          <div>
+            <div class="goal-title">8k step goal</div>
+            <div class="muted"><span id="stepCountLabel">0</span> / <span id="stepGoalLabel">8,000</span> steps</div>
+          </div>
+          <div class="mini-ring" id="stepRing"><span id="stepPct">0%</span></div>
+        </div>
+        <label>Steps today<input id="dailySteps" type="number" min="0" step="100" placeholder="Enter from Google Health"></label>
+        <label class="check"><input type="checkbox" id="officeStairs"> <span>Office stairs -1 → 5 at normal pace (if applicable)</span></label>
+        <p class="muted">The step goal contributes proportionally to daily completion. 4,000/8,000 = 50%; 8,000+ = 100%. Recovery still overrides the number when needed.</p>
+      </div>
+      <div class="card" id="checkinCard">
+        <h2>Quick check-in</h2>
+        <div class="grid2">
+          <label>Sleep (h)<input id="sleep" type="number" step="0.1" min="0"></label>
+          <label>Morning body weight (kg)<input id="weight" type="number" step="0.1" min="0"></label>
+          <label>Energy 1–10<input id="energy" type="number" min="1" max="10"></label>
+          <label>Calories burned (Health app)<input id="caloriesBurned" type="number" min="0" placeholder="Optional, end of day"></label>
+          <label>Daily steps<input id="healthSteps" type="number" min="0" placeholder="Optional, end of day"></label>
+          <label>Resting HR (bpm)<input id="restingHr" type="number" min="0" placeholder="Optional"></label>
+          <label>Leg soreness 0–10<input id="soreness" type="number" min="0" max="10"></label>
+          <label>Shin pain 0–10<input id="shin" type="number" min="0" max="10"></label>
+          <label>Knee/Achilles/foot pain 0–10<input id="jointPain" type="number" min="0" max="10"></label>
+        </div>
+        <label>Notes<textarea id="notes" placeholder="Work stress, unusual fatigue, niggle, anything relevant..."></textarea></label>
+        <button id="saveCheckin">Save check-in</button>
+      </div>
+    </section>
+
+
+    <section id="dashboard" class="tab">
+      <div class="card">
+        <h2>Progress dashboard</h2>
+        <div class="progress-grid">
+          <div class="ring-wrap">
+            <div class="ring" id="todayRing"><span id="todayPct">0%</span></div>
+            <div class="ring-label">Today</div>
+          </div>
+          <div class="ring-wrap">
+            <div class="ring" id="weekRing"><span id="weekPct">0%</span></div>
+            <div class="ring-label">This week</div>
+          </div>
+          <div class="ring-wrap">
+            <div class="ring" id="planRing"><span id="planPct">0%</span></div>
+            <div class="ring-label">Plan to date</div>
+          </div>
+        </div>
+        <p class="muted">Completion is based on the scheduled checklist you tick each day. A workout log adds a dot to that calendar day but does not inflate the percentage.</p>
+      </div>
+      <div class="card">
+        <h2>Training calendar</h2>
+        <div class="calendar-legend">
+          <span><i class="legend-box none"></i> not done</span>
+          <span><i class="legend-box partial"></i> partial</span>
+          <span><i class="legend-box done"></i> complete</span>
+          <span><i class="legend-dot"></i> workout logged</span>
+        </div>
+        <div id="trainingCalendar" class="calendar"></div>
+      </div>
+      <div class="card">
+        <h2>Goals & preferences</h2>
+        <label>Daily step goal<input id="stepGoalSetting" type="number" min="1000" step="500" value="8000"></label>
+        <p class="muted">Saved to your private GitHub training database when sync is connected.</p>
+        <button id="saveGoals">Save goals</button>
+      </div>
+      <div class="card">
+        <h2>GitHub sync</h2>
+        <div class="sync-line"><span id="syncDot" class="sync-dot offline"></span><b id="syncStatus">Not connected</b></div>
+        <p id="syncDetail" class="muted">Enter the private sync key once on this device. The key itself is not stored in GitHub.</p>
+        <label>Private sync key<input id="syncKey" type="password" autocomplete="off" placeholder="Enter your Uhuru sync key"></label>
+        <div class="summary-actions"><button id="saveSyncKey">Connect / save key</button><button id="syncNow" class="secondary">Sync now</button></div>
+      </div>
+      <div class="card">
+        <h2>Appearance</h2>
+        <label>Theme
+          <select id="themeMode">
+            <option value="auto">Auto (06:00–18:00 light)</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
+        <p class="muted">Auto uses your phone's local time. It switches while the app is open and also recalculates every time you reopen it.</p>
+      </div>
+      <div class="card">
+        <h2>Uhuru benchmark</h2>
+        <div id="benchmarkBars"></div>
+      </div>
+    </section>
+
+    <section id="plan" class="tab">
+      <div class="card">
+        <h2>Plan</h2>
+        <p class="muted">Oct 5 → Dec 14. Tap any day to expand. Missed sessions are not made up.</p>
+        <div id="planList"></div>
+      </div>
+    </section>
+
+    <section id="log" class="tab">
+      <div class="card">
+        <h2>Workout / hike log</h2>
+        <div class="grid2">
+          <label>Date<input id="logDate" type="date"></label>
+          <label>Type<select id="logType">
+            <option>Hike</option><option>Gym A</option><option>Gym B</option>
+            <option>Run</option><option>Vertical conditioning</option><option>Walk</option><option>Other</option>
+          </select></label>
+          <label>Duration (min)<input id="duration" type="number" min="0"></label>
+          <label>Distance (km)<input id="distance" type="number" step="0.1" min="0"></label>
+          <label>Ascent (m)<input id="ascent" type="number" min="0"></label>
+          <label>Pack (kg)<input id="pack" type="number" step="0.1" min="0"></label>
+          <label>Avg HR<input id="avgHr" type="number" min="0"></label>
+          <label>RPE 1–10<input id="rpe" type="number" min="1" max="10"></label>
+          <label>Shin pain 0–10<input id="logShin" type="number" min="0" max="10"></label>
+          <label>Other pain 0–10<input id="logPain" type="number" min="0" max="10"></label>
+        </div>
+        <label>Notes<textarea id="logNotes"></textarea></label>
+        <button id="saveWorkout">Save workout</button>
+      </div>
+      <div class="card">
+        <h2>Recent logs</h2>
+        <div id="recentLogs"></div>
+      </div>
+    </section>
+
+    <section id="summary" class="tab">
+      <div class="card">
+        <h2>Mission debrief to ChatGPT</h2>
+        <p id="summaryDue" class="status"></p>
+        <div class="summary-actions">
+          <button id="gen3">Generate last 3 days</button>
+          <button id="genWeek" class="secondary">Generate Sunday / 7-day summary</button>
+        </div>
+        <textarea id="summaryText" class="summarybox" placeholder="Your generated summary appears here..."></textarea>
+        <div class="summary-actions">
+          <button id="shareSummary">Share</button>
+          <button id="copySummary" class="secondary">Copy</button>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Data & backup</h2>
+        <p>GitHub is the authoritative training database. This device keeps an offline cache and pending changes until they are synced.</p>
+        <div class="summary-actions">
+          <button id="exportData">Export data</button>
+          <label class="fileBtn secondary">Import data<input id="importData" type="file" accept="application/json" hidden></label>
+        </div>
+      </div>
+    </section>
+
+    <section id="safety" class="tab">
+      <div class="card">
+        <h2>Mission rules</h2>
+        <ul>
+          <li><b>Do not make up missed sessions.</b> Continue with the plan.</li>
+          <li><b>Work crisis priority:</b> long hike → one gym → second gym → conditioning → optional run.</li>
+          <li><b>Gym:</b> stop most sets with 2–3 reps in reserve; no maxing, no routine failure training.</li>
+          <li><b>Pack:</b> progress gradually toward 6–7 kg. Secure any kettlebells; water ballast is better.</li>
+          <li><b>Running:</b> optional, easy, 0–1×/week. Reduce first if shin symptoms return.</li>
+          <li><b>Daily movement:</b> ~8k easy steps is a baseline, not a punishment.</li>
+          <li><b>Nutrition:</b> small surplus ~150–250 kcal/day; protein ~100–120 g/day; keep carbs adequate.</li>
+          <li><b>Taper:</b> Dec 7–13 is deliberately easy. No hero workouts.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Pain rules</h2>
+        <div class="traffic green"><b>0–2/10:</b> continue and monitor.</div>
+        <div class="traffic amber"><b>3–4/10:</b> do not increase load; reduce the provoking activity if needed.</div>
+        <div class="traffic red"><b>5+/10 or sharp/localized pain:</b> stop/reduce the provoking activity.</div>
+        <p class="muted">Persistent or worsening shin, Achilles, knee, foot, chest, breathing, neurological or other concerning symptoms need proper medical assessment. This app is training guidance, not diagnosis.</p>
+      </div>
+      <div class="card">
+        <h2>Uhuru benchmark before taper</h2>
+        <ul>
+          <li>6–7 h hiking</li>
+          <li>1,000–1,300 m ascent</li>
+          <li>6–7 kg pack</li>
+          <li>Then 3–4 h easy hiking the next day</li>
+          <li>No meaningful shin/knee/foot problem; functional by Monday</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js?v=4.0"></script>
+</body>
+</html>
