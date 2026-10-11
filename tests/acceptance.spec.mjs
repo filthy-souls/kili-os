@@ -399,15 +399,17 @@ test('Desktop Phone toggle constrains app to phone width and restores desktop', 
 });
 
 
-test('Mobile primary navigation is fixed to the bottom and uses four accessible destinations', async ({page},testInfo) => {
+test('Mobile primary navigation is fixed to the right side and uses four accessible destinations', async ({page},testInfo) => {
   test.skip(testInfo.project.name!=='mobile');
   const errors=await boot(page);
   const nav=page.locator('.tabs');
   await expect(nav).toBeVisible();
   const position=await nav.evaluate(el=>getComputedStyle(el).position);
+  const right=await nav.evaluate(el=>getComputedStyle(el).right);
   const bottom=await nav.evaluate(el=>getComputedStyle(el).bottom);
   expect(position).toBe('fixed');
-  expect(parseFloat(bottom)).toBe(0);
+  expect(parseFloat(right)).toBeGreaterThanOrEqual(0);
+  expect(bottom).toBe('auto');
   expect(await nav.locator('button').allTextContents()).toEqual(['Today','Progress','Plan','More']);
   for(const name of ['Today','Progress','Plan','More']){
     const button=page.getByRole('button',{name,exact:true});
@@ -417,7 +419,7 @@ test('Mobile primary navigation is fixed to the bottom and uses four accessible 
   expect(errors).toEqual([]);
 });
 
-test('Phone 390 develop preview uses the mobile bottom navigation shell', async ({page},testInfo) => {
+test('Phone 390 develop preview uses the mobile right-side navigation shell', async ({page},testInfo) => {
   test.skip(testInfo.project.name!=='desktop');
   const errors=await boot(page);
   await page.locator('#previewPhone').click();
@@ -426,7 +428,7 @@ test('Phone 390 develop preview uses the mobile bottom navigation shell', async 
   const navBox=await nav.boundingBox();
   const viewport=page.viewportSize();
   expect(navBox.width).toBeLessThanOrEqual(390);
-  expect(navBox.y+navBox.height).toBeGreaterThan(viewport.height-80);
+  expect(navBox.x+navBox.width).toBeGreaterThan(viewport.width/2);
   await page.locator('#previewDesktop').click();
   expect(await nav.evaluate(el=>getComputedStyle(el).position)).not.toBe('fixed');
   expect(errors).toEqual([]);
