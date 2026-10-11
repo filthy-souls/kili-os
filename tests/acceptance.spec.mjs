@@ -78,7 +78,8 @@ test('Sljeme form saves a hike and updates dashboard log', async ({page}) => {
 
 test('Summary generation works', async ({page}) => {
   const errors=await boot(page);
-  await page.getByRole('button',{name:'Summary'}).click();
+  await page.getByRole('button',{name:'More'}).click();
+  await page.locator('details.more-section').filter({hasText:'Summary & export'}).locator('summary').click();
   await page.locator('#gen3').click();
   await expect(page.locator('#summaryText')).toHaveValue(/KILI TRAINING UPDATE/);
   await expect(page.locator('#summaryText')).toHaveValue(/Average steps/);
@@ -95,7 +96,7 @@ test('No manual sync button in normal progress UI', async ({page}) => {
 
 test('Navigation tabs all activate without runtime errors', async ({page}) => {
   const errors=await boot(page);
-  for (const name of ['Progress','Plan','Log','Summary','Safety','Today']) {
+  for (const name of ['Progress','Plan','More','Today']) {
     await page.getByRole('button',{name}).click();
   }
   expect(errors).toEqual([]);
@@ -116,5 +117,23 @@ test('Light and dark theme switching remains functional', async ({page}) => {
   await expect(page.locator('body')).toHaveClass(/light-theme/);
   await page.locator('#themeMode').selectOption('dark');
   await expect(page.locator('body')).not.toHaveClass(/light-theme/);
+  expect(errors).toEqual([]);
+});
+
+
+test('Top navigation is simplified to four primary tabs', async ({page}) => {
+  const errors=await boot(page);
+  const labels=await page.locator('.tabs button').allTextContents();
+  expect(labels).toEqual(['Today','Progress','Plan','More']);
+  expect(errors).toEqual([]);
+});
+
+test('Manual workout entry is available under More and recent logs remain on Progress', async ({page}) => {
+  const errors=await boot(page);
+  await page.getByRole('button',{name:'More'}).click();
+  await page.locator('details.more-section').filter({hasText:'Manual workout entry'}).locator('summary').click();
+  await expect(page.locator('#saveWorkout')).toBeVisible();
+  await page.getByRole('button',{name:'Progress'}).click();
+  await expect(page.locator('#recentLogs')).toBeVisible();
   expect(errors).toEqual([]);
 });
