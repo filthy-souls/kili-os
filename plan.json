@@ -1,0 +1,769 @@
+{
+  "preWeekend": [],
+  "weeks": [
+    {
+      "week": 1,
+      "start": "2026-10-05",
+      "end": "2026-10-11",
+      "phase": "Rebuild",
+      "days": {
+        "Monday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Easy movement only",
+            "Office stairs if comfortable",
+            "8k step goal is a target, not punishment"
+          ]
+        },
+        "Tuesday": {
+          "title": "Gym A",
+          "items": [
+            "45° leg press 3×8–12",
+            "Machine chest press 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Seated row 3×8–12",
+            "Machine shoulder press 2×8–12",
+            "Biceps curl 3×10–15",
+            "Triceps pushdown 3×10–15",
+            "Plank 2×30–60 sec",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Wednesday": {
+          "title": "Easy aerobic / vertical conditioning",
+          "items": [
+            "45–60 min conversational early; progress toward 60–90 min",
+            "Stairs, curved treadmill, easy walk/run",
+            "No weekday hiking"
+          ]
+        },
+        "Thursday": {
+          "title": "Gym B",
+          "items": [
+            "45° leg press 3×10–12, lower each rep over ~3 sec",
+            "Single-leg 45° leg press 2–3×8–12 each leg",
+            "45° leg press calf raises 3×15–20",
+            "Back extensions 3×10–15",
+            "Incline machine press OR pec deck 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Reverse pec deck / rear-delt fly 3×12–15",
+            "Lateral raises 3×12–20",
+            "Biceps curl 2–3×10–15",
+            "Triceps pushdown 2–3×10–15",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Friday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Recover for weekend",
+            "Do not make up missed work"
+          ]
+        },
+        "Saturday": {
+          "title": "Long Hike / Sljeme",
+          "items": [
+            "Sljeme only",
+            "2.5–3.5 h, 2–3 kg pack",
+            "Controlled pace",
+            "Practice downhill tolerance"
+          ]
+        },
+        "Sunday": {
+          "title": "Recovery / weekly check-in",
+          "items": [
+            "Recovery walk",
+            "Weekly review",
+            "No cramming missed sessions"
+          ]
+        }
+      }
+    },
+    {
+      "week": 2,
+      "start": "2026-10-12",
+      "end": "2026-10-18",
+      "phase": "Rebuild",
+      "days": {
+        "Monday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Easy movement only",
+            "Office stairs if comfortable",
+            "8k step goal is a target, not punishment"
+          ]
+        },
+        "Tuesday": {
+          "title": "Gym A",
+          "items": [
+            "45° leg press 3×8–12",
+            "Machine chest press 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Seated row 3×8–12",
+            "Machine shoulder press 2×8–12",
+            "Biceps curl 3×10–15",
+            "Triceps pushdown 3×10–15",
+            "Plank 2×30–60 sec",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Wednesday": {
+          "title": "Easy aerobic / vertical conditioning",
+          "items": [
+            "45–60 min conversational early; progress toward 60–90 min",
+            "Stairs, curved treadmill, easy walk/run",
+            "No weekday hiking"
+          ]
+        },
+        "Thursday": {
+          "title": "Gym B",
+          "items": [
+            "45° leg press 3×10–12, lower each rep over ~3 sec",
+            "Single-leg 45° leg press 2–3×8–12 each leg",
+            "45° leg press calf raises 3×15–20",
+            "Back extensions 3×10–15",
+            "Incline machine press OR pec deck 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Reverse pec deck / rear-delt fly 3×12–15",
+            "Lateral raises 3×12–20",
+            "Biceps curl 2–3×10–15",
+            "Triceps pushdown 2–3×10–15",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Friday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Recover for weekend",
+            "Do not make up missed work"
+          ]
+        },
+        "Saturday": {
+          "title": "Long Hike / Sljeme",
+          "items": [
+            "Sljeme only",
+            "2.5–3.5 h, 2–3 kg pack",
+            "Controlled pace",
+            "Practice downhill tolerance"
+          ]
+        },
+        "Sunday": {
+          "title": "Recovery / weekly check-in",
+          "items": [
+            "Recovery walk",
+            "Weekly review",
+            "No cramming missed sessions"
+          ]
+        }
+      }
+    },
+    {
+      "week": 3,
+      "start": "2026-10-19",
+      "end": "2026-10-25",
+      "phase": "Build",
+      "days": {
+        "Monday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Easy movement only",
+            "Office stairs if comfortable",
+            "8k step goal is a target, not punishment"
+          ]
+        },
+        "Tuesday": {
+          "title": "Gym A",
+          "items": [
+            "45° leg press 3×8–12",
+            "Machine chest press 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Seated row 3×8–12",
+            "Machine shoulder press 2×8–12",
+            "Biceps curl 3×10–15",
+            "Triceps pushdown 3×10–15",
+            "Plank 2×30–60 sec",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Wednesday": {
+          "title": "Easy aerobic / vertical conditioning",
+          "items": [
+            "45–60 min conversational early; progress toward 60–90 min",
+            "Stairs, curved treadmill, easy walk/run",
+            "No weekday hiking"
+          ]
+        },
+        "Thursday": {
+          "title": "Gym B",
+          "items": [
+            "45° leg press 3×10–12, lower each rep over ~3 sec",
+            "Single-leg 45° leg press 2–3×8–12 each leg",
+            "45° leg press calf raises 3×15–20",
+            "Back extensions 3×10–15",
+            "Incline machine press OR pec deck 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Reverse pec deck / rear-delt fly 3×12–15",
+            "Lateral raises 3×12–20",
+            "Biceps curl 2–3×10–15",
+            "Triceps pushdown 2–3×10–15",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Friday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Recover for weekend",
+            "Do not make up missed work"
+          ]
+        },
+        "Saturday": {
+          "title": "Long Hike / Sljeme",
+          "items": [
+            "Sljeme only",
+            "3.5–4.5 h, 3–4 kg pack",
+            "Controlled pace",
+            "Practice downhill tolerance"
+          ]
+        },
+        "Sunday": {
+          "title": "Recovery / weekly check-in",
+          "items": [
+            "Recovery walk",
+            "Weekly review",
+            "No cramming missed sessions"
+          ]
+        }
+      }
+    },
+    {
+      "week": 4,
+      "start": "2026-10-26",
+      "end": "2026-11-01",
+      "phase": "Build",
+      "days": {
+        "Monday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Easy movement only",
+            "Office stairs if comfortable",
+            "8k step goal is a target, not punishment"
+          ]
+        },
+        "Tuesday": {
+          "title": "Gym A",
+          "items": [
+            "45° leg press 3×8–12",
+            "Machine chest press 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Seated row 3×8–12",
+            "Machine shoulder press 2×8–12",
+            "Biceps curl 3×10–15",
+            "Triceps pushdown 3×10–15",
+            "Plank 2×30–60 sec",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Wednesday": {
+          "title": "Easy aerobic / vertical conditioning",
+          "items": [
+            "45–60 min conversational early; progress toward 60–90 min",
+            "Stairs, curved treadmill, easy walk/run",
+            "No weekday hiking"
+          ]
+        },
+        "Thursday": {
+          "title": "Gym B",
+          "items": [
+            "45° leg press 3×10–12, lower each rep over ~3 sec",
+            "Single-leg 45° leg press 2–3×8–12 each leg",
+            "45° leg press calf raises 3×15–20",
+            "Back extensions 3×10–15",
+            "Incline machine press OR pec deck 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Reverse pec deck / rear-delt fly 3×12–15",
+            "Lateral raises 3×12–20",
+            "Biceps curl 2–3×10–15",
+            "Triceps pushdown 2–3×10–15",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Friday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Recover for weekend",
+            "Do not make up missed work"
+          ]
+        },
+        "Saturday": {
+          "title": "Long Hike / Sljeme",
+          "items": [
+            "Sljeme only",
+            "3.5–4.5 h, 3–4 kg pack",
+            "Controlled pace",
+            "Practice downhill tolerance"
+          ]
+        },
+        "Sunday": {
+          "title": "Recovery / weekly check-in",
+          "items": [
+            "Recovery walk",
+            "Weekly review",
+            "No cramming missed sessions"
+          ]
+        }
+      }
+    },
+    {
+      "week": 5,
+      "start": "2026-11-02",
+      "end": "2026-11-08",
+      "phase": "Build",
+      "days": {
+        "Monday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Easy movement only",
+            "Office stairs if comfortable",
+            "8k step goal is a target, not punishment"
+          ]
+        },
+        "Tuesday": {
+          "title": "Gym A",
+          "items": [
+            "45° leg press 3×8–12",
+            "Machine chest press 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Seated row 3×8–12",
+            "Machine shoulder press 2×8–12",
+            "Biceps curl 3×10–15",
+            "Triceps pushdown 3×10–15",
+            "Plank 2×30–60 sec",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Wednesday": {
+          "title": "Easy aerobic / vertical conditioning",
+          "items": [
+            "45–60 min conversational early; progress toward 60–90 min",
+            "Stairs, curved treadmill, easy walk/run",
+            "No weekday hiking"
+          ]
+        },
+        "Thursday": {
+          "title": "Gym B",
+          "items": [
+            "45° leg press 3×10–12, lower each rep over ~3 sec",
+            "Single-leg 45° leg press 2–3×8–12 each leg",
+            "45° leg press calf raises 3×15–20",
+            "Back extensions 3×10–15",
+            "Incline machine press OR pec deck 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Reverse pec deck / rear-delt fly 3×12–15",
+            "Lateral raises 3×12–20",
+            "Biceps curl 2–3×10–15",
+            "Triceps pushdown 2–3×10–15",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Friday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Recover for weekend",
+            "Do not make up missed work"
+          ]
+        },
+        "Saturday": {
+          "title": "Long Hike / Sljeme",
+          "items": [
+            "Sljeme only",
+            "4.5–5 h, 4–5 kg pack",
+            "Controlled pace",
+            "Practice downhill tolerance"
+          ]
+        },
+        "Sunday": {
+          "title": "Recovery / weekly check-in",
+          "items": [
+            "Recovery walk",
+            "Weekly review",
+            "No cramming missed sessions"
+          ]
+        }
+      }
+    },
+    {
+      "week": 6,
+      "start": "2026-11-09",
+      "end": "2026-11-15",
+      "phase": "Peak",
+      "days": {
+        "Monday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Easy movement only",
+            "Office stairs if comfortable",
+            "8k step goal is a target, not punishment"
+          ]
+        },
+        "Tuesday": {
+          "title": "Gym A",
+          "items": [
+            "45° leg press 3×8–12",
+            "Machine chest press 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Seated row 3×8–12",
+            "Machine shoulder press 2×8–12",
+            "Biceps curl 3×10–15",
+            "Triceps pushdown 3×10–15",
+            "Plank 2×30–60 sec",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Wednesday": {
+          "title": "Easy aerobic / vertical conditioning",
+          "items": [
+            "45–60 min conversational early; progress toward 60–90 min",
+            "Stairs, curved treadmill, easy walk/run",
+            "No weekday hiking"
+          ]
+        },
+        "Thursday": {
+          "title": "Gym B",
+          "items": [
+            "45° leg press 3×10–12, lower each rep over ~3 sec",
+            "Single-leg 45° leg press 2–3×8–12 each leg",
+            "45° leg press calf raises 3×15–20",
+            "Back extensions 3×10–15",
+            "Incline machine press OR pec deck 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Reverse pec deck / rear-delt fly 3×12–15",
+            "Lateral raises 3×12–20",
+            "Biceps curl 2–3×10–15",
+            "Triceps pushdown 2–3×10–15",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Friday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Recover for weekend",
+            "Do not make up missed work"
+          ]
+        },
+        "Saturday": {
+          "title": "Long Hike / Sljeme",
+          "items": [
+            "Sljeme only",
+            "5–6 h, 5–6 kg pack",
+            "Controlled pace",
+            "Practice downhill tolerance"
+          ]
+        },
+        "Sunday": {
+          "title": "Recovery / weekly check-in",
+          "items": [
+            "Recovery walk",
+            "Weekly review",
+            "No cramming missed sessions"
+          ]
+        }
+      }
+    },
+    {
+      "week": 7,
+      "start": "2026-11-16",
+      "end": "2026-11-22",
+      "phase": "Peak",
+      "days": {
+        "Monday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Easy movement only",
+            "Office stairs if comfortable",
+            "8k step goal is a target, not punishment"
+          ]
+        },
+        "Tuesday": {
+          "title": "Gym A",
+          "items": [
+            "45° leg press 3×8–12",
+            "Machine chest press 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Seated row 3×8–12",
+            "Machine shoulder press 2×8–12",
+            "Biceps curl 3×10–15",
+            "Triceps pushdown 3×10–15",
+            "Plank 2×30–60 sec",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Wednesday": {
+          "title": "Easy aerobic / vertical conditioning",
+          "items": [
+            "45–60 min conversational early; progress toward 60–90 min",
+            "Stairs, curved treadmill, easy walk/run",
+            "No weekday hiking"
+          ]
+        },
+        "Thursday": {
+          "title": "Gym B",
+          "items": [
+            "45° leg press 3×10–12, lower each rep over ~3 sec",
+            "Single-leg 45° leg press 2–3×8–12 each leg",
+            "45° leg press calf raises 3×15–20",
+            "Back extensions 3×10–15",
+            "Incline machine press OR pec deck 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Reverse pec deck / rear-delt fly 3×12–15",
+            "Lateral raises 3×12–20",
+            "Biceps curl 2–3×10–15",
+            "Triceps pushdown 2–3×10–15",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Friday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Recover for weekend",
+            "Do not make up missed work"
+          ]
+        },
+        "Saturday": {
+          "title": "Long Hike / Sljeme",
+          "items": [
+            "Sljeme only",
+            "5–6 h, 5–6 kg pack",
+            "Controlled pace",
+            "Practice downhill tolerance"
+          ]
+        },
+        "Sunday": {
+          "title": "Recovery / weekly check-in",
+          "items": [
+            "Recovery walk",
+            "Weekly review",
+            "No cramming missed sessions"
+          ]
+        }
+      }
+    },
+    {
+      "week": 8,
+      "start": "2026-11-23",
+      "end": "2026-11-29",
+      "phase": "Peak",
+      "days": {
+        "Monday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Easy movement only",
+            "Office stairs if comfortable",
+            "8k step goal is a target, not punishment"
+          ]
+        },
+        "Tuesday": {
+          "title": "Gym A",
+          "items": [
+            "45° leg press 3×8–12",
+            "Machine chest press 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Seated row 3×8–12",
+            "Machine shoulder press 2×8–12",
+            "Biceps curl 3×10–15",
+            "Triceps pushdown 3×10–15",
+            "Plank 2×30–60 sec",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Wednesday": {
+          "title": "Easy aerobic / vertical conditioning",
+          "items": [
+            "45–60 min conversational early; progress toward 60–90 min",
+            "Stairs, curved treadmill, easy walk/run",
+            "No weekday hiking"
+          ]
+        },
+        "Thursday": {
+          "title": "Gym B",
+          "items": [
+            "45° leg press 3×10–12, lower each rep over ~3 sec",
+            "Single-leg 45° leg press 2–3×8–12 each leg",
+            "45° leg press calf raises 3×15–20",
+            "Back extensions 3×10–15",
+            "Incline machine press OR pec deck 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Reverse pec deck / rear-delt fly 3×12–15",
+            "Lateral raises 3×12–20",
+            "Biceps curl 2–3×10–15",
+            "Triceps pushdown 2–3×10–15",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Friday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Recover for weekend",
+            "Do not make up missed work"
+          ]
+        },
+        "Saturday": {
+          "title": "Long Hike / Sljeme",
+          "items": [
+            "Sljeme only",
+            "6–7 h, 6–7 kg pack, 1000–1300 m ascent",
+            "Controlled pace",
+            "Practice downhill tolerance"
+          ]
+        },
+        "Sunday": {
+          "title": "Second easy Sljeme",
+          "items": [
+            "3–4 h easy Sljeme",
+            "400–700 m if practical",
+            "No racing"
+          ]
+        }
+      }
+    },
+    {
+      "week": 9,
+      "start": "2026-11-30",
+      "end": "2026-12-06",
+      "phase": "Taper",
+      "days": {
+        "Monday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Easy movement only",
+            "Office stairs if comfortable",
+            "8k step goal is a target, not punishment"
+          ]
+        },
+        "Tuesday": {
+          "title": "Gym A",
+          "items": [
+            "45° leg press 3×8–12",
+            "Machine chest press 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Seated row 3×8–12",
+            "Machine shoulder press 2×8–12",
+            "Biceps curl 3×10–15",
+            "Triceps pushdown 3×10–15",
+            "Plank 2×30–60 sec",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Wednesday": {
+          "title": "Easy aerobic / vertical conditioning",
+          "items": [
+            "45–60 min conversational early; progress toward 60–90 min",
+            "Stairs, curved treadmill, easy walk/run",
+            "No weekday hiking"
+          ]
+        },
+        "Thursday": {
+          "title": "Gym B",
+          "items": [
+            "45° leg press 3×10–12, lower each rep over ~3 sec",
+            "Single-leg 45° leg press 2–3×8–12 each leg",
+            "45° leg press calf raises 3×15–20",
+            "Back extensions 3×10–15",
+            "Incline machine press OR pec deck 3×8–12",
+            "Lat pulldown 3×8–12",
+            "Reverse pec deck / rear-delt fly 3×12–15",
+            "Lateral raises 3×12–20",
+            "Biceps curl 2–3×10–15",
+            "Triceps pushdown 2–3×10–15",
+            "Finish most sets with 2–3 reps in reserve"
+          ]
+        },
+        "Friday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Recover for weekend",
+            "Do not make up missed work"
+          ]
+        },
+        "Saturday": {
+          "title": "Long Hike / Sljeme",
+          "items": [
+            "Sljeme only",
+            "4.5–5.5 h, 5–6 kg pack",
+            "Controlled pace",
+            "Practice downhill tolerance"
+          ]
+        },
+        "Sunday": {
+          "title": "Recovery / weekly check-in",
+          "items": [
+            "Recovery walk",
+            "Weekly review",
+            "No cramming missed sessions"
+          ]
+        }
+      }
+    },
+    {
+      "week": 10,
+      "start": "2026-12-07",
+      "end": "2026-12-13",
+      "phase": "Taper",
+      "days": {
+        "Monday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Easy movement only",
+            "Office stairs if comfortable",
+            "8k step goal is a target, not punishment"
+          ]
+        },
+        "Tuesday": {
+          "title": "Light full-body gym",
+          "items": [
+            "Half normal volume",
+            "No failure",
+            "Leave fresh"
+          ]
+        },
+        "Wednesday": {
+          "title": "Easy aerobic / vertical conditioning",
+          "items": [
+            "45–60 min conversational early; progress toward 60–90 min",
+            "Stairs, curved treadmill, easy walk/run",
+            "No weekday hiking"
+          ]
+        },
+        "Thursday": {
+          "title": "Rest",
+          "items": [
+            "Rest / easy walking only"
+          ]
+        },
+        "Friday": {
+          "title": "Rest + easy walking",
+          "items": [
+            "Recover for weekend",
+            "Do not make up missed work"
+          ]
+        },
+        "Saturday": {
+          "title": "Easy Sljeme / walk",
+          "items": [
+            "Sljeme only",
+            "60–90 min easy, no heavy pack",
+            "Controlled pace",
+            "Practice downhill tolerance"
+          ]
+        },
+        "Sunday": {
+          "title": "Recovery / weekly check-in",
+          "items": [
+            "Recovery walk",
+            "Weekly review",
+            "No cramming missed sessions"
+          ]
+        }
+      }
+    }
+  ]
+}
