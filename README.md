@@ -80,3 +80,7 @@ Removed step-ups, controlled step-downs and leg curls.
 
 ## v4.0 Git-backed database
 GitHub is authoritative (`data/state.json`). The PWA reads/writes through `netlify/functions/uhuru-data.mjs`; localStorage is only an offline cache. Fixed duplicate `findDayPlan()` that bypassed rescheduling, including the Oct 10 -> Oct 11 Sljeme case.
+
+
+## Development quality gate
+UI/functionality changes are tested on `develop` before promotion to `main`. See `.github/workflows/develop-acceptance.yml` and `tests/acceptance.spec.mjs`.
