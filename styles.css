@@ -18,3 +18,41 @@ main{max-width:860px;margin:0 auto}
 .bench-row{margin:12px 0}.bench-head{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}.bar{height:10px;background:#273141;border-radius:999px;overflow:hidden}.bar>span{display:block;height:100%;background:linear-gradient(90deg,#4aa3ff,#8bd0ff);border-radius:999px}
 .advanced-card summary{cursor:pointer}.advanced-body{padding-top:12px}
 @media(max-width:520px){.metric-strip{grid-template-columns:1fr 1fr}.metric-strip .metric-tile:last-child{grid-column:1/-1}}
+
+/* v4.4 mission / local-preview polish */
+.mission-card{
+  display:flex;justify-content:space-between;align-items:center;gap:18px;
+  padding:20px;margin-bottom:14px;border-radius:20px;
+  background:linear-gradient(145deg,var(--card),var(--card2));
+  border:1px solid var(--border);overflow:hidden;position:relative
+}
+.mission-card:before{
+  content:"";position:absolute;right:-40px;bottom:-70px;width:210px;height:210px;
+  border:1px solid color-mix(in srgb,var(--accent) 24%,transparent);
+  border-radius:50%;pointer-events:none
+}
+.mission-kicker{font-size:11px;font-weight:800;letter-spacing:.16em;color:var(--accent)}
+.mission-title{font-size:34px;line-height:1;font-weight:850;margin:6px 0}
+.mission-sub{font-size:14px;color:var(--muted);margin-bottom:8px}
+.weekend-rule{font-size:12px;color:var(--muted)}
+.mission-badge{
+  flex:0 0 auto;width:86px;height:86px;border-radius:50%;display:grid;place-items:center;
+  border:1px solid color-mix(in srgb,var(--accent) 55%,var(--border));
+  background:color-mix(in srgb,var(--accent) 10%,var(--card));
+  font-size:12px;font-weight:900;letter-spacing:.14em;color:var(--accent)
+}
+.schedule-options{display:flex;gap:8px;flex-wrap:wrap}
+.hike-checkin{border-color:color-mix(in srgb,var(--accent) 38%,var(--border))}
+.hike-title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}
+.hike-badge{
+  min-width:68px;height:68px;border-radius:50%;display:grid;place-items:center;
+  background:color-mix(in srgb,var(--accent) 10%,var(--card2));border:1px solid var(--border);
+  color:var(--accent);font-size:11px;font-weight:850;letter-spacing:.1em
+}
+.metric-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}
+.metric-tile{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:10px;text-align:center}
+.metric-tile b{display:block;font-size:20px}.metric-tile span{font-size:10px;color:var(--muted);letter-spacing:.08em}
+@media(max-width:620px){
+  .mission-card{padding:16px}.mission-title{font-size:30px}.mission-badge{width:70px;height:70px}
+  .schedule-options{display:grid;grid-template-columns:1fr}.schedule-options button{width:100%}
+}
