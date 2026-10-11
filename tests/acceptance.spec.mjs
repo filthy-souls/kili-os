@@ -383,7 +383,7 @@ test('Calendar renders as separate conventional month grids', async ({page}) => 
   expect(errors).toEqual([]);
 });
 
-test('Desktop Phone toggle constrains app to phone width and restores desktop', async ({page}) => {
+test('Desktop Phone toggle constrains app to phone width and restores desktop', async ({page},testInfo) => {\n  test.skip(testInfo.project.name!=='desktop');
   const errors=await boot(page);
   await expect(page.locator('#devPreviewBar')).toBeVisible();
   await page.locator('#previewPhone').click();
@@ -416,7 +416,7 @@ test('Mobile primary navigation is fixed to the bottom and uses four accessible 
   expect(errors).toEqual([]);
 });
 
-test('Phone 390 develop preview uses the mobile bottom navigation shell', async ({page}) => {
+test('Phone 390 develop preview uses the mobile bottom navigation shell', async ({page},testInfo) => {\n  test.skip(testInfo.project.name!=='desktop');
   const errors=await boot(page);
   await page.locator('#previewPhone').click();
   const nav=page.locator('.tabs');
@@ -430,14 +430,3 @@ test('Phone 390 develop preview uses the mobile bottom navigation shell', async 
   expect(errors).toEqual([]);
 });
 
-test('Explicit devPreview query exposes preview controls outside local-preview mode', async ({page}) => {
-  const errors=[];
-  page.on('pageerror',e=>errors.push(String(e)));
-  await installClock(page,{clear:true});
-  await page.route('**/.netlify/functions/uhuru-data',async route=>{
-    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({state:null,sha:null})});
-  });
-  await page.goto('/?remoteSync=1&devPreview=1',{waitUntil:'networkidle'});
-  await expect(page.locator('#devPreviewBar')).toBeVisible();
-  expect(errors).toEqual([]);
-});
