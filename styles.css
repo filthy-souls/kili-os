@@ -158,3 +158,108 @@ body.light-theme .secondary{background:#ece8de;color:var(--text)}
   .more-section>summary{align-items:flex-start}
   .more-section>summary .muted{white-space:normal;text-align:right;max-width:46%}
 }
+
+
+/* v4.8 Conventional calendar + develop phone preview */
+.calendar{display:block}
+.calendar-month{margin:0 0 22px}
+.calendar-month:last-child{margin-bottom:0}
+.calendar-month-title{
+  font-size:15px;font-weight:760;letter-spacing:-.015em;color:var(--text);
+  margin:3px 0 10px
+}
+.month-grid{
+  display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px
+}
+.month-grid .cal-head{
+  font-size:10px!important;letter-spacing:.02em;text-transform:none;
+  color:var(--muted);text-align:center;padding:3px 0 5px;font-weight:650
+}
+.month-grid .cal-blank{min-height:0;background:transparent;border:0}
+.month-grid .cal-day{
+  aspect-ratio:auto;min-height:66px!important;border-radius:10px;
+  border:1px solid var(--border)!important;background:var(--surface-soft)!important;
+  display:block;position:relative;padding:8px!important;
+  font-size:14px;font-weight:700;color:var(--text)
+}
+.month-grid .cal-day .date-num{display:block;line-height:1}
+.month-grid .cal-day.partial{
+  background:color-mix(in srgb,var(--accent) 18%,var(--surface-soft))!important
+}
+.month-grid .cal-day.done{
+  background:color-mix(in srgb,var(--accent) 55%,var(--surface-soft))!important;
+  color:var(--text)
+}
+.month-grid .cal-day.today{
+  outline:2px solid var(--accent-strong);outline-offset:1px
+}
+.month-grid .cal-day.future{opacity:.58}
+.month-grid .cal-day.outside{opacity:.18}
+.month-grid .cal-day .pct{
+  position:absolute;left:8px;bottom:7px;font-size:9px;font-weight:650;
+  color:var(--muted);opacity:1
+}
+.month-grid .cal-day .dot{
+  position:absolute;width:7px;height:7px;border-radius:50%;
+  right:8px;bottom:8px;background:var(--accent-strong)
+}
+
+.dev-preview-bar{
+  position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:center;
+  gap:7px;width:max-content;max-width:calc(100% - 20px);margin:0 auto 12px;
+  padding:6px 8px;border:1px solid var(--border);border-radius:999px;
+  background:color-mix(in srgb,var(--card) 94%,transparent);backdrop-filter:blur(12px);
+  box-shadow:0 6px 24px rgba(0,0,0,.14)
+}
+.dev-preview-bar>span{
+  font-size:10px;color:var(--muted);font-weight:750;letter-spacing:.06em;text-transform:uppercase;
+  padding:0 4px
+}
+.dev-preview-bar button{
+  padding:6px 9px;border-radius:999px;background:transparent;color:var(--muted);
+  font-size:11px;font-weight:700;border:1px solid transparent
+}
+.dev-preview-bar button.active{
+  background:var(--card2);color:var(--text);border-color:var(--border)
+}
+body.dev-phone-preview{
+  background:color-mix(in srgb,var(--bg) 88%,#000)
+}
+body.dev-phone-preview>header,
+body.dev-phone-preview>.tabs,
+body.dev-phone-preview>main{
+  width:390px;max-width:calc(100vw - 24px);margin-left:auto;margin-right:auto
+}
+body.dev-phone-preview>header{
+  margin-top:10px;border-left:1px solid var(--border);border-right:1px solid var(--border);
+  border-top:1px solid var(--border);border-radius:22px 22px 0 0;background:var(--bg)
+}
+body.dev-phone-preview>.tabs{
+  border-left:1px solid var(--border);border-right:1px solid var(--border);background:var(--bg)
+}
+body.dev-phone-preview>main{
+  border-left:1px solid var(--border);border-right:1px solid var(--border);
+  border-bottom:1px solid var(--border);border-radius:0 0 22px 22px;background:var(--bg);
+  min-height:720px
+}
+body.dev-phone-preview .grid2{grid-template-columns:1fr}
+body.dev-phone-preview .schedule-options{display:grid;grid-template-columns:1fr}
+body.dev-phone-preview .schedule-options button{width:100%}
+body.dev-phone-preview .mission-title{font-size:21px}
+body.dev-phone-preview .mission-badge{width:56px;height:56px}
+body.dev-phone-preview .today-title{font-size:25px}
+body.dev-phone-preview .ring-wrap{grid-template-columns:90px 1fr 42px}
+body.dev-phone-preview .ring span{right:-50px;width:42px}
+body.dev-phone-preview .month-grid{gap:4px}
+body.dev-phone-preview .month-grid .cal-day{min-height:48px!important;padding:6px!important;font-size:13px}
+body.dev-phone-preview .month-grid .cal-day .pct{font-size:7px;left:5px;bottom:4px}
+body.dev-phone-preview .month-grid .cal-day .dot{width:6px;height:6px;right:5px;bottom:5px}
+
+@media(max-width:620px){
+  .calendar-month{margin-bottom:18px}
+  .month-grid{gap:4px}
+  .month-grid .cal-head{font-size:8px!important}
+  .month-grid .cal-day{min-height:48px!important;padding:6px!important;font-size:13px}
+  .month-grid .cal-day .pct{font-size:7px;left:5px;bottom:4px}
+  .month-grid .cal-day .dot{width:6px;height:6px;right:5px;bottom:5px}
+}
