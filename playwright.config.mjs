@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
@@ -7,11 +7,23 @@ export default defineConfig({
   retries: 0,
   use: {
     baseURL: 'http://127.0.0.1:8080',
+    browserName: 'chromium',
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure'
   },
   projects: [
-    { name: 'mobile', use: { ...devices['iPhone 13'] } },
-    { name: 'desktop', use: { viewport: { width: 1440, height: 1000 } } }
+    {
+      name: 'mobile',
+      use: {
+        viewport: { width: 390, height: 844 },
+        isMobile: true,
+        hasTouch: true,
+        deviceScaleFactor: 3
+      }
+    },
+    {
+      name: 'desktop',
+      use: { viewport: { width: 1440, height: 1000 } }
+    }
   ]
 });
