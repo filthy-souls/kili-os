@@ -737,9 +737,6 @@ body.dev-phone-preview .muted{font-size:13px}
 body.dev-phone-preview .pill{font-size:11px}
 
 /* Keep checklist layout compact and aligned */
-body.dev-phone-preview .check,
-@media(max-width:620px){
-}
 body.dev-phone-preview .check{
   gap:10px;
   padding:10px 0;
@@ -748,4 +745,15 @@ body.dev-phone-preview .check{
 body.dev-phone-preview .check input{
   flex:0 0 auto;
   margin-top:2px;
+}
+@media(max-width:620px){
+  .check{
+    gap:10px;
+    padding:10px 0;
+    align-items:flex-start;
+  }
+  .check input{
+    flex:0 0 auto;
+    margin-top:2px;
+  }
 }
