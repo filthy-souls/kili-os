@@ -1,6 +1,6 @@
 
 const KEY="kili2026data_v2", SYNC_KEY="projectUhuruSyncKey", API="/.netlify/functions/uhuru-data";
-const URL_FLAGS=new URLSearchParams(location.search);\nconst LOCAL_PREVIEW=["localhost","127.0.0.1"].includes(location.hostname) && !URL_FLAGS.has("remoteSync");\nconst DEV_PREVIEW_AVAILABLE=LOCAL_PREVIEW||URL_FLAGS.get("devPreview")==="1";
+const URL_FLAGS=new URLSearchParams(location.search);\nconst LOCAL_PREVIEW=["localhost","127.0.0.1"].includes(location.hostname) && !URL_FLAGS.has("remoteSync");
 let plan=null, data={version:2,settings:{stepGoal:8000,themeMode:"auto"},checks:{},daily:{},workouts:[],scheduleState:{globalShiftDays:0,actions:[]}},dirty=false,syncing=false,timer=null;
 const $=id=>document.getElementById(id);
 const todayISO=()=>new Date().toLocaleDateString("en-CA");
@@ -162,7 +162,7 @@ function exportData(){const b=new Blob([JSON.stringify(data,null,2)],{type:"appl
 function importData(file){const r=new FileReader();r.onload=()=>{try{data=normalize(JSON.parse(r.result));save();renderAll()}catch(e){alert("Invalid file")}};r.readAsText(file)}
 function applyTheme(){const mode=data.settings.themeMode||"auto",h=new Date().getHours(),actual=mode==="auto"?(h>=6&&h<18?"light":"dark"):mode;document.body.classList.toggle("light-theme",actual==="light");if($("themeMode"))$("themeMode").value=mode}
 function initDevPreview(){
-  const bar=$("devPreviewBar");if(!bar||!DEV_PREVIEW_AVAILABLE)return;
+  const bar=$("devPreviewBar");if(!bar||window.innerWidth<=620)return;
   bar.classList.remove("hidden");
   const apply=mode=>{
     const phone=mode==="phone";
