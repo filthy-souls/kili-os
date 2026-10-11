@@ -216,6 +216,27 @@ test('Manual unscheduled workout saves from More and appears in Recent logs', as
   expect(errors).toEqual([]);
 });
 
+test('Days with no plan or activity do not get phantom 70 percent completion', async ({page}) => {
+  const errors=await boot(page);
+  await page.getByRole('button',{name:'Progress',exact:true}).click();
+  await expect(page.locator('.cal-day[data-date="2026-10-03"] .pct')).toHaveText('0%');
+  expect(errors).toEqual([]);
+});
+
+test('Remote sync failure falls back to bundled repository state', async ({page}) => {
+  await page.route('**/.netlify/functions/uhuru-data',async route=>{
+    await route.fulfill({status:500,contentType:'application/json',body:JSON.stringify({error:'simulated sync failure'})});
+  });
+  const errors=await boot(page,{clear:true,remoteSync:true});
+  await expect(page.locator('#syncMiniText')).toContainText('using bundled data');
+  await page.getByRole('button',{name:'Progress',exact:true}).click();
+  await page.locator('.cal-day[data-date="2026-10-08"]').click();
+  await expect(page.locator('#calendarDayDetails')).toContainText('Gym B');
+  await page.locator('.cal-day[data-date="2026-10-11"]').click();
+  await expect(page.locator('#calendarDayDetails')).toContainText('12 km');
+  expect(errors).toEqual([]);
+});
+
 test('Progress renders historical percentages and the full 73-day calendar', async ({page}) => {
   const errors=await boot(page);
   await page.getByRole('button',{name:'Progress'}).click();
