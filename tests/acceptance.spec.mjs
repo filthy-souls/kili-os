@@ -396,3 +396,48 @@ test('Develop preview toggle constrains app to phone width and restores desktop'
   expect(desktopWidth).toBeGreaterThan(phoneWidth);
   expect(errors).toEqual([]);
 });
+
+
+test('Mobile primary navigation is fixed to the bottom and uses four accessible destinations', async ({page},testInfo) => {
+  test.skip(testInfo.project.name!=='mobile');
+  const errors=await boot(page);
+  const nav=page.locator('.tabs');
+  await expect(nav).toBeVisible();
+  const position=await nav.evaluate(el=>getComputedStyle(el).position);
+  const bottom=await nav.evaluate(el=>getComputedStyle(el).bottom);
+  expect(position).toBe('fixed');
+  expect(parseFloat(bottom)).toBe(0);
+  expect(await nav.locator('button').allTextContents()).toEqual(['Today','Progress','Plan','More']);
+  for(const name of ['Today','Progress','Plan','More']){
+    const button=page.getByRole('button',{name,exact:true});
+    const box=await button.boundingBox();
+    expect(box.height).toBeGreaterThanOrEqual(44);
+  }
+  expect(errors).toEqual([]);
+});
+
+test('Phone 390 develop preview uses the mobile bottom navigation shell', async ({page}) => {
+  const errors=await boot(page);
+  await page.locator('#previewPhone').click();
+  const nav=page.locator('.tabs');
+  expect(await nav.evaluate(el=>getComputedStyle(el).position)).toBe('fixed');
+  const navBox=await nav.boundingBox();
+  const viewport=page.viewportSize();
+  expect(navBox.width).toBeLessThanOrEqual(390);
+  expect(navBox.y+navBox.height).toBeGreaterThan(viewport.height-80);
+  await page.locator('#previewDesktop').click();
+  expect(await nav.evaluate(el=>getComputedStyle(el).position)).not.toBe('fixed');
+  expect(errors).toEqual([]);
+});
+
+test('Explicit devPreview query exposes preview controls outside local-preview mode', async ({page}) => {
+  const errors=[];
+  page.on('pageerror',e=>errors.push(String(e)));
+  await installClock(page,{clear:true});
+  await page.route('**/.netlify/functions/uhuru-data',async route=>{
+    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({state:null,sha:null})});
+  });
+  await page.goto('/?remoteSync=1&devPreview=1',{waitUntil:'networkidle'});
+  await expect(page.locator('#devPreviewBar')).toBeVisible();
+  expect(errors).toEqual([]);
+});
