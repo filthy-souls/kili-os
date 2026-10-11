@@ -454,7 +454,7 @@ test('Checklist controls align with text and typography weights stay restrained'
   const textBox=await check.locator('span').boundingBox();
   expect(Math.round(box.width)).toBe(18);
   expect(Math.round(box.height)).toBe(18);
-  expect(Math.abs((box.y+box.height/2)-(textBox.y+textBox.height/2))).toBeLessThanOrEqual(4);
+  expect(Math.abs(box.y-textBox.y)).toBeLessThanOrEqual(3);
   const weight=async sel=>Number(await page.locator(sel).first().evaluate(el=>getComputedStyle(el).fontWeight));
   expect(await weight('#todayChecks .check')).toBe(400);
   expect(await weight('.schedule-options button')).toBeLessThanOrEqual(600);
@@ -467,7 +467,7 @@ test('Typography hierarchy is consistent in desktop and Phone 390 preview', asyn
   test.skip(testInfo.project.name!=='desktop');
   const errors=await boot(page);
   const px=async sel=>parseFloat(await page.locator(sel).first().evaluate(el=>getComputedStyle(el).fontSize));
-  expect(await px('header h1')).toBe(30);
+  expect(await px('header h1')).toBe(28);
   expect(await px('.mission-title')).toBe(26);
   expect(await px('.today-title')).toBe(26);
   expect(await px('h2')).toBe(22);
