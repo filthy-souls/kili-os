@@ -1567,3 +1567,16 @@ body.dev-phone-preview .check{
   grid-template-columns:48px minmax(0,1fr);
   padding:4px 0;
 }
+
+
+/* v6.0.1 Material checkbox visual alignment */
+.check{
+  align-items:start;
+}
+.check input[type="checkbox"]{
+  align-self:start;
+  margin-top:1px;
+}
+.check>span{
+  align-self:start;
+}
