@@ -91,7 +91,7 @@ function renderDashboard(){
     for(let day=1;day<=last;day++){
       const d=y+"-"+String(m+1).padStart(2,"0")+"-"+String(day).padStart(2,"0");
       const inPlan=d>=calStart&&d<=calEnd;
-      if(!inPlan){cells.push('<div class="cal-day outside" aria-hidden="true"><span class="date-num">'+day+'</span></div>');continue}
+      if(!inPlan){cells.push('<div class="cal-outside" aria-hidden="true"><span class="date-num">'+day+'</span></div>');continue}
       const pct=completion(d),hasLog=data.workouts.some(x=>x.date===d);
       let cls="cal-day";if(d>today)cls+=" future";else if(pct===100)cls+=" done";else if(pct>0)cls+=" partial";if(d===today)cls+=" today";
       cells.push('<div class="'+cls+'" data-date="'+d+'" title="'+fmt(d)+' — '+pct+'%"><span class="date-num">'+day+'</span>'+(d<=today?'<span class="pct">'+pct+'%</span>':'')+(hasLog?'<span class="dot"></span>':'')+'</div>');
