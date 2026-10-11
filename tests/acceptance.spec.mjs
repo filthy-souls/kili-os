@@ -383,7 +383,8 @@ test('Calendar renders as separate conventional month grids', async ({page}) => 
   expect(errors).toEqual([]);
 });
 
-test('Desktop Phone toggle constrains app to phone width and restores desktop', async ({page},testInfo) => {\n  test.skip(testInfo.project.name!=='desktop');
+test('Desktop Phone toggle constrains app to phone width and restores desktop', async ({page},testInfo) => {
+  test.skip(testInfo.project.name!=='desktop');
   const errors=await boot(page);
   await expect(page.locator('#devPreviewBar')).toBeVisible();
   await page.locator('#previewPhone').click();
@@ -416,7 +417,8 @@ test('Mobile primary navigation is fixed to the bottom and uses four accessible 
   expect(errors).toEqual([]);
 });
 
-test('Phone 390 develop preview uses the mobile bottom navigation shell', async ({page},testInfo) => {\n  test.skip(testInfo.project.name!=='desktop');
+test('Phone 390 develop preview uses the mobile bottom navigation shell', async ({page},testInfo) => {
+  test.skip(testInfo.project.name!=='desktop');
   const errors=await boot(page);
   await page.locator('#previewPhone').click();
   const nav=page.locator('.tabs');
