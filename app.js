@@ -25,7 +25,7 @@ async function pull(){
       if(cached){
         state=JSON.parse(cached);
       }else{
-        const r=await fetch("data/state.json?v=5.3",{cache:"no-store"});
+        const r=await fetch("data/state.json?v=6.1",{cache:"no-store"});
         if(!r.ok)throw new Error("Local seed data unavailable");
         state=await r.json();
       }
@@ -35,7 +35,22 @@ async function pull(){
     }
     if(state&&!dirty){data=normalize(state);cache();renderAll()}
     setSync("ok",LOCAL_PREVIEW?"Local preview":"Synced",LOCAL_PREVIEW?"Loaded data/state.json from develop":"GitHub is authoritative");
-  }catch(e){setSync("error",LOCAL_PREVIEW?"Preview data error":"Sync error",e.message)}
+  }catch(e){
+    if(!LOCAL_PREVIEW){
+      try{
+        const fallback=await fetch("data/state.json?v=6.1",{cache:"no-store"});
+        if(fallback.ok){
+          const state=await fallback.json();
+          if(state&&!dirty){data=normalize(state);cache();renderAll()}
+          setSync("error","Sync error — using bundled data",e.message);
+        }else{
+          setSync("error","Sync error",e.message);
+        }
+      }catch(_){setSync("error","Sync error",e.message)}
+    }else{
+      setSync("error","Preview data error",e.message)
+    }
+  }
   finally{syncing=false}
 }
 async function push(force){if(syncing||!navigator.onLine||(!dirty&&!force))return;if(!getKey()){setSync("error","Write key needed","Open More → Safety & app settings → App connection and enter the key once.");return;}syncing=true;setSync("syncing","Syncing…","Saving to GitHub");try{await remote("PUT",{state:data,message:"Uhuru data update "+new Date().toISOString()});dirty=false;cache();setSync("ok","Synced","Latest changes committed to GitHub")}catch(e){setSync("error","Sync error",e.message)}finally{syncing=false}}
@@ -66,7 +81,7 @@ function isTraining(p){if(!p)return false;const t=(p.title||"").toLowerCase();re
 function isHikePlan(p){if(!p)return false;const t=((p.title||"")+" "+((p.items||[]).join(" "))).toLowerCase();return t.includes("sljeme")||t.includes("long hike")||t.includes("second hike")}
 function completion(date){
   const p=effectivePlan(date),st=data.daily[date]||{},checks=st.checks||{},items=(p&&p.items)||[];
-  const done=Object.values(checks).filter(Boolean).length,checkScore=items.length?Math.min(1,done/items.length):1;
+  const done=Object.values(checks).filter(Boolean).length,checkScore=items.length?Math.min(1,done/items.length):0;
   const hasWorkout=data.workouts.some(w=>w.date===date);
   const trainingScore=hasWorkout?1:checkScore;
   const goal=Math.max(1000,Number(data.settings.stepGoal)||8000),steps=Number(st.dailySteps)||0,stepScore=Math.min(1,steps/goal);
@@ -281,5 +296,5 @@ function initDevPreview(){
   apply(localStorage.getItem("uhuruDevViewport")==="phone"?"phone":"desktop");
 }
 function initTabs(){document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button,.tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.tab).classList.add("active")})}
-window.addEventListener("load",async()=>{plan=await fetch("plan.json?v=5.3",{cache:"no-store"}).then(r=>r.json());const hadLocal=!!localStorage.getItem(KEY);loadLocal();if(LOCAL_PREVIEW&&!hadLocal){try{const seed=await fetch("data/state.json?v=5.3",{cache:"no-store"}).then(r=>r.json());data=normalize(seed);cache()}catch(e){}}initTabs();initDevPreview();$("logDate").value=todayISO();renderAll();$("dailySteps").oninput=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].dailySteps=Math.max(0,+e.target.value||0);save();renderSteps();renderDashboard()};$("officeStairs").onchange=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].officeStairs=e.target.checked;save()};$("saveWorkout").onclick=saveWorkout;$("moveSkipBtn").onclick=moveToday;$("skipTodayBtn").onclick=skipToday;$("undoPostponeBtn").onclick=undoLast;$("shiftAllBtn").onclick=shiftAll;$("gen3").onclick=()=>generateSummary(3,"3-DAY CHECK-IN");$("genWeek").onclick=()=>generateSummary(7,"SUNDAY / 7-DAY CHECK-IN");$("copySummary").onclick=()=>navigator.clipboard.writeText($("summaryText").value);$("shareSummary").onclick=async()=>{if(navigator.share)await navigator.share({title:"Kili training update",text:$("summaryText").value});else navigator.clipboard.writeText($("summaryText").value)};$("exportData").onclick=exportData;$("importData").onchange=e=>e.target.files[0]&&importData(e.target.files[0]);$("saveGoals").onclick=()=>{data.settings.stepGoal=Math.max(1000,+$("stepGoalSetting").value||8000);save();renderAll()};$("themeMode").onchange=e=>{data.settings.themeMode=e.target.value;save();applyTheme()};if($("saveSyncKey"))$("saveSyncKey").onclick=()=>{const v=$("syncKey").value.trim();if(v)localStorage.setItem(SYNC_KEY,v);$("syncKey").value="";dirty?push(true):pull()};if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js?v=5.3").then(r=>r.update()).catch(()=>{});pull();setInterval(()=>{if(!dirty)pull()},15*60*1000)});
+window.addEventListener("load",async()=>{plan=await fetch("plan.json?v=6.1",{cache:"no-store"}).then(r=>r.json());const hadLocal=!!localStorage.getItem(KEY);loadLocal();if(LOCAL_PREVIEW&&!hadLocal){try{const seed=await fetch("data/state.json?v=6.1",{cache:"no-store"}).then(r=>r.json());data=normalize(seed);cache()}catch(e){}}initTabs();initDevPreview();$("logDate").value=todayISO();renderAll();$("dailySteps").oninput=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].dailySteps=Math.max(0,+e.target.value||0);save();renderSteps();renderDashboard()};$("officeStairs").onchange=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].officeStairs=e.target.checked;save()};$("saveWorkout").onclick=saveWorkout;$("moveSkipBtn").onclick=moveToday;$("skipTodayBtn").onclick=skipToday;$("undoPostponeBtn").onclick=undoLast;$("shiftAllBtn").onclick=shiftAll;$("gen3").onclick=()=>generateSummary(3,"3-DAY CHECK-IN");$("genWeek").onclick=()=>generateSummary(7,"SUNDAY / 7-DAY CHECK-IN");$("copySummary").onclick=()=>navigator.clipboard.writeText($("summaryText").value);$("shareSummary").onclick=async()=>{if(navigator.share)await navigator.share({title:"Kili training update",text:$("summaryText").value});else navigator.clipboard.writeText($("summaryText").value)};$("exportData").onclick=exportData;$("importData").onchange=e=>e.target.files[0]&&importData(e.target.files[0]);$("saveGoals").onclick=()=>{data.settings.stepGoal=Math.max(1000,+$("stepGoalSetting").value||8000);save();renderAll()};$("themeMode").onchange=e=>{data.settings.themeMode=e.target.value;save();applyTheme()};if($("saveSyncKey"))$("saveSyncKey").onclick=()=>{const v=$("syncKey").value.trim();if(v)localStorage.setItem(SYNC_KEY,v);$("syncKey").value="";dirty?push(true):pull()};if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js?v=6.1").then(r=>r.update()).catch(()=>{});pull();setInterval(()=>{if(!dirty)pull()},15*60*1000)});
 window.addEventListener("online",()=>dirty?push(true):pull());window.addEventListener("offline",()=>setSync("offline","Offline","Changes cached locally"));
