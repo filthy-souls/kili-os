@@ -919,3 +919,22 @@ body.dev-phone-preview{
 body.dev-phone-preview .month-grid .cal-head{font-size:var(--type-label-sm)!important}
 body.dev-phone-preview .month-grid .cal-day{font-size:13px!important}
 body.dev-phone-preview .month-grid .cal-day .pct{font-size:9px}
+
+
+/* v5.5 specificity lock: Phone 390 must use the same semantic type tokens */
+body.dev-phone-preview header h1{font-size:var(--type-display);line-height:var(--leading-display)}
+body.dev-phone-preview #phaseLine{font-size:var(--type-body);line-height:var(--leading-body)}
+body.dev-phone-preview .eyebrow{font-size:var(--type-label-sm);line-height:1.25}
+body.dev-phone-preview .mission-kicker,
+body.dev-phone-preview .section-kicker{font-size:var(--type-label-sm);line-height:1.25}
+body.dev-phone-preview .mission-title{font-size:var(--type-headline);line-height:var(--leading-headline)}
+body.dev-phone-preview .mission-sub{font-size:var(--type-body);line-height:var(--leading-body)}
+body.dev-phone-preview .weekend-rule{font-size:var(--type-body-sm);line-height:var(--leading-body)}
+body.dev-phone-preview .today-title{font-size:var(--type-headline);line-height:var(--leading-headline)}
+body.dev-phone-preview h2{font-size:var(--type-title-lg);line-height:var(--leading-title)}
+body.dev-phone-preview label,
+body.dev-phone-preview .check{font-size:var(--type-body);line-height:var(--leading-body)}
+body.dev-phone-preview .muted,
+body.dev-phone-preview .tiny{font-size:var(--type-body-sm);line-height:var(--leading-body)}
+body.dev-phone-preview .pill,
+body.dev-phone-preview .plan-progress-chip{font-size:var(--type-label);line-height:1.25}
