@@ -426,6 +426,24 @@ test('Tapping an older calendar date shows only recorded activity for that day',
   expect(errors).toEqual([]);
 });
 
+test('Checklist controls align with text and typography weights stay restrained', async ({page},testInfo) => {
+  test.skip(testInfo.project.name!=='desktop');
+  const errors=await boot(page);
+  await page.locator('#previewPhone').click();
+  const check=page.locator('#todayChecks .check').first();
+  const box=await check.locator('input[type="checkbox"]').boundingBox();
+  const textBox=await check.locator('span').boundingBox();
+  expect(Math.round(box.width)).toBe(20);
+  expect(Math.round(box.height)).toBe(20);
+  expect(Math.abs(box.y-textBox.y)).toBeLessThanOrEqual(3);
+  const weight=async sel=>Number(await page.locator(sel).first().evaluate(el=>getComputedStyle(el).fontWeight));
+  expect(await weight('#todayChecks .check')).toBe(400);
+  expect(await weight('.schedule-options button')).toBeLessThanOrEqual(600);
+  expect(await weight('h2')).toBeLessThanOrEqual(600);
+  expect(await weight('.today-title')).toBeLessThanOrEqual(650);
+  expect(errors).toEqual([]);
+});
+
 test('Typography hierarchy is consistent in desktop and Phone 390 preview', async ({page},testInfo) => {
   test.skip(testInfo.project.name!=='desktop');
   const errors=await boot(page);
