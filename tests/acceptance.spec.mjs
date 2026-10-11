@@ -12,7 +12,10 @@ async function installClock(page,{clear=true}={}) {
       static now(){ return new RealDate(fixed).getTime(); }
     }
     window.Date=FakeDate;
-    if(clear)localStorage.clear();
+    if(clear&&!sessionStorage.getItem('__uhuruTestBooted')){
+      localStorage.clear();
+      sessionStorage.setItem('__uhuruTestBooted','1');
+    }
   },{fixed:FIXED_DATE,clear});
 }
 
