@@ -329,3 +329,36 @@ body.dev-phone-preview>main{padding-bottom:110px}
 @media(max-width:620px){
   .dev-preview-bar{display:none!important}
 }
+
+
+/* v5.0 Mobile right-side navigation dock */
+@media(max-width:620px){
+  body{padding-bottom:24px;padding-right:76px}
+  .tabs{
+    position:fixed;top:50%;right:8px;left:auto;bottom:auto;transform:translateY(-50%);
+    z-index:80;width:62px;max-width:none;margin:0;padding:7px 5px;
+    display:grid;grid-template-columns:1fr;gap:5px;
+    border:1px solid var(--border);border-radius:18px;
+    background:color-mix(in srgb,var(--card) 96%,transparent);
+    backdrop-filter:blur(16px);box-shadow:0 8px 28px rgba(0,0,0,.18);
+    overflow:visible
+  }
+  .tabs button{
+    min-height:54px;width:100%;padding:6px 2px;border-radius:12px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    font-size:9px;line-height:1.05
+  }
+  main{padding-right:4px;padding-bottom:42px}
+}
+
+/* Phone preview mirrors the right-side mobile dock */
+body.dev-phone-preview{padding-bottom:24px}
+body.dev-phone-preview>.tabs{
+  position:fixed;z-index:80;top:50%;right:calc(50% - 187px);left:auto;bottom:auto;
+  transform:translateY(-50%);width:58px;max-width:none;margin:0;
+  display:grid;grid-template-columns:1fr;gap:5px;padding:7px 5px;
+  border:1px solid var(--border);border-radius:18px;
+  background:color-mix(in srgb,var(--card) 96%,transparent);
+  backdrop-filter:blur(16px);box-shadow:0 8px 28px rgba(0,0,0,.26)
+}
+body.dev-phone-preview>main{padding-right:70px;padding-bottom:42px}
