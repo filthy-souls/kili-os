@@ -1,0 +1,35 @@
+name: Develop acceptance tests
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+
+jobs:
+  ui-acceptance:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm install
+      - run: npx playwright install --with-deps chromium
+      - name: Start local preview
+        run: |
+          python3 -m http.server 8080 >/tmp/uhuru-server.log 2>&1 &
+          echo $! > /tmp/uhuru-server.pid
+          sleep 2
+      - name: Run acceptance suite
+        run: npm run test:ui
+      - name: Upload Playwright report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
