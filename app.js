@@ -42,15 +42,19 @@ function weekFor(date){return plan.weeks.find(w=>date>=w.start&&date<=w.end)}
 function basePlan(date){const pre=(plan.preWeekend||[]).find(x=>x.date===date);if(pre)return Object.assign({phase:"Re-entry"},pre);const w=weekFor(date);if(!w)return null;const day=new Date(date+"T12:00:00").toLocaleDateString("en-US",{weekday:"long"});const p=w.days[day];return p?Object.assign({phase:w.phase,week:w.week},p):null}
 function actions(){return (data.scheduleState.actions||[]).filter(a=>!a.undone)}
 function effectivePlan(date){
-  const incoming=[...actions()].reverse().find(a=>a.type==="move-skip"&&a.to===date);
-  if(incoming){
-    const p=incoming.plan||basePlan(incoming.from);
-    return p?Object.assign({},p,{rescheduled:true,rescheduledFrom:incoming.originalFrom||incoming.from}):null;
+  const list=[...actions()].reverse();
+  for(const a of list){
+    if(a.type==="skip"&&a.date===date){
+      return {title:"Skipped / Recovery Day",phase:"",items:["No scheduled workout today","Resume normal schedule tomorrow"]};
+    }
+    if(a.type==="move-skip"&&a.from===date){
+      return {title:"Skipped / Recovery Day",phase:"",items:["No scheduled workout today","Easy walking only if comfortable","Do not make up this session later"]};
+    }
+    if(a.type==="move-skip"&&a.to===date){
+      const p=a.plan||basePlan(a.from);
+      return p?Object.assign({},p,{rescheduled:true,rescheduledFrom:a.originalFrom||a.from}):null;
+    }
   }
-  const away=[...actions()].reverse().find(a=>a.type==="move-skip"&&a.from===date);
-  if(away)return {title:"Skipped / Recovery Day",phase:"",items:["No scheduled workout today","Easy walking only if comfortable","Do not make up this session later"]};
-  const skip=[...actions()].reverse().find(a=>a.type==="skip"&&a.date===date);
-  if(skip)return {title:"Skipped / Recovery Day",phase:"",items:["No scheduled workout today","Resume normal schedule tomorrow"]};
   return basePlan(date)
 }
 function isWeekend(date){const d=new Date(date+"T12:00:00").getDay();return d===0||d===6}
