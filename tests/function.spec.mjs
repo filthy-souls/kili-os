@@ -28,27 +28,27 @@ test.afterEach(()=>{
   global.fetch=ORIGINAL_FETCH;
 });
 
-test('function rejects invalid sync key before GitHub access', async ()=>{
-  configure();
-  let called=false;global.fetch=async()=>{called=true;throw new Error('should not call')};
-  const r=await handler(req('GET','wrong'));
-  expect(r.status).toBe(401);
-  expect((await r.json()).error).toBe('Invalid sync key');
-  expect(called).toBe(false);
-});
-
-test('function GET decodes GitHub state from configured branch', async ()=>{
+test('function GET reads GitHub state without a sync key', async ()=>{
   configure();
   let url='';
   global.fetch=async input=>{
     url=String(input);
     return new Response(JSON.stringify(ghFile({version:2,settings:{stepGoal:8000}})),{status:200});
   };
-  const r=await handler(req());
+  const r=await handler(new Request('http://localhost/.netlify/functions/uhuru-data',{method:'GET'}));
   expect(r.status).toBe(200);
   const j=await r.json();
   expect(j.state.settings.stepGoal).toBe(8000);
   expect(url).toContain('ref=develop');
+});
+
+test('function rejects invalid PUT sync key before GitHub access', async ()=>{
+  configure();
+  let called=false;global.fetch=async()=>{called=true;throw new Error('should not call')};
+  const r=await handler(req('PUT','wrong',{state:{version:2}}));
+  expect(r.status).toBe(401);
+  expect((await r.json()).error).toBe('Invalid sync key');
+  expect(called).toBe(false);
 });
 
 test('function PUT writes state to configured branch with current sha', async ()=>{
@@ -108,12 +108,20 @@ test('function returns 405 for unsupported methods', async ()=>{
   expect(r.status).toBe(405);
 });
 
-test('function reports incomplete server config', async ()=>{
+test('function reports incomplete GitHub config on GET', async ()=>{
   delete process.env.GITHUB_TOKEN;
   delete process.env.GITHUB_OWNER;
   delete process.env.GITHUB_REPO;
-  delete process.env.UHURU_SYNC_KEY;
+  process.env.UHURU_SYNC_KEY='secret';
   const r=await handler(new Request('http://localhost/.netlify/functions/uhuru-data',{method:'GET'}));
+  expect(r.status).toBe(500);
+  expect((await r.json()).error).toMatch(/configuration is incomplete/i);
+});
+
+test('function reports missing write key config on PUT', async ()=>{
+  configure();
+  delete process.env.UHURU_SYNC_KEY;
+  const r=await handler(req('PUT','secret',{state:{version:2}}));
   expect(r.status).toBe(500);
   expect((await r.json()).error).toMatch(/configuration is incomplete/i);
 });
