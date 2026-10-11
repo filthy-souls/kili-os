@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#111827">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=4.5">
+  <link rel="stylesheet" href="styles.css?v=4.6">
   <title>Project Uhuru</title>
 </head>
 <body>
@@ -22,9 +22,7 @@
     <button data-tab="today" class="active">Today</button>
     <button data-tab="dashboard">Progress</button>
     <button data-tab="plan">Plan</button>
-    <button data-tab="log">Log</button>
-    <button data-tab="summary">Summary</button>
-    <button data-tab="safety">Safety</button>
+    <button data-tab="more">More</button>
   </nav>
 
   <main>
@@ -146,9 +144,17 @@
         <div id="planList"></div>
       </div>
     </section>
+    <section id="more" class="tab">
+      <div class="more-intro">
+        <div class="section-kicker">TOOLS & SETTINGS</div>
+        <h2>More</h2>
+        <p class="muted">Manual logging, summaries, safety rules and app settings.</p>
+      </div>
 
-    <section id="log" class="tab">
-      <div class="card">
+      <details class="card more-section">
+        <summary><b>Manual workout entry</b><span class="muted">For unscheduled sessions</span></summary>
+        <div class="more-body">
+<div class="card">
         <h2>Workout / hike log</h2>
         <div class="grid2">
           <label>Date<input id="logDate" type="date"></label>
@@ -172,10 +178,13 @@
         <h2>Recent logs</h2>
         <div id="recentLogs"></div>
       </div>
-    </section>
+        </div>
+      </details>
 
-    <section id="summary" class="tab">
-      <div class="card">
+      <details class="card more-section">
+        <summary><b>Summary & export</b><span class="muted">3-day / weekly review</span></summary>
+        <div class="more-body">
+<div class="card">
         <h2>Mission debrief to ChatGPT</h2>
         <p id="summaryDue" class="status"></p>
         <div class="summary-actions">
@@ -196,10 +205,13 @@
           <label class="fileBtn secondary">Import data<input id="importData" type="file" accept="application/json" hidden></label>
         </div>
       </div>
-    </section>
+        </div>
+      </details>
 
-    <section id="safety" class="tab">
-      <div class="card">
+      <details class="card more-section">
+        <summary><b>Safety & app settings</b><span class="muted">Rules, pain guidance, connection</span></summary>
+        <div class="more-body">
+<div class="card">
         <h2>Mission rules</h2>
         <ul>
           <li><b>Do not make up missed sessions.</b> Continue with the plan.</li>
@@ -238,9 +250,12 @@
           <p id="syncDetail" class="muted"></p>
         </div>
       </details>
+        </div>
+      </details>
     </section>
+
   </main>
 
-  <script src="app.js?v=4.5"></script>
+  <script src="app.js?v=4.6"></script>
 </body>
 </html>
