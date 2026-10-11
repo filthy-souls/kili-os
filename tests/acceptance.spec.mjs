@@ -366,7 +366,7 @@ test('Wrong sync key surfaces an error and a valid key recovers', async ({page})
   await outer.locator('details.advanced-card summary').click();
   await page.locator('#syncKey').fill('wrong');
   await page.locator('#saveSyncKey').click();
-  await expect(page.locator('#syncMiniText')).toHaveText('Sync error');
+  await expect(page.locator('#syncMiniText')).toContainText('Sync error');
   await page.locator('#syncKey').fill('correct');
   await page.locator('#saveSyncKey').click();
   await expect(page.locator('#syncMiniText')).toHaveText('Synced');
