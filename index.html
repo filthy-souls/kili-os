@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#111827">
   <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="styles.css?v=4.2">
+  <link rel="stylesheet" href="styles.css?v=4.3">
   <title>Project Uhuru</title>
 </head>
 <body>
@@ -13,7 +13,7 @@
     <div>
       <div class="eyebrow">PROJECT UHURU • KILIMANJARO • 14 DEC 2026</div>
       <h1>Project Uhuru</h1>
-      <p id="phaseLine"></p>
+      <p id="phaseLine"></p><div id="syncMini" class="sync-mini"><span></span><span id="syncMiniText">Loading…</span></div>
     </div>
     <button id="installBtn" class="ghost hidden">Install</button>
   </header>
@@ -37,7 +37,7 @@
         </div>
         <div class="mission-badge">UHURU</div>
       </div>
-      <div id="todayPlan"></div>
+      <div id="todayPlan"></div><div id="todayHikeCheckin"></div>
 
       <div class="card reschedule-card">
         <h2>Schedule control</h2>
@@ -122,14 +122,7 @@
         <p class="muted">Saved to your private GitHub training database when sync is connected.</p>
         <button id="saveGoals">Save goals</button>
       </div>
-      <div class="card">
-        <h2>GitHub sync</h2>
-        <div class="sync-line"><span id="syncDot" class="sync-dot offline"></span><b id="syncStatus">Not connected</b></div>
-        <p id="syncDetail" class="muted">Enter the private sync key once on this device. The key itself is not stored in GitHub.</p>
-        <label>Private sync key<input id="syncKey" type="password" autocomplete="off" placeholder="Enter your Uhuru sync key"></label>
-        <div class="summary-actions"><button id="saveSyncKey">Connect / save key</button><button id="syncNow" class="secondary">Sync now</button></div>
-      </div>
-      <div class="card">
+<div class="card">
         <h2>Appearance</h2>
         <label>Theme
           <select id="themeMode">
@@ -236,9 +229,18 @@
           <li>No meaningful shin/knee/foot problem; functional by Monday</li>
         </ul>
       </div>
+      <details class="card advanced-card">
+        <summary><b>App connection</b> <span class="muted">automatic GitHub sync</span></summary>
+        <div class="advanced-body">
+          <p class="muted">Project Uhuru pulls automatically on open and saves automatically after changes. Enter the private write key once on this device if you want this phone to write back to GitHub.</p>
+          <label>Private write key<input id="syncKey" type="password" autocomplete="off" placeholder="Enter once"></label>
+          <button id="saveSyncKey">Save connection key</button>
+          <p id="syncDetail" class="muted"></p>
+        </div>
+      </details>
     </section>
   </main>
 
-  <script src="app.js?v=4.2"></script>
+  <script src="app.js?v=4.3"></script>
 </body>
 </html>
