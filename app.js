@@ -1,6 +1,7 @@
 
 const KEY="kili2026data_v2", SYNC_KEY="projectUhuruSyncKey", API="/.netlify/functions/uhuru-data";
-const URL_FLAGS=new URLSearchParams(location.search);\nconst LOCAL_PREVIEW=["localhost","127.0.0.1"].includes(location.hostname) && !URL_FLAGS.has("remoteSync");
+const URL_FLAGS=new URLSearchParams(location.search);
+const LOCAL_PREVIEW=["localhost","127.0.0.1"].includes(location.hostname) && !URL_FLAGS.has("remoteSync");
 let plan=null, data={version:2,settings:{stepGoal:8000,themeMode:"auto"},checks:{},daily:{},workouts:[],scheduleState:{globalShiftDays:0,actions:[]}},dirty=false,syncing=false,timer=null;
 const $=id=>document.getElementById(id);
 const todayISO=()=>new Date().toLocaleDateString("en-CA");
