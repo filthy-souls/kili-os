@@ -651,3 +651,101 @@ body.light-theme .snackbar{background:#303134;color:#fff}
   .checkin-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .snackbar{bottom:18px}
 }
+
+
+/* v5.4 Phone preview frame + typography normalization */
+body.dev-phone-preview{
+  position:relative;
+  padding-bottom:24px;
+}
+
+/* One continuous 390px device frame instead of separate header/main borders */
+body.dev-phone-preview::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  top:10px;
+  bottom:18px;
+  left:50%;
+  width:390px;
+  max-width:calc(100vw - 24px);
+  transform:translateX(-50%);
+  border:1px solid var(--border);
+  border-radius:24px;
+  pointer-events:none;
+}
+body.dev-phone-preview>header,
+body.dev-phone-preview>main{
+  position:relative;
+  z-index:1;
+  border:0!important;
+  width:390px;
+  max-width:calc(100vw - 24px);
+  margin-left:auto;
+  margin-right:auto;
+  background:transparent;
+}
+body.dev-phone-preview>header{
+  margin-top:10px;
+  border-radius:24px 24px 0 0;
+}
+body.dev-phone-preview>main{
+  border-radius:0 0 24px 24px;
+  padding-right:14px;
+  padding-left:14px;
+}
+
+/* Right dock sits beside the content instead of shrinking the app column */
+body.dev-phone-preview>.tabs{
+  top:50%;
+  right:calc(50% - 259px);
+  width:62px;
+}
+@media(max-width:540px){
+  body.dev-phone-preview>.tabs{
+    right:8px;
+  }
+}
+
+/* A single mobile typography scale for both real mobile and desktop phone preview */
+@media(max-width:620px){
+  body{font-size:15px}
+  header h1{font-size:28px;line-height:1.08}
+  #phaseLine{font-size:14px}
+  .eyebrow{font-size:10px}
+  .mission-title{font-size:28px;line-height:1.08}
+  .mission-sub{font-size:14px;line-height:1.4}
+  .today-title{font-size:24px;line-height:1.14}
+  h2{font-size:20px;line-height:1.2}
+  label,.check{font-size:14px;line-height:1.4}
+  .muted{font-size:13px}
+  .pill{font-size:11px}
+}
+body.dev-phone-preview{
+  font-size:15px;
+}
+body.dev-phone-preview header h1{font-size:28px;line-height:1.08}
+body.dev-phone-preview #phaseLine{font-size:14px}
+body.dev-phone-preview .eyebrow{font-size:10px}
+body.dev-phone-preview .mission-title{font-size:28px;line-height:1.08}
+body.dev-phone-preview .mission-sub{font-size:14px;line-height:1.4}
+body.dev-phone-preview .today-title{font-size:24px;line-height:1.14}
+body.dev-phone-preview h2{font-size:20px;line-height:1.2}
+body.dev-phone-preview label,
+body.dev-phone-preview .check{font-size:14px;line-height:1.4}
+body.dev-phone-preview .muted{font-size:13px}
+body.dev-phone-preview .pill{font-size:11px}
+
+/* Keep checklist layout compact and aligned */
+body.dev-phone-preview .check,
+@media(max-width:620px){
+}
+body.dev-phone-preview .check{
+  gap:10px;
+  padding:10px 0;
+  align-items:flex-start;
+}
+body.dev-phone-preview .check input{
+  flex:0 0 auto;
+  margin-top:2px;
+}
