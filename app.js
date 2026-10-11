@@ -23,7 +23,7 @@ async function pull(){
       if(cached){
         state=JSON.parse(cached);
       }else{
-        const r=await fetch("data/state.json?v=4.7",{cache:"no-store"});
+        const r=await fetch("data/state.json?v=4.8",{cache:"no-store"});
         if(!r.ok)throw new Error("Local seed data unavailable");
         state=await r.json();
       }
@@ -81,10 +81,24 @@ function renderDashboard(){
   $("weekPct").textContent=weekPct+"%";$("weekRing").style.setProperty("--p",weekPct);
   const end=today<"2026-12-14"?today:"2026-12-14",all=rangeDates("2026-10-03",end),planPct=all.length?Math.round(all.reduce((s,d)=>s+completion(d),0)/all.length):0;
   $("planPct").textContent=planPct+"%";$("planRing").style.setProperty("--p",planPct);
-  const calDates=rangeDates("2026-10-03","2026-12-14");let out=['<div class="cal-head">M</div><div class="cal-head">T</div><div class="cal-head">W</div><div class="cal-head">T</div><div class="cal-head">F</div><div class="cal-head">S</div><div class="cal-head">S</div>'];
-  const first=new Date("2026-10-03T12:00:00"),pad=(first.getDay()+6)%7;for(let i=0;i<pad;i++)out.push("<div></div>");
-  calDates.forEach(d=>{const dt=new Date(d+"T12:00:00"),pct=completion(d),hasLog=data.workouts.some(x=>x.date===d);let cls="cal-day";if(d>today)cls+=" future";else if(pct===100)cls+=" done";else if(pct>0)cls+=" partial";if(d===today)cls+=" today";out.push('<div class="'+cls+'" data-date="'+d+'" title="'+fmt(d)+' — '+pct+'%">'+dt.getDate()+(d<=today?'<span class="pct">'+pct+'%</span>':'')+(hasLog?'<span class="dot"></span>':'')+'</div>')});
-  $("trainingCalendar").innerHTML=out.join("");
+  const calStart="2026-10-03",calEnd="2026-12-14";
+  const monthStarts=["2026-10-01","2026-11-01","2026-12-01"];
+  const months=monthStarts.map(ms=>{
+    const md=new Date(ms+"T12:00:00"),monthName=md.toLocaleDateString(undefined,{month:"long",year:"numeric"});
+    const y=md.getFullYear(),m=md.getMonth(),last=new Date(y,m+1,0).getDate(),pad=(md.getDay()+6)%7;
+    const cells=['<div class="cal-head">Mon</div><div class="cal-head">Tue</div><div class="cal-head">Wed</div><div class="cal-head">Thu</div><div class="cal-head">Fri</div><div class="cal-head">Sat</div><div class="cal-head">Sun</div>'];
+    for(let i=0;i<pad;i++)cells.push('<div class="cal-blank" aria-hidden="true"></div>');
+    for(let day=1;day<=last;day++){
+      const d=y+"-"+String(m+1).padStart(2,"0")+"-"+String(day).padStart(2,"0");
+      const inPlan=d>=calStart&&d<=calEnd;
+      if(!inPlan){cells.push('<div class="cal-day outside" aria-hidden="true"><span class="date-num">'+day+'</span></div>');continue}
+      const pct=completion(d),hasLog=data.workouts.some(x=>x.date===d);
+      let cls="cal-day";if(d>today)cls+=" future";else if(pct===100)cls+=" done";else if(pct>0)cls+=" partial";if(d===today)cls+=" today";
+      cells.push('<div class="'+cls+'" data-date="'+d+'" title="'+fmt(d)+' — '+pct+'%"><span class="date-num">'+day+'</span>'+(d<=today?'<span class="pct">'+pct+'%</span>':'')+(hasLog?'<span class="dot"></span>':'')+'</div>');
+    }
+    return '<section class="calendar-month"><div class="calendar-month-title">'+monthName+'</div><div class="month-grid">'+cells.join("")+'</div></section>';
+  });
+  $("trainingCalendar").innerHTML=months.join("");
   const hikes=data.workouts.filter(x=>x.type==="Hike"),bestHours=hikes.length?Math.max(...hikes.map(x=>(x.duration||0)/60)):0,bestAscent=hikes.length?Math.max(...hikes.map(x=>x.ascent||0)):0,bestPack=hikes.length?Math.max(...hikes.map(x=>x.pack||0)):0;
   $("benchmarkBars").innerHTML=[["Longest hike",bestHours,6.5,"h"],["Vertical ascent",bestAscent,1200,"m"],["Pack carried",bestPack,6.5,"kg"]].map(([n,v,t,u])=>{const p=Math.min(100,Math.round(v/t*100));return '<div class="bench-row"><div class="bench-head"><span>'+n+'</span><span>'+(v?(u==="h"?v.toFixed(1):v.toFixed(0)):0)+' '+u+' / '+t+' '+u+'</span></div><div class="bar"><span style="width:'+p+'%"></span></div></div>'}).join("");
   const logs=[...data.workouts].sort((x,y)=>y.date.localeCompare(x.date)).slice(0,12);
@@ -147,6 +161,20 @@ function summaryStatus(){$("summaryDue").textContent=new Date().getDay()===0?"Su
 function exportData(){const b=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="uhuru-"+todayISO()+".json";a.click()}
 function importData(file){const r=new FileReader();r.onload=()=>{try{data=normalize(JSON.parse(r.result));save();renderAll()}catch(e){alert("Invalid file")}};r.readAsText(file)}
 function applyTheme(){const mode=data.settings.themeMode||"auto",h=new Date().getHours(),actual=mode==="auto"?(h>=6&&h<18?"light":"dark"):mode;document.body.classList.toggle("light-theme",actual==="light");if($("themeMode"))$("themeMode").value=mode}
+function initDevPreview(){
+  const bar=$("devPreviewBar");if(!bar||!LOCAL_PREVIEW)return;
+  bar.classList.remove("hidden");
+  const apply=mode=>{
+    const phone=mode==="phone";
+    document.body.classList.toggle("dev-phone-preview",phone);
+    $("previewPhone")?.classList.toggle("active",phone);
+    $("previewDesktop")?.classList.toggle("active",!phone);
+    localStorage.setItem("uhuruDevViewport",phone?"phone":"desktop");
+  };
+  $("previewPhone").onclick=()=>apply("phone");
+  $("previewDesktop").onclick=()=>apply("desktop");
+  apply(localStorage.getItem("uhuruDevViewport")==="phone"?"phone":"desktop");
+}
 function initTabs(){document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button,.tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.tab).classList.add("active")})}
-window.addEventListener("load",async()=>{plan=await fetch("plan.json?v=4.7",{cache:"no-store"}).then(r=>r.json());const hadLocal=!!localStorage.getItem(KEY);loadLocal();if(LOCAL_PREVIEW&&!hadLocal){try{const seed=await fetch("data/state.json?v=4.7",{cache:"no-store"}).then(r=>r.json());data=normalize(seed);cache()}catch(e){}}initTabs();$("logDate").value=todayISO();renderAll();$("dailySteps").oninput=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].dailySteps=Math.max(0,+e.target.value||0);save();renderSteps();renderDashboard()};$("officeStairs").onchange=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].officeStairs=e.target.checked;save()};$("saveCheckin").onclick=saveCheckin;$("saveWorkout").onclick=saveWorkout;$("moveSkipBtn").onclick=moveToday;$("skipTodayBtn").onclick=skipToday;$("undoPostponeBtn").onclick=undoLast;$("shiftAllBtn").onclick=shiftAll;$("gen3").onclick=()=>generateSummary(3,"3-DAY CHECK-IN");$("genWeek").onclick=()=>generateSummary(7,"SUNDAY / 7-DAY CHECK-IN");$("copySummary").onclick=()=>navigator.clipboard.writeText($("summaryText").value);$("shareSummary").onclick=async()=>{if(navigator.share)await navigator.share({title:"Kili training update",text:$("summaryText").value});else navigator.clipboard.writeText($("summaryText").value)};$("exportData").onclick=exportData;$("importData").onchange=e=>e.target.files[0]&&importData(e.target.files[0]);$("saveGoals").onclick=()=>{data.settings.stepGoal=Math.max(1000,+$("stepGoalSetting").value||8000);save();renderAll()};$("themeMode").onchange=e=>{data.settings.themeMode=e.target.value;save();applyTheme()};if($("saveSyncKey"))$("saveSyncKey").onclick=()=>{const v=$("syncKey").value.trim();if(v)localStorage.setItem(SYNC_KEY,v);$("syncKey").value="";dirty?push(true):pull()};if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js?v=4.7").then(r=>r.update()).catch(()=>{});pull();setInterval(()=>{if(!dirty)pull()},15*60*1000)});
+window.addEventListener("load",async()=>{plan=await fetch("plan.json?v=4.8",{cache:"no-store"}).then(r=>r.json());const hadLocal=!!localStorage.getItem(KEY);loadLocal();if(LOCAL_PREVIEW&&!hadLocal){try{const seed=await fetch("data/state.json?v=4.8",{cache:"no-store"}).then(r=>r.json());data=normalize(seed);cache()}catch(e){}}initTabs();initDevPreview();$("logDate").value=todayISO();renderAll();$("dailySteps").oninput=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].dailySteps=Math.max(0,+e.target.value||0);save();renderSteps();renderDashboard()};$("officeStairs").onchange=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].officeStairs=e.target.checked;save()};$("saveCheckin").onclick=saveCheckin;$("saveWorkout").onclick=saveWorkout;$("moveSkipBtn").onclick=moveToday;$("skipTodayBtn").onclick=skipToday;$("undoPostponeBtn").onclick=undoLast;$("shiftAllBtn").onclick=shiftAll;$("gen3").onclick=()=>generateSummary(3,"3-DAY CHECK-IN");$("genWeek").onclick=()=>generateSummary(7,"SUNDAY / 7-DAY CHECK-IN");$("copySummary").onclick=()=>navigator.clipboard.writeText($("summaryText").value);$("shareSummary").onclick=async()=>{if(navigator.share)await navigator.share({title:"Kili training update",text:$("summaryText").value});else navigator.clipboard.writeText($("summaryText").value)};$("exportData").onclick=exportData;$("importData").onchange=e=>e.target.files[0]&&importData(e.target.files[0]);$("saveGoals").onclick=()=>{data.settings.stepGoal=Math.max(1000,+$("stepGoalSetting").value||8000);save();renderAll()};$("themeMode").onchange=e=>{data.settings.themeMode=e.target.value;save();applyTheme()};if($("saveSyncKey"))$("saveSyncKey").onclick=()=>{const v=$("syncKey").value.trim();if(v)localStorage.setItem(SYNC_KEY,v);$("syncKey").value="";dirty?push(true):pull()};if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js?v=4.8").then(r=>r.update()).catch(()=>{});pull();setInterval(()=>{if(!dirty)pull()},15*60*1000)});
 window.addEventListener("online",()=>dirty?push(true):pull());window.addEventListener("offline",()=>setSync("offline","Offline","Changes cached locally"));
