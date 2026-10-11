@@ -121,7 +121,7 @@ test('Safe shift never moves Sljeme to a weekday and can be undone', async ({pag
   expect(errors).toEqual([]);
 });
 
-test('Quick check-in saves every field and persists after reload', async ({page}) => {
+test('Quick check-in becomes a saved summary, shows confirmation, persists and can be undone', async ({page}) => {
   const errors=await boot(page,{clear:false});
   const values={
     sleep:'7.6',weight:'60.4',energy:'8',caloriesBurned:'2450',healthSteps:'9200',
@@ -129,14 +129,25 @@ test('Quick check-in saves every field and persists after reload', async ({page}
   };
   for(const [id,v] of Object.entries(values)) await page.locator('#'+id).fill(v);
   await page.locator('#saveCheckin').click();
+  await expect(page.locator('#toast')).toHaveClass(/show/);
+  await expect(page.locator('#toast')).toContainText('Check-in saved');
+  await expect(page.locator('#checkinCard')).toContainText('CHECK-IN SAVED');
+  await expect(page.locator('#checkinCard')).toContainText('7.6');
+  await expect(page.locator('#checkinCard')).toContainText('60.4');
+  await expect(page.locator('#checkinCard')).toContainText(values.notes);
+  await expect(page.locator('#sleep')).toHaveCount(0);
   let s=await state(page);
   expect(s.checks['2026-10-11'].sleep).toBe(7.6);
   expect(s.checks['2026-10-11'].weight).toBe(60.4);
   expect(s.checks['2026-10-11'].notes).toBe(values.notes);
   await page.reload({waitUntil:'networkidle'});
-  await expect(page.locator('#sleep')).toHaveValue('7.6');
-  await expect(page.locator('#weight')).toHaveValue('60.4');
-  await expect(page.locator('#notes')).toHaveValue(values.notes);
+  await expect(page.locator('#checkinCard')).toContainText('CHECK-IN SAVED');
+  await expect(page.locator('#checkinCard')).toContainText(values.notes);
+  await page.locator('#undoCheckin').click();
+  await expect(page.locator('#toast')).toContainText('Check-in undone');
+  await expect(page.locator('#saveCheckin')).toBeVisible();
+  s=await state(page);
+  expect(s.checks['2026-10-11']).toBeUndefined();
   expect(errors).toEqual([]);
 });
 
