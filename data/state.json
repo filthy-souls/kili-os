@@ -75,15 +75,15 @@
       "id": 2026101101,
       "date": "2026-10-11",
       "type": "Hike",
-      "duration": 0,
-      "distance": 0,
+      "duration": 210,
+      "distance": 12,
       "ascent": 0,
       "pack": 0,
-      "avgHr": 0,
-      "rpe": 0,
+      "avgHr": 140,
+      "rpe": 5,
       "shin": 0,
       "pain": 0,
-      "notes": "Sljeme hike completed after moving the planned Saturday hike to Sunday. Metrics pending."
+      "notes": "Sljeme hike completed after moving the planned Saturday hike to Sunday. 12 km, ~3.5 h total, average pace ~16 min/km, max HR 170 bpm, average HR 140 bpm. Moderate pace. No injuries or pain reported."
     }
   ],
   "scheduleState": {
@@ -103,6 +103,6 @@
   },
   "meta": {
     "lastUpdatedBy": "user-correction",
-    "note": "Corrected training history: Oct 4 back/legs gym, Oct 8 Gym B variation, Oct 11 Sljeme completed after Saturday→Sunday move. Hike metrics pending."
+    "note": "Updated Oct 11 Sljeme with completed hike metrics: 12 km, 3.5 h, avg HR 140, max HR 170, moderate pace, no injuries."
   }
 }
