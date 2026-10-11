@@ -1,21 +1,108 @@
 {
   "version": 2,
-  "settings": {"stepGoal":8000,"themeMode":"auto"},
+  "settings": {
+    "stepGoal": 8000,
+    "themeMode": "auto"
+  },
   "checks": {},
   "daily": {
-    "2026-10-04":{"checks":{},"dailySteps":6000,"officeStairs":false},
-    "2026-10-05":{"checks":{},"dailySteps":6000,"officeStairs":false},
-    "2026-10-06":{"checks":{},"dailySteps":6000,"officeStairs":false},
-    "2026-10-07":{"checks":{},"dailySteps":6000,"officeStairs":false},
-    "2026-10-08":{"checks":{},"dailySteps":6000,"officeStairs":false},
-    "2026-10-09":{"checks":{},"dailySteps":6000,"officeStairs":false},
-    "2026-10-10":{"checks":{},"dailySteps":6000,"officeStairs":false}
+    "2026-10-04": {
+      "checks": {},
+      "dailySteps": 6000,
+      "officeStairs": false
+    },
+    "2026-10-05": {
+      "checks": {},
+      "dailySteps": 6000,
+      "officeStairs": false
+    },
+    "2026-10-06": {
+      "checks": {},
+      "dailySteps": 6000,
+      "officeStairs": false
+    },
+    "2026-10-07": {
+      "checks": {},
+      "dailySteps": 6000,
+      "officeStairs": false
+    },
+    "2026-10-08": {
+      "checks": {},
+      "dailySteps": 6000,
+      "officeStairs": false
+    },
+    "2026-10-09": {
+      "checks": {},
+      "dailySteps": 6000,
+      "officeStairs": false
+    },
+    "2026-10-10": {
+      "checks": {},
+      "dailySteps": 6000,
+      "officeStairs": false
+    }
   },
   "workouts": [
-    {"id":2026100501,"date":"2026-10-05","type":"Other","duration":0,"distance":0,"ascent":0,"pack":0,"avgHr":0,"rpe":0,"shin":0,"pain":0,"notes":"Gym — back and legs; 45° leg press variations per plan."},
-    {"id":2026100701,"date":"2026-10-07","type":"Other","duration":0,"distance":0,"ascent":0,"pack":0,"avgHr":0,"rpe":0,"shin":0,"pain":0,"notes":"Gym — back and legs."},
-    {"id":2026100801,"date":"2026-10-08","type":"Gym B","duration":0,"distance":0,"ascent":0,"pack":0,"avgHr":0,"rpe":0,"shin":0,"pain":0,"notes":"Updated Gym B: 45° leg press, single-leg press, leg-press calf raises, back extensions, upper-body work."}
+    {
+      "id": 2026100401,
+      "date": "2026-10-04",
+      "type": "Other",
+      "duration": 0,
+      "distance": 0,
+      "ascent": 0,
+      "pack": 0,
+      "avgHr": 0,
+      "rpe": 0,
+      "shin": 0,
+      "pain": 0,
+      "notes": "Gym — back and legs."
+    },
+    {
+      "id": 2026100801,
+      "date": "2026-10-08",
+      "type": "Gym B",
+      "duration": 0,
+      "distance": 0,
+      "ascent": 0,
+      "pack": 0,
+      "avgHr": 0,
+      "rpe": 0,
+      "shin": 0,
+      "pain": 0,
+      "notes": "Gym B variation — 45° leg press, single-leg press, leg-press calf raises, back extensions and upper-body work."
+    },
+    {
+      "id": 2026101101,
+      "date": "2026-10-11",
+      "type": "Hike",
+      "duration": 0,
+      "distance": 0,
+      "ascent": 0,
+      "pack": 0,
+      "avgHr": 0,
+      "rpe": 0,
+      "shin": 0,
+      "pain": 0,
+      "notes": "Sljeme hike completed after moving the planned Saturday hike to Sunday. Metrics pending."
+    }
   ],
-  "scheduleState":{"globalShiftDays":0,"actions":[{"type":"move-skip","from":"2026-10-10","to":"2026-10-11","skippedTitle":"Recovery / Second Hike + Weekly Check-in","skippedWasTraining":false,"skippedWasHike":false,"createdAt":"2026-10-10T20:00:00+02:00","undone":false}]},
-  "meta":{"lastUpdatedBy":"seed","note":"Oct 4–10 steps seeded at approximately 6000/day. Oct 11 Sljeme intentionally not marked complete until actual metrics are logged."}
+  "scheduleState": {
+    "globalShiftDays": 0,
+    "actions": [
+      {
+        "type": "move-skip",
+        "from": "2026-10-10",
+        "to": "2026-10-11",
+        "skippedTitle": "Recovery / Second Hike + Weekly Check-in",
+        "skippedWasTraining": false,
+        "skippedWasHike": false,
+        "createdAt": "2026-10-10T20:00:00+02:00",
+        "undone": false
+      }
+    ]
+  },
+  "meta": {
+    "lastUpdatedBy": "user-correction",
+    "note": "Corrected training history: Oct 4 back/legs gym, Oct 8 Gym B variation, Oct 11 Sljeme completed after Saturday→Sunday move. Hike metrics pending."
+  }
 }
