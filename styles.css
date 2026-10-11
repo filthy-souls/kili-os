@@ -56,3 +56,89 @@ main{max-width:860px;margin:0 auto}
   .mission-card{padding:16px}.mission-title{font-size:30px}.mission-badge{width:70px;height:70px}
   .schedule-options{display:grid;grid-template-columns:1fr}.schedule-options button{width:100%}
 }
+
+/* v4.5 Quiet Alpine Utility redesign */
+:root{
+  --bg:#0f1412;--card:#151b18;--card2:#1b231f;--surface-soft:#101613;
+  --text:#eef2ed;--muted:#9ca79f;--accent:#7f9f82;--accent-strong:#a9c4a6;
+  --border:#2a342f;--track:#26302b;--good:#183226;--warn:#433923;--bad:#43272a
+}
+body{background:radial-gradient(circle at 85% 0%,rgba(127,159,130,.08),transparent 30%),var(--bg);color:var(--text);letter-spacing:-.01em}
+header{max-width:860px;margin:0 auto;padding:22px 16px 10px;align-items:center}
+header h1{font-size:27px;letter-spacing:-.035em;margin:2px 0 3px;font-weight:760}
+.eyebrow{font-size:10px;letter-spacing:.18em;color:var(--accent-strong);font-weight:800}
+#phaseLine{margin:0;color:var(--muted);font-size:13px}
+.sync-mini{margin-top:7px;font-size:10px;opacity:.8}
+main{padding:0 14px 88px}
+.tabs{max-width:860px;margin:0 auto 10px;padding:7px 14px 11px;border-bottom:1px solid var(--border);gap:2px}
+.tabs button{border-radius:0;padding:9px 12px;border:0;border-bottom:2px solid transparent;font-weight:650;background:transparent!important}
+.tabs button.active{color:var(--text);border-bottom-color:var(--accent);box-shadow:none}
+.card{border-radius:14px;padding:17px 18px;margin-bottom:12px;box-shadow:none;background:var(--card);border:1px solid var(--border)}
+h2{font-size:20px;letter-spacing:-.025em;font-weight:740}
+.section-kicker{font-size:10px;letter-spacing:.14em;font-weight:800;color:var(--accent-strong);margin-bottom:5px}
+.muted{font-size:12.5px;line-height:1.45}
+.mission-card{min-height:0;padding:16px 18px;margin:2px 0 14px;background:linear-gradient(135deg,var(--card2),var(--card));border-radius:14px;border:1px solid var(--border)}
+.mission-card:before{width:150px;height:150px;right:-44px;bottom:-82px;border-color:rgba(127,159,130,.16)}
+.mission-kicker{font-size:9px;letter-spacing:.18em;color:var(--accent-strong)}
+.mission-title{font-size:23px;margin:5px 0 4px;font-weight:720;letter-spacing:-.03em}
+.mission-sub{font-size:13px;color:var(--muted);margin-bottom:4px}
+.weekend-rule{font-size:11px;color:var(--muted)}
+.mission-badge{width:64px;height:64px;border-radius:12px;display:flex;flex-direction:column;gap:1px;background:transparent;border:1px solid var(--border);font-size:18px;color:var(--accent-strong)}
+.mission-badge small{font-size:8px;letter-spacing:.14em}
+.today-title{font-size:28px;line-height:1.08;margin:9px 0 16px;letter-spacing:-.04em}
+.pill{border-radius:6px;padding:5px 7px;background:rgba(127,159,130,.12);color:var(--accent-strong);font-size:10px;font-weight:800;letter-spacing:.05em}
+.check{padding:10px 0;border-top:1px solid rgba(255,255,255,.035)}
+.check:first-child{border-top:0}.check input{accent-color:var(--accent)}
+button,.fileBtn{border-radius:9px;background:var(--accent);color:#101712;font-weight:760;padding:11px 15px}
+.secondary{background:var(--card2);color:var(--text);border:1px solid var(--border)}
+.schedule-options{gap:7px}.reschedule-card{background:transparent;border-style:dashed}.tomorrow-card{background:transparent;border-style:solid;border-color:var(--border)}
+input,select,textarea{background:var(--surface-soft);border-color:var(--border);border-radius:8px;padding:10px 11px}
+label{font-size:12px}.goal-row{margin-bottom:10px}.goal-title{font-size:16px}
+.mini-ring{width:58px;height:58px;background:conic-gradient(var(--accent) calc(var(--p)*1%),var(--track) 0)}
+.mini-ring:after{inset:6px}
+.progress-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:12px}
+.ring-wrap{display:grid;grid-template-columns:110px 1fr 48px;align-items:center;gap:12px;text-align:left}
+.ring-label{grid-column:1;grid-row:1;margin:0;color:var(--text);font-size:12px;font-weight:650}
+.ring{grid-column:2;grid-row:1;width:100%;height:8px;border-radius:999px;margin:0;display:block;background:linear-gradient(90deg,var(--accent) 0 calc(var(--p,0)*1%),var(--track) calc(var(--p,0)*1%) 100%);overflow:visible;position:relative}
+.ring:after{display:none}.ring span{position:absolute;right:-60px;top:-5px;width:48px;text-align:right;color:var(--accent-strong);font-size:13px;font-weight:760}
+.calendar{gap:6px}.calendar>div{background:transparent}
+.cal-head{font-size:9px!important;letter-spacing:.08em}
+.cal-day{border-radius:50%;border:0!important;background:var(--track)!important;min-width:0}
+.cal-day.partial{background:#4d5146!important}.cal-day.done{background:var(--accent)!important;color:#111811}
+.cal-day.today{outline:1px solid var(--accent-strong);outline-offset:2px}
+.cal-day .pct{font-size:7px;opacity:.72}.cal-day .dot{background:var(--accent-strong)}
+.calendar-legend{font-size:10px;gap:10px}.legend-box{border-radius:50%}
+.bench-row{margin:15px 0}.bench-head{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px}
+.bar{height:7px;border-radius:999px;background:var(--track);overflow:hidden}.bar span{display:block;height:100%;background:var(--accent);border-radius:999px}
+.plan-intro{margin-top:-5px}
+.plan-week{border-radius:12px;margin:10px 0;border:1px solid var(--border);background:var(--card)}
+.plan-week>.day-head{min-height:68px;padding:14px 15px;background:transparent}
+.plan-week[open]>.day-head{background:linear-gradient(90deg,rgba(127,159,130,.11),transparent)}
+.day-card{border-radius:10px;border-color:var(--border);background:var(--surface-soft)}
+.day-head{background:transparent;padding:11px 12px;font-size:12px}
+.day-body{padding:4px 12px 12px}.day-body li{margin:7px 0;color:var(--muted);line-height:1.4}
+.plan-progress-chip{border:0;background:rgba(127,159,130,.10);color:var(--accent-strong);padding:5px 7px;border-radius:6px;font-size:9px}
+.day-head:after{font-size:15px;font-weight:500}.day-card[open]>.day-head:after{color:var(--accent-strong)}
+.hike-checkin{background:linear-gradient(180deg,rgba(127,159,130,.10),transparent 38%),var(--card);border-color:rgba(127,159,130,.28)}
+.hike-badge{background:transparent;border-color:var(--border);color:var(--accent-strong);border-radius:12px}
+.metric-strip{gap:7px}.metric-tile{background:var(--surface-soft);border-color:var(--border);border-radius:9px}
+.log-item{padding:12px 0}.traffic{border:1px solid var(--border)}
+.advanced-card{background:transparent}
+body.light-theme{
+  --bg:#f3f1e9;--card:#fbfaf5;--card2:#eeeae0;--surface-soft:#f6f3eb;
+  --text:#1c2420;--muted:#68726c;--accent:#58775d;--accent-strong:#426448;
+  --border:#d9d4c8;--track:#dedbd2
+}
+body.light-theme{background:radial-gradient(circle at 85% 0%,rgba(88,119,93,.07),transparent 28%),var(--bg)}
+body.light-theme .check{border-top-color:rgba(0,0,0,.045)}
+body.light-theme .cal-day.partial{background:#b8b4a8!important}
+body.light-theme .cal-day.done{background:#6f9074!important;color:#fff}
+body.light-theme .secondary{background:#ece8de;color:var(--text)}
+@media(max-width:620px){
+  header{padding:18px 14px 8px}.tabs{padding-left:8px;padding-right:8px}.tabs button{padding:9px 10px}
+  main{padding:0 10px 84px}.card{padding:15px}.mission-card{padding:14px 15px}
+  .mission-title{font-size:21px}.mission-badge{width:56px;height:56px}.today-title{font-size:25px}
+  .schedule-options{display:grid;grid-template-columns:1fr}.schedule-options button{width:100%}
+  .ring-wrap{grid-template-columns:90px 1fr 42px}.ring span{right:-50px;width:42px}
+  .calendar{gap:5px}
+}
