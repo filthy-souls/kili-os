@@ -265,3 +265,62 @@ body.dev-phone-preview .month-grid .cal-day .dot{width:6px;height:6px;right:5px;
   .month-grid .cal-day .pct{font-size:7px;left:5px;bottom:4px}
   .month-grid .cal-day .dot{width:6px;height:6px;right:5px;bottom:5px}
 }
+
+
+/* v4.9 Mobile app navigation */
+@media(max-width:620px){
+  body{padding-bottom:calc(82px + env(safe-area-inset-bottom))}
+  .tabs{
+    position:fixed;left:0;right:0;bottom:0;z-index:80;
+    display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
+    max-width:none;margin:0;padding:7px 8px calc(7px + env(safe-area-inset-bottom));
+    border-top:1px solid var(--border);border-bottom:0;
+    background:color-mix(in srgb,var(--card) 96%,transparent);
+    backdrop-filter:blur(16px);overflow:visible;
+    box-shadow:0 -8px 28px rgba(0,0,0,.16)
+  }
+  .tabs button{
+    min-height:54px;padding:5px 4px 4px;border:0!important;border-radius:11px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    color:var(--muted);font-size:10px;font-weight:700;line-height:1.1;
+    background:transparent!important
+  }
+  .tabs button::before{
+    display:block;font-size:20px;line-height:18px;font-weight:500;letter-spacing:0
+  }
+  .tabs button[data-tab="today"]::before{content:"⌂"}
+  .tabs button[data-tab="dashboard"]::before{content:"▥"}
+  .tabs button[data-tab="plan"]::before{content:"≡"}
+  .tabs button[data-tab="more"]::before{content:"•••";font-size:16px;letter-spacing:1px}
+  .tabs button.active{
+    color:var(--accent-strong);background:color-mix(in srgb,var(--accent) 12%,transparent)!important
+  }
+  main{padding-bottom:calc(104px + env(safe-area-inset-bottom))}
+}
+
+/* Laptop Phone 390 preview uses the same mobile app shell */
+body.dev-phone-preview{padding-bottom:96px}
+body.dev-phone-preview>.tabs{
+  position:fixed;z-index:80;left:50%;right:auto;bottom:12px;transform:translateX(-50%);
+  width:390px;max-width:calc(100vw - 24px);margin:0;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:2px;
+  padding:7px 8px;border:1px solid var(--border);border-radius:18px;
+  background:color-mix(in srgb,var(--card) 96%,transparent);backdrop-filter:blur(16px);
+  box-shadow:0 10px 34px rgba(0,0,0,.28);overflow:visible
+}
+body.dev-phone-preview>.tabs button{
+  min-height:54px;padding:5px 4px 4px;border:0!important;border-radius:11px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  color:var(--muted);font-size:10px;font-weight:700;line-height:1.1;background:transparent!important
+}
+body.dev-phone-preview>.tabs button::before{
+  display:block;font-size:20px;line-height:18px;font-weight:500;letter-spacing:0
+}
+body.dev-phone-preview>.tabs button[data-tab="today"]::before{content:"⌂"}
+body.dev-phone-preview>.tabs button[data-tab="dashboard"]::before{content:"▥"}
+body.dev-phone-preview>.tabs button[data-tab="plan"]::before{content:"≡"}
+body.dev-phone-preview>.tabs button[data-tab="more"]::before{content:"•••";font-size:16px;letter-spacing:1px}
+body.dev-phone-preview>.tabs button.active{
+  color:var(--accent-strong);background:color-mix(in srgb,var(--accent) 12%,transparent)!important
+}
+body.dev-phone-preview>main{padding-bottom:110px}
