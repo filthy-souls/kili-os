@@ -282,7 +282,7 @@ test('Mobile layout has no page-level horizontal overflow on every primary tab',
   test.skip(testInfo.project.name!=='mobile');
   const errors=await boot(page);
   for(const name of ['Today','Progress','Plan','More']){
-    await page.getByRole('button',{name}).click();
+    await page.getByRole('button',{name,exact:true}).click();
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth);
     expect(overflow).toBeLessThanOrEqual(1);
   }
