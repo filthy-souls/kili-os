@@ -468,8 +468,8 @@ test('Typography hierarchy is consistent in desktop and Phone 390 preview', asyn
   const errors=await boot(page);
   const px=async sel=>parseFloat(await page.locator(sel).first().evaluate(el=>getComputedStyle(el).fontSize));
   expect(await px('header h1')).toBe(28);
-  expect(await px('.mission-title')).toBe(26);
-  expect(await px('.today-title')).toBe(26);
+  expect(await px('.mission-title')).toBe(24);
+  expect(await px('.today-title')).toBe(24);
   expect(await px('h2')).toBe(22);
   expect(await px('.mission-sub')).toBe(14);
   expect(await px('.muted')).toBe(13);
