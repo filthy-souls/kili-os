@@ -938,3 +938,144 @@ body.dev-phone-preview .muted,
 body.dev-phone-preview .tiny{font-size:var(--type-body-sm);line-height:var(--leading-body)}
 body.dev-phone-preview .pill,
 body.dev-phone-preview .plan-progress-chip{font-size:var(--type-label);line-height:1.25}
+
+
+/* v5.6 Component geometry + unified font-weight system */
+:root{
+  --weight-regular:400;
+  --weight-medium:550;
+  --weight-semibold:620;
+  --weight-bold:700;
+}
+
+/* Weight hierarchy */
+body{font-weight:var(--weight-regular)}
+header h1{
+  font-weight:var(--weight-semibold);
+}
+.mission-title,
+.today-title{
+  font-weight:var(--weight-semibold);
+}
+h2,
+.saved-checkin-head h2,
+.history-head h3,
+.calendar-month-title,
+.goal-title{
+  font-weight:var(--weight-medium);
+}
+.eyebrow,
+.section-kicker,
+.mission-kicker,
+.history-label,
+.checkin-note>span,
+.checkin-summary-tile span{
+  font-weight:var(--weight-bold);
+}
+.mission-sub,
+.weekend-rule,
+.check,
+label,
+.history-notes,
+.history-done,
+.log-item,
+.day-body,
+.muted,
+.tiny,
+.calendar-legend{
+  font-weight:var(--weight-regular);
+}
+button,.fileBtn{
+  font-weight:var(--weight-medium);
+}
+.schedule-options button,
+.secondary,
+.material-tonal{
+  font-weight:var(--weight-medium);
+}
+.tabs button,
+.more-section>summary,
+.day-head{
+  font-weight:var(--weight-medium);
+}
+.pill,
+.plan-progress-chip,
+.month-grid .cal-head,
+.metric-tile span,
+.checkin-summary-tile small{
+  font-weight:var(--weight-semibold);
+}
+.checkin-summary-tile b,
+.metric-tile b{
+  font-weight:var(--weight-semibold);
+}
+
+/* Checkbox is a control, not a text-field input */
+.check{
+  display:grid;
+  grid-template-columns:20px minmax(0,1fr);
+  column-gap:12px;
+  align-items:start;
+}
+.check input[type="checkbox"]{
+  appearance:none;
+  -webkit-appearance:none;
+  width:20px;
+  height:20px;
+  min-width:20px;
+  min-height:20px;
+  padding:0;
+  margin:1px 0 0;
+  border:2px solid color-mix(in srgb,var(--muted) 68%,var(--border));
+  border-radius:6px;
+  background:transparent;
+  display:grid;
+  place-content:center;
+  cursor:pointer;
+  flex:none;
+}
+.check input[type="checkbox"]::after{
+  content:"";
+  width:8px;
+  height:4px;
+  border-left:2px solid #10213b;
+  border-bottom:2px solid #10213b;
+  transform:rotate(-45deg) scale(0);
+  transform-origin:center;
+  transition:transform .12s ease;
+}
+.check input[type="checkbox"]:checked{
+  background:var(--gh-blue);
+  border-color:var(--gh-blue);
+}
+.check input[type="checkbox"]:checked::after{
+  transform:rotate(-45deg) scale(1);
+}
+.check input[type="checkbox"]:focus-visible{
+  outline:3px solid color-mix(in srgb,var(--gh-blue) 28%,transparent);
+  outline-offset:2px;
+}
+.check>span{
+  min-width:0;
+  padding-top:0;
+  line-height:var(--leading-body);
+}
+
+/* Prevent generic Material text-field sizing from leaking into native controls */
+input[type="checkbox"]{
+  min-height:0;
+}
+
+/* Phone and preview use the same geometry */
+@media(max-width:620px){
+  .check{
+    grid-template-columns:20px minmax(0,1fr);
+    column-gap:12px;
+    padding:11px 0;
+  }
+}
+body.dev-phone-preview .check{
+  grid-template-columns:20px minmax(0,1fr);
+  column-gap:12px;
+  padding:11px 0;
+}
