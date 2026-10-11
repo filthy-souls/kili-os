@@ -28,7 +28,7 @@ async function boot(page,{clear=true,remoteSync=false}={}) {
 async function openMoreSection(page,label){
   await page.getByRole('button',{name:'More'}).click();
   const section=page.locator('details.more-section').filter({hasText:label});
-  if(!(await section.getAttribute('open'))) await section.locator('summary').click();
+  if(!(await section.getAttribute('open'))) await section.locator(':scope > summary').click();
   return section;
 }
 
@@ -252,7 +252,7 @@ test('Data import replaces app state and rerenders settings', async ({page}) => 
 test('Top navigation is exactly Today Progress Plan More', async ({page}) => {
   const errors=await boot(page);
   expect(await page.locator('.tabs button').allTextContents()).toEqual(['Today','Progress','Plan','More']);
-  for(const name of ['Progress','Plan','More','Today']) await page.getByRole('button',{name}).click();
+  for(const name of ['Progress','Plan','More','Today']) await page.getByRole('button',{name,exact:true}).click();
   expect(errors).toEqual([]);
 });
 
