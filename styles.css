@@ -555,3 +555,99 @@ body.light-theme .traffic.red{background:#fde9ec}
   .calendar-day-details{padding:14px}
   .history-metrics span{min-width:calc(50% - 4px)}
 }
+
+
+/* v5.3 Material You interaction layer */
+.card,.mission-card,.calendar-day-details,.more-section>summary{
+  border-radius:22px;
+}
+.card{
+  box-shadow:0 1px 2px rgba(0,0,0,.08),0 5px 18px rgba(0,0,0,.035);
+}
+button,.fileBtn{
+  border-radius:999px;
+  min-height:44px;
+  padding:10px 18px;
+  font-weight:720;
+  letter-spacing:.005em;
+  box-shadow:none;
+}
+button:not(.secondary):not(.ghost):active,.fileBtn:active{transform:scale(.985)}
+.secondary,.material-tonal{
+  background:color-mix(in srgb,var(--gh-blue) 12%,var(--card2));
+  color:var(--text);
+  border-color:transparent;
+}
+input,select,textarea{
+  border-radius:14px;
+  min-height:48px;
+  padding:12px 14px;
+  background:color-mix(in srgb,var(--surface-soft) 82%,var(--card));
+  border:1px solid color-mix(in srgb,var(--border) 84%,transparent);
+}
+textarea{min-height:92px}
+input:focus,select:focus,textarea:focus{
+  outline:2px solid color-mix(in srgb,var(--gh-blue) 65%,transparent);
+  outline-offset:1px;
+  border-color:transparent;
+}
+.check{
+  border-radius:16px;
+}
+.saved-checkin-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px
+}
+.saved-checkin-head h2{margin:3px 0 2px}
+.saved-state-icon{
+  width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:var(--gh-surface-mint);color:var(--gh-mint);font-size:24px;font-weight:800;
+  border:1px solid color-mix(in srgb,var(--gh-mint) 26%,var(--border))
+}
+.checkin-summary-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0
+}
+.checkin-summary-tile{
+  padding:12px 13px;border-radius:18px;background:var(--surface-soft);
+  border:1px solid color-mix(in srgb,var(--border) 78%,transparent);
+  display:grid;grid-template-columns:1fr auto;align-items:end;gap:3px 8px
+}
+.checkin-summary-tile span{
+  grid-column:1/-1;font-size:10px;font-weight:760;letter-spacing:.045em;
+  text-transform:uppercase;color:var(--muted)
+}
+.checkin-summary-tile b{font-size:20px;line-height:1.05}
+.checkin-summary-tile small{color:var(--muted);font-size:10px;padding-bottom:2px}
+.checkin-note{
+  margin:10px 0 14px;padding:13px 14px;border-radius:18px;background:var(--gh-surface-purple)
+}
+.checkin-note>span{
+  display:block;font-size:10px;font-weight:760;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)
+}
+.checkin-note p{margin:5px 0 0;line-height:1.45}
+.snackbar{
+  position:fixed;left:50%;bottom:24px;z-index:200;transform:translate(-50%,18px);
+  display:flex;align-items:center;gap:18px;max-width:min(92vw,420px);min-width:220px;
+  padding:13px 14px 13px 17px;border-radius:18px;background:#2f3033;color:#fff;
+  box-shadow:0 8px 28px rgba(0,0,0,.28);opacity:0;pointer-events:none;
+  transition:opacity .18s ease,transform .18s ease
+}
+.snackbar.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.snackbar-action{
+  min-height:34px;padding:5px 9px;margin-left:auto;background:transparent!important;color:#a8c7fa!important
+}
+body.light-theme .snackbar{background:#303134;color:#fff}
+.calendar-day-details{
+  background:color-mix(in srgb,var(--gh-surface-blue) 46%,var(--card));
+  box-shadow:0 6px 22px rgba(0,0,0,.06)
+}
+.month-grid .cal-day{
+  border-radius:16px!important;
+}
+.month-grid .cal-day[role="button"]:active{transform:scale(.97)}
+.tabs{
+  border-radius:24px!important;
+}
+@media(max-width:620px){
+  .checkin-summary-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .snackbar{bottom:18px}
+}
