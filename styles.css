@@ -324,3 +324,8 @@ body.dev-phone-preview>.tabs button.active{
   color:var(--accent-strong);background:color-mix(in srgb,var(--accent) 12%,transparent)!important
 }
 body.dev-phone-preview>main{padding-bottom:110px}
+
+/* v4.9 simplified preview toggle */
+@media(max-width:620px){
+  .dev-preview-bar{display:none!important}
+}
