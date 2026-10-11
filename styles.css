@@ -1580,3 +1580,19 @@ body.dev-phone-preview .check{
 .check>span{
   align-self:start;
 }
+
+
+/* v6.0.2 Material 3 body-small specificity lock */
+body.dev-phone-preview .muted,
+body.dev-phone-preview .tiny{
+  font-size:var(--md-body-small-size);
+  line-height:var(--md-body-small-line);
+  font-weight:400;
+}
+@media(max-width:620px){
+  .muted,.tiny{
+    font-size:var(--md-body-small-size);
+    line-height:var(--md-body-small-line);
+    font-weight:400;
+  }
+}
