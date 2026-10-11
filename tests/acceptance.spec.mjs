@@ -36,17 +36,28 @@ async function state(page){
   return page.evaluate(k=>JSON.parse(localStorage.getItem(k)),STATE_KEY);
 }
 
+async function removeTodayHike(page){
+  await page.evaluate(k=>{
+    const s=JSON.parse(localStorage.getItem(k));
+    s.workouts=(s.workouts||[]).filter(w=>!(w.date==='2026-10-11'&&w.type==='Hike'));
+    localStorage.setItem(k,JSON.stringify(s));
+  },STATE_KEY);
+  await page.reload({waitUntil:'networkidle'});
+  await expect(page.locator('#phaseLine')).toContainText('Sun, Oct 11');
+}
+
 test('Today renders moved Sljeme and dedicated hike check-in', async ({page}) => {
   const errors=await boot(page);
   await expect(page.locator('#todayPlan')).toContainText('Long Hike / Sljeme');
-  await expect(page.locator('#todayHikeCheckin')).toContainText("Log today's hike");
-  await expect(page.locator('#saveTodayHike')).toBeVisible();
+  await expect(page.locator('#todayHikeCheckin')).toContainText("Hike logged");
+  await expect(page.locator('#todayHikeCheckin')).toContainText("SLJEME");
   await expect(page.locator('#tomorrowPreview')).toContainText('Rest + easy walking');
   expect(errors).toEqual([]);
 });
 
 test('Today checklist changes completion and calendar, and unticking reverses it', async ({page}) => {
   const errors=await boot(page);
+  await removeTodayHike(page);
   const first=page.locator('#todayChecks input').first();
   await first.check();
   await page.getByRole('button',{name:'Progress'}).click();
@@ -154,6 +165,7 @@ test('Changing step goal recalculates percentage and persists', async ({page}) =
 
 test('Sljeme form saves hike metrics, calendar dot, logs and benchmarks', async ({page}) => {
   const errors=await boot(page);
+  await removeTodayHike(page);
   await page.locator('#todayHikeDuration').fill('180');
   await page.locator('#todayHikeDistance').fill('10.5');
   await page.locator('#todayHikeAscent').fill('720');
@@ -405,11 +417,11 @@ test('Mobile primary navigation is fixed to the right side and uses four accessi
   const nav=page.locator('.tabs');
   await expect(nav).toBeVisible();
   const position=await nav.evaluate(el=>getComputedStyle(el).position);
-  const right=await nav.evaluate(el=>getComputedStyle(el).right);
-  const bottom=await nav.evaluate(el=>getComputedStyle(el).bottom);
   expect(position).toBe('fixed');
-  expect(parseFloat(right)).toBeGreaterThanOrEqual(0);
-  expect(bottom).toBe('auto');
+  const navBox=await nav.boundingBox();
+  const viewport=page.viewportSize();
+  expect(navBox.x+navBox.width).toBeGreaterThan(viewport.width-20);
+  expect(Math.abs((navBox.y+navBox.height/2)-viewport.height/2)).toBeLessThan(40);
   expect(await nav.locator('button').allTextContents()).toEqual(['Today','Progress','Plan','More']);
   for(const name of ['Today','Progress','Plan','More']){
     const button=page.getByRole('button',{name,exact:true});
