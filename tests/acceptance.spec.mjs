@@ -383,7 +383,7 @@ test('Calendar renders as separate conventional month grids', async ({page}) => 
   expect(errors).toEqual([]);
 });
 
-test('Develop preview toggle constrains app to phone width and restores desktop', async ({page}) => {
+test('Desktop Phone toggle constrains app to phone width and restores desktop', async ({page}) => {
   const errors=await boot(page);
   await expect(page.locator('#devPreviewBar')).toBeVisible();
   await page.locator('#previewPhone').click();
