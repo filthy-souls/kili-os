@@ -2,7 +2,7 @@
 const KEY="kili2026data_v2", SYNC_KEY="projectUhuruSyncKey", API="/.netlify/functions/uhuru-data";
 const URL_FLAGS=new URLSearchParams(location.search);
 const LOCAL_PREVIEW=["localhost","127.0.0.1"].includes(location.hostname) && !URL_FLAGS.has("remoteSync");
-let plan=null, data={version:2,settings:{stepGoal:8000,themeMode:"auto"},checks:{},daily:{},workouts:[],scheduleState:{globalShiftDays:0,actions:[]}},dirty=false,syncing=false,timer=null,selectedHistoryDate=null;
+let plan=null, data={version:2,settings:{stepGoal:8000,themeMode:"auto"},checks:{},daily:{},workouts:[],scheduleState:{globalShiftDays:0,actions:[]}},dirty=false,syncing=false,timer=null,selectedHistoryDate=null,toastTimer=null;
 const $=id=>document.getElementById(id);
 const todayISO=()=>new Date().toLocaleDateString("en-CA");
 const fmt=s=>new Date(s+"T12:00:00").toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
@@ -25,7 +25,7 @@ async function pull(){
       if(cached){
         state=JSON.parse(cached);
       }else{
-        const r=await fetch("data/state.json?v=4.9",{cache:"no-store"});
+        const r=await fetch("data/state.json?v=5.3",{cache:"no-store"});
         if(!r.ok)throw new Error("Local seed data unavailable");
         state=await r.json();
       }
@@ -174,9 +174,59 @@ function renderTodayHikeCheckin(){
   box.innerHTML='<div class="card hike-checkin"><div class="hike-title-row"><div><div class="pill">TODAY\'S SLJEME</div><h2>Log today\'s hike</h2></div><div class="hike-badge">SLJEME</div></div><div class="grid2"><label>Duration (min)<input id="todayHikeDuration" type="number" min="0"></label><label>Distance (km)<input id="todayHikeDistance" type="number" step="0.1" min="0"></label><label>Ascent (m)<input id="todayHikeAscent" type="number" min="0"></label><label>Pack (kg)<input id="todayHikePack" type="number" step="0.1" min="0"></label><label>Avg HR<input id="todayHikeHr" type="number" min="0"></label><label>RPE 1–10<input id="todayHikeRpe" type="number" min="1" max="10"></label><label>Shin pain 0–10<input id="todayHikeShin" type="number" min="0" max="10"></label><label>Other pain 0–10<input id="todayHikePain" type="number" min="0" max="10"></label></div><label>Notes<textarea id="todayHikeNotes" placeholder="Weather, legs, breathing, descents, footwear…"></textarea></label><button id="saveTodayHike">Save Sljeme check-in</button></div>';
   $("saveTodayHike").onclick=()=>{data.workouts.push({id:Date.now(),date:d,type:"Hike",duration:+$("todayHikeDuration").value||0,distance:+$("todayHikeDistance").value||0,ascent:+$("todayHikeAscent").value||0,pack:+$("todayHikePack").value||0,avgHr:+$("todayHikeHr").value||0,rpe:+$("todayHikeRpe").value||0,shin:+$("todayHikeShin").value||0,pain:+$("todayHikePain").value||0,notes:$("todayHikeNotes").value.trim()});save();renderTodayHikeCheckin();renderDashboard();};
 }
-function loadInputs(){const c=data.checks[todayISO()]||{};["sleep","weight","energy","caloriesBurned","healthSteps","restingHr","soreness","shin","jointPain","notes"].forEach(k=>{if($(k))$(k).value=c[k]??""});renderSteps()}
-function renderAll(){renderToday();renderTodayHikeCheckin();renderSteps();renderTomorrowPreview();renderDashboard();renderPlan();loadInputs();renderScheduleState();summaryStatus();applyTheme()}
-function saveCheckin(){const d=todayISO();data.checks[d]={sleep:+$("sleep").value||null,weight:+$("weight").value||null,energy:+$("energy").value||null,caloriesBurned:+$("caloriesBurned").value||null,healthSteps:+$("healthSteps").value||null,restingHr:+$("restingHr").value||null,soreness:+$("soreness").value||null,shin:+$("shin").value||null,jointPain:+$("jointPain").value||null,notes:$("notes").value.trim()};save()}
+function showToast(message,actionLabel,action){
+  const toast=$("toast");if(!toast)return;
+  clearTimeout(toastTimer);
+  toast.innerHTML='<span>'+esc(message)+'</span>'+(actionLabel?'<button type="button" class="snackbar-action">'+esc(actionLabel)+'</button>':'');
+  toast.classList.add("show");
+  const btn=toast.querySelector(".snackbar-action");
+  if(btn)btn.onclick=()=>{toast.classList.remove("show");if(action)action()};
+  toastTimer=setTimeout(()=>toast.classList.remove("show"),3200);
+}
+function checkinHasData(c){return !!c&&Object.entries(c).some(([k,v])=>k==="notes"?String(v||"").trim()!=="":v!==null&&v!==undefined&&v!=="")}
+function renderCheckinCard(){
+  const card=$("checkinCard");if(!card)return;
+  const d=todayISO(),c=data.checks[d]||null;
+  if(checkinHasData(c)){
+    const rows=[
+      ["Sleep",c.sleep,"h"],["Weight",c.weight,"kg"],["Energy",c.energy,"/10"],
+      ["Calories",c.caloriesBurned,"kcal"],["Health steps",c.healthSteps,"steps"],
+      ["Resting HR",c.restingHr,"bpm"],["Soreness",c.soreness,"/10"],
+      ["Shin pain",c.shin,"/10"],["Joint pain",c.jointPain,"/10"]
+    ].filter(([,v])=>v!==null&&v!==undefined&&v!=="");
+    card.innerHTML='<div class="saved-checkin-head"><div><div class="section-kicker">CHECK-IN SAVED</div><h2>Daily check-in</h2><p class="muted">'+esc(fmt(d))+'</p></div><div class="saved-state-icon" aria-hidden="true">✓</div></div>'+
+      (rows.length?'<div class="checkin-summary-grid">'+rows.map(([name,v,u])=>'<div class="checkin-summary-tile"><span>'+esc(name)+'</span><b>'+esc(v)+'</b><small>'+esc(u)+'</small></div>').join("")+'</div>':'')+
+      (c.notes?'<div class="checkin-note"><span>Notes</span><p>'+esc(c.notes)+'</p></div>':'')+
+      '<button id="undoCheckin" class="secondary material-tonal" type="button">Undo check-in</button>';
+    $("undoCheckin").onclick=()=>{delete data.checks[d];save();renderCheckinCard();renderDashboard();showToast("Check-in undone")};
+    return;
+  }
+  card.innerHTML='<div class="section-kicker">DAILY READINESS</div><h2>Quick check-in</h2>'+
+    '<div class="grid2">'+
+    '<label>Sleep (h)<input id="sleep" type="number" step="0.1" min="0"></label>'+
+    '<label>Morning body weight (kg)<input id="weight" type="number" step="0.1" min="0"></label>'+
+    '<label>Energy 1–10<input id="energy" type="number" min="1" max="10"></label>'+
+    '<label>Calories burned (Health app)<input id="caloriesBurned" type="number" min="0" placeholder="Optional, end of day"></label>'+
+    '<label>Daily steps<input id="healthSteps" type="number" min="0" placeholder="Optional, end of day"></label>'+
+    '<label>Resting HR (bpm)<input id="restingHr" type="number" min="0" placeholder="Optional"></label>'+
+    '<label>Leg soreness 0–10<input id="soreness" type="number" min="0" max="10"></label>'+
+    '<label>Shin pain 0–10<input id="shin" type="number" min="0" max="10"></label>'+
+    '<label>Knee/Achilles/foot pain 0–10<input id="jointPain" type="number" min="0" max="10"></label>'+
+    '</div><label>Notes<textarea id="notes" placeholder="Work stress, unusual fatigue, niggle, anything relevant..."></textarea></label>'+
+    '<button id="saveCheckin" type="button">Save check-in</button>';
+  $("saveCheckin").onclick=saveCheckin;
+}
+function renderAll(){renderToday();renderTodayHikeCheckin();renderSteps();renderTomorrowPreview();renderDashboard();renderPlan();renderCheckinCard();renderScheduleState();summaryStatus();applyTheme()}
+function saveCheckin(){
+  const d=todayISO();
+  data.checks[d]={
+    sleep:+$("sleep").value||null,weight:+$("weight").value||null,energy:+$("energy").value||null,
+    caloriesBurned:+$("caloriesBurned").value||null,healthSteps:+$("healthSteps").value||null,
+    restingHr:+$("restingHr").value||null,soreness:+$("soreness").value||null,
+    shin:+$("shin").value||null,jointPain:+$("jointPain").value||null,notes:$("notes").value.trim()
+  };
+  save();renderCheckinCard();renderDashboard();showToast("Check-in saved");
+}
 function saveWorkout(){data.workouts.push({id:Date.now(),date:$("logDate").value||todayISO(),type:$("logType").value,duration:+$("duration").value||0,distance:+$("distance").value||0,ascent:+$("ascent").value||0,pack:+$("pack").value||0,avgHr:+$("avgHr").value||0,rpe:+$("rpe").value||0,shin:+$("logShin").value||0,pain:+$("logPain").value||0,notes:$("logNotes").value.trim()});save();renderDashboard()}
 function moveToday(){
   const from=todayISO(),current=effectivePlan(from),to=postponeTarget(from,current),targetPlan=effectivePlan(to);
@@ -231,5 +281,5 @@ function initDevPreview(){
   apply(localStorage.getItem("uhuruDevViewport")==="phone"?"phone":"desktop");
 }
 function initTabs(){document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button,.tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.tab).classList.add("active")})}
-window.addEventListener("load",async()=>{plan=await fetch("plan.json?v=4.9",{cache:"no-store"}).then(r=>r.json());const hadLocal=!!localStorage.getItem(KEY);loadLocal();if(LOCAL_PREVIEW&&!hadLocal){try{const seed=await fetch("data/state.json?v=4.9",{cache:"no-store"}).then(r=>r.json());data=normalize(seed);cache()}catch(e){}}initTabs();initDevPreview();$("logDate").value=todayISO();renderAll();$("dailySteps").oninput=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].dailySteps=Math.max(0,+e.target.value||0);save();renderSteps();renderDashboard()};$("officeStairs").onchange=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].officeStairs=e.target.checked;save()};$("saveCheckin").onclick=saveCheckin;$("saveWorkout").onclick=saveWorkout;$("moveSkipBtn").onclick=moveToday;$("skipTodayBtn").onclick=skipToday;$("undoPostponeBtn").onclick=undoLast;$("shiftAllBtn").onclick=shiftAll;$("gen3").onclick=()=>generateSummary(3,"3-DAY CHECK-IN");$("genWeek").onclick=()=>generateSummary(7,"SUNDAY / 7-DAY CHECK-IN");$("copySummary").onclick=()=>navigator.clipboard.writeText($("summaryText").value);$("shareSummary").onclick=async()=>{if(navigator.share)await navigator.share({title:"Kili training update",text:$("summaryText").value});else navigator.clipboard.writeText($("summaryText").value)};$("exportData").onclick=exportData;$("importData").onchange=e=>e.target.files[0]&&importData(e.target.files[0]);$("saveGoals").onclick=()=>{data.settings.stepGoal=Math.max(1000,+$("stepGoalSetting").value||8000);save();renderAll()};$("themeMode").onchange=e=>{data.settings.themeMode=e.target.value;save();applyTheme()};if($("saveSyncKey"))$("saveSyncKey").onclick=()=>{const v=$("syncKey").value.trim();if(v)localStorage.setItem(SYNC_KEY,v);$("syncKey").value="";dirty?push(true):pull()};if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js?v=4.9").then(r=>r.update()).catch(()=>{});pull();setInterval(()=>{if(!dirty)pull()},15*60*1000)});
+window.addEventListener("load",async()=>{plan=await fetch("plan.json?v=5.3",{cache:"no-store"}).then(r=>r.json());const hadLocal=!!localStorage.getItem(KEY);loadLocal();if(LOCAL_PREVIEW&&!hadLocal){try{const seed=await fetch("data/state.json?v=5.3",{cache:"no-store"}).then(r=>r.json());data=normalize(seed);cache()}catch(e){}}initTabs();initDevPreview();$("logDate").value=todayISO();renderAll();$("dailySteps").oninput=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].dailySteps=Math.max(0,+e.target.value||0);save();renderSteps();renderDashboard()};$("officeStairs").onchange=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].officeStairs=e.target.checked;save()};$("saveWorkout").onclick=saveWorkout;$("moveSkipBtn").onclick=moveToday;$("skipTodayBtn").onclick=skipToday;$("undoPostponeBtn").onclick=undoLast;$("shiftAllBtn").onclick=shiftAll;$("gen3").onclick=()=>generateSummary(3,"3-DAY CHECK-IN");$("genWeek").onclick=()=>generateSummary(7,"SUNDAY / 7-DAY CHECK-IN");$("copySummary").onclick=()=>navigator.clipboard.writeText($("summaryText").value);$("shareSummary").onclick=async()=>{if(navigator.share)await navigator.share({title:"Kili training update",text:$("summaryText").value});else navigator.clipboard.writeText($("summaryText").value)};$("exportData").onclick=exportData;$("importData").onchange=e=>e.target.files[0]&&importData(e.target.files[0]);$("saveGoals").onclick=()=>{data.settings.stepGoal=Math.max(1000,+$("stepGoalSetting").value||8000);save();renderAll()};$("themeMode").onchange=e=>{data.settings.themeMode=e.target.value;save();applyTheme()};if($("saveSyncKey"))$("saveSyncKey").onclick=()=>{const v=$("syncKey").value.trim();if(v)localStorage.setItem(SYNC_KEY,v);$("syncKey").value="";dirty?push(true):pull()};if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js?v=5.3").then(r=>r.update()).catch(()=>{});pull();setInterval(()=>{if(!dirty)pull()},15*60*1000)});
 window.addEventListener("online",()=>dirty?push(true):pull());window.addEventListener("offline",()=>setSync("offline","Offline","Changes cached locally"));
