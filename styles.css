@@ -757,3 +757,165 @@ body.dev-phone-preview .check input{
     margin-top:2px;
   }
 }
+
+
+/* v5.5 Unified typography system */
+:root{
+  --type-display:30px;
+  --type-headline:26px;
+  --type-title-lg:22px;
+  --type-title-md:18px;
+  --type-title-sm:16px;
+  --type-body:14px;
+  --type-body-sm:13px;
+  --type-label:12px;
+  --type-label-sm:10px;
+  --leading-display:1.08;
+  --leading-headline:1.12;
+  --leading-title:1.22;
+  --leading-body:1.45;
+}
+
+/* Top-level hierarchy */
+body{
+  font-size:var(--type-body);
+  line-height:var(--leading-body);
+}
+header h1{
+  font-size:var(--type-display);
+  line-height:var(--leading-display);
+  font-weight:760;
+  letter-spacing:-.035em;
+}
+#phaseLine{
+  font-size:var(--type-body);
+  line-height:var(--leading-body);
+}
+.eyebrow,
+.section-kicker,
+.mission-kicker,
+.history-label,
+.checkin-note>span,
+.checkin-summary-tile span{
+  font-size:var(--type-label-sm);
+  line-height:1.25;
+  font-weight:780;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+
+/* Major content titles */
+.mission-title{
+  font-size:var(--type-headline);
+  line-height:var(--leading-headline);
+  font-weight:740;
+  letter-spacing:-.03em;
+}
+.today-title{
+  font-size:var(--type-headline);
+  line-height:var(--leading-headline);
+  font-weight:760;
+  letter-spacing:-.035em;
+}
+h2,
+.saved-checkin-head h2{
+  font-size:var(--type-title-lg);
+  line-height:var(--leading-title);
+  font-weight:720;
+  letter-spacing:-.02em;
+}
+.history-head h3{
+  font-size:var(--type-title-md);
+  line-height:var(--leading-title);
+  font-weight:700;
+  letter-spacing:-.015em;
+}
+.calendar-month-title,
+.goal-title{
+  font-size:var(--type-title-sm);
+  line-height:var(--leading-title);
+  font-weight:700;
+}
+
+/* Body and supporting text */
+.mission-sub,
+.check,
+label,
+.history-notes,
+.history-done,
+.log-item,
+.day-body{
+  font-size:var(--type-body);
+  line-height:var(--leading-body);
+}
+.weekend-rule,
+.muted,
+.tiny,
+.ring-label,
+.calendar-legend{
+  font-size:var(--type-body-sm);
+  line-height:var(--leading-body);
+}
+.pill,
+.plan-progress-chip,
+.month-grid .cal-head,
+.more-section>summary .muted,
+.checkin-summary-tile small,
+.metric-tile span{
+  font-size:var(--type-label);
+  line-height:1.25;
+}
+.more-section>summary,
+.day-head{
+  font-size:var(--type-body);
+  line-height:var(--leading-title);
+  font-weight:650;
+}
+.tabs button{
+  font-size:var(--type-label);
+  line-height:1.2;
+  font-weight:700;
+}
+.dev-preview-bar>span{
+  font-size:var(--type-label-sm);
+}
+.dev-preview-bar button{
+  font-size:var(--type-label);
+}
+.checkin-summary-tile b,
+.metric-tile b{
+  font-size:var(--type-title-lg);
+  line-height:1.08;
+}
+
+/* Real phone and Phone 390 use the exact same type scale */
+@media(max-width:620px){
+  :root{
+    --type-display:28px;
+    --type-headline:24px;
+    --type-title-lg:20px;
+    --type-title-md:17px;
+    --type-title-sm:15px;
+    --type-body:14px;
+    --type-body-sm:13px;
+    --type-label:11px;
+    --type-label-sm:10px;
+  }
+  .month-grid .cal-head{font-size:var(--type-label-sm)!important}
+  .month-grid .cal-day{font-size:13px!important}
+  .month-grid .cal-day .pct{font-size:9px}
+}
+body.dev-phone-preview{
+  --type-display:28px;
+  --type-headline:24px;
+  --type-title-lg:20px;
+  --type-title-md:17px;
+  --type-title-sm:15px;
+  --type-body:14px;
+  --type-body-sm:13px;
+  --type-label:11px;
+  --type-label-sm:10px;
+}
+body.dev-phone-preview .month-grid .cal-head{font-size:var(--type-label-sm)!important}
+body.dev-phone-preview .month-grid .cal-day{font-size:13px!important}
+body.dev-phone-preview .month-grid .cal-day .pct{font-size:9px}
