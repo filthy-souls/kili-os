@@ -36,7 +36,7 @@ async function pull(){
   }catch(e){setSync("error",LOCAL_PREVIEW?"Preview data error":"Sync error",e.message)}
   finally{syncing=false}
 }
-async function push(force){if(syncing||!navigator.onLine||(!dirty&&!force))return;if(!getKey()){setSync("error","Write key needed","Open Safety → App connection and enter the key once.");return;}syncing=true;setSync("syncing","Syncing…","Saving to GitHub");try{await remote("PUT",{state:data,message:"Uhuru data update "+new Date().toISOString()});dirty=false;cache();setSync("ok","Synced","Latest changes committed to GitHub")}catch(e){setSync("error","Sync error",e.message)}finally{syncing=false}}
+async function push(force){if(syncing||!navigator.onLine||(!dirty&&!force))return;if(!getKey()){setSync("error","Write key needed","Open More → Safety & app settings → App connection and enter the key once.");return;}syncing=true;setSync("syncing","Syncing…","Saving to GitHub");try{await remote("PUT",{state:data,message:"Uhuru data update "+new Date().toISOString()});dirty=false;cache();setSync("ok","Synced","Latest changes committed to GitHub")}catch(e){setSync("error","Sync error",e.message)}finally{syncing=false}}
 function save(){cache();dirty=true;setSync(navigator.onLine?"syncing":"offline",navigator.onLine?"Pending sync…":"Offline — pending","");clearTimeout(timer);timer=setTimeout(()=>push(false),900)}
 function weekFor(date){return plan.weeks.find(w=>date>=w.start&&date<=w.end)}
 function basePlan(date){const pre=(plan.preWeekend||[]).find(x=>x.date===date);if(pre)return Object.assign({phase:"Re-entry"},pre);const w=weekFor(date);if(!w)return null;const day=new Date(date+"T12:00:00").toLocaleDateString("en-US",{weekday:"long"});const p=w.days[day];return p?Object.assign({phase:w.phase,week:w.week},p):null}
