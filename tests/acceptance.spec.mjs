@@ -371,3 +371,28 @@ test('No manual sync button is exposed in normal UI', async ({page}) => {
   await expect(page.getByText('GitHub sync',{exact:true})).toHaveCount(0);
   expect(errors).toEqual([]);
 });
+
+
+test('Calendar renders as separate conventional month grids', async ({page}) => {
+  const errors=await boot(page);
+  await page.getByRole('button',{name:'Progress',exact:true}).click();
+  await expect(page.locator('.calendar-month')).toHaveCount(3);
+  await expect(page.locator('.calendar-month-title')).toHaveText(['October 2026','November 2026','December 2026']);
+  await expect(page.locator('.month-grid').first().locator('.cal-head')).toHaveCount(7);
+  await expect(page.locator('.cal-day')).toHaveCount(73);
+  expect(errors).toEqual([]);
+});
+
+test('Develop preview toggle constrains app to phone width and restores desktop', async ({page}) => {
+  const errors=await boot(page);
+  await expect(page.locator('#devPreviewBar')).toBeVisible();
+  await page.locator('#previewPhone').click();
+  await expect(page.locator('body')).toHaveClass(/dev-phone-preview/);
+  const phoneWidth=await page.locator('main').evaluate(el=>Math.round(el.getBoundingClientRect().width));
+  expect(phoneWidth).toBeLessThanOrEqual(390);
+  await page.locator('#previewDesktop').click();
+  await expect(page.locator('body')).not.toHaveClass(/dev-phone-preview/);
+  const desktopWidth=await page.locator('main').evaluate(el=>Math.round(el.getBoundingClientRect().width));
+  expect(desktopWidth).toBeGreaterThan(phoneWidth);
+  expect(errors).toEqual([]);
+});
