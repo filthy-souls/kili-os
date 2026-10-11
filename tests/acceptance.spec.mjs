@@ -398,6 +398,23 @@ test('Calendar renders as separate conventional month grids', async ({page}) => 
   expect(errors).toEqual([]);
 });
 
+test('Tapping an older calendar date shows only recorded activity for that day', async ({page}) => {
+  const errors=await boot(page);
+  await page.getByRole('button',{name:'Progress',exact:true}).click();
+  await page.locator('.cal-day[data-date="2026-10-08"]').click();
+  const detail=page.locator('#calendarDayDetails');
+  await expect(detail).toBeVisible();
+  await expect(detail).toContainText('Thu, Oct 8');
+  await expect(detail).toContainText('Gym B');
+  await expect(detail).toContainText('Gym B variation');
+  await expect(detail).toContainText('6,000 steps');
+  await expect(detail).not.toContainText('not done');
+  await expect(detail).not.toContainText('missed');
+  await page.getByRole('button',{name:'Close day history'}).click();
+  await expect(detail).toBeHidden();
+  expect(errors).toEqual([]);
+});
+
 test('Desktop Phone toggle constrains app to phone width and restores desktop', async ({page},testInfo) => {
   test.skip(testInfo.project.name!=='desktop');
   const errors=await boot(page);

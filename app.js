@@ -2,10 +2,11 @@
 const KEY="kili2026data_v2", SYNC_KEY="projectUhuruSyncKey", API="/.netlify/functions/uhuru-data";
 const URL_FLAGS=new URLSearchParams(location.search);
 const LOCAL_PREVIEW=["localhost","127.0.0.1"].includes(location.hostname) && !URL_FLAGS.has("remoteSync");
-let plan=null, data={version:2,settings:{stepGoal:8000,themeMode:"auto"},checks:{},daily:{},workouts:[],scheduleState:{globalShiftDays:0,actions:[]}},dirty=false,syncing=false,timer=null;
+let plan=null, data={version:2,settings:{stepGoal:8000,themeMode:"auto"},checks:{},daily:{},workouts:[],scheduleState:{globalShiftDays:0,actions:[]}},dirty=false,syncing=false,timer=null,selectedHistoryDate=null;
 const $=id=>document.getElementById(id);
 const todayISO=()=>new Date().toLocaleDateString("en-CA");
 const fmt=s=>new Date(s+"T12:00:00").toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 function addDate(s,n){const d=new Date(s+"T12:00:00");d.setDate(d.getDate()+n);return d.toLocaleDateString("en-CA")}
 function normalize(x){x=x||{};x.settings=Object.assign({stepGoal:8000,themeMode:"auto"},x.settings||{});x.checks=x.checks||{};x.daily=x.daily||{};x.workouts=Array.isArray(x.workouts)?x.workouts:[];x.scheduleState=x.scheduleState||{globalShiftDays:0,actions:[]};x.scheduleState.actions=x.scheduleState.actions||[];return x}
 function loadLocal(){try{data=normalize(JSON.parse(localStorage.getItem(KEY))||data)}catch(e){data=normalize(data)}}
@@ -75,6 +76,57 @@ function renderToday(){const date=todayISO(),p=effectivePlan(date),st=data.daily
 function renderSteps(){const date=todayISO(),st=data.daily[date]||{},goal=Math.max(1000,Number(data.settings.stepGoal)||8000),v=Number(st.dailySteps)||0,p=Math.min(100,Math.round(v/goal*100));$("dailySteps").value=v||"";$("stepCountLabel").textContent=v.toLocaleString();$("stepGoalLabel").textContent=goal.toLocaleString();$("stepPct").textContent=p+"%";$("stepRing").style.setProperty("--p",p);$("stepGoalSetting").value=goal}
 function renderTomorrowPreview(){const p=effectivePlan(addDate(todayISO(),1));$("tomorrowPreview").innerHTML=p?"<b>"+p.title+"</b><p class='muted'>"+(p.items||[]).slice(0,2).join(" • ")+"</p>":"<span class='muted'>No scheduled session</span>"}
 function rangeDates(s,e){const out=[];let d=s;while(d<=e){out.push(d);d=addDate(d,1)}return out}
+function renderCalendarDayDetails(date){
+  const box=$("calendarDayDetails");if(!box)return;
+  if(!date||date>todayISO()){box.classList.add("hidden");box.innerHTML="";return;}
+  const workouts=data.workouts.filter(w=>w.date===date);
+  const daily=data.daily[date]||{},checks=daily.checks||{},p=effectivePlan(date);
+  const completedItems=((p&&p.items)||[]).filter((_,i)=>checks[i]);
+  const checkin=data.checks[date]||{};
+  const checkinRows=[
+    ["Sleep",checkin.sleep,"h"],["Weight",checkin.weight,"kg"],["Energy",checkin.energy,"/10"],
+    ["Resting HR",checkin.restingHr,"bpm"],["Soreness",checkin.soreness,"/10"],
+    ["Shin",checkin.shin,"/10"],["Joint pain",checkin.jointPain,"/10"]
+  ].filter(([,v])=>v!==null&&v!==undefined&&v!=="");
+  const sections=[];
+  if(workouts.length){
+    sections.push('<div class="history-block"><div class="history-label">ACTIVITY</div>'+
+      workouts.map(w=>{
+        const metrics=[];
+        if(Number(w.duration)>0)metrics.push(w.duration+" min");
+        if(Number(w.distance)>0)metrics.push(w.distance+" km");
+        if(Number(w.ascent)>0)metrics.push("+"+w.ascent+" m");
+        if(Number(w.pack)>0)metrics.push("pack "+w.pack+" kg");
+        if(Number(w.avgHr)>0)metrics.push("avg HR "+w.avgHr);
+        if(Number(w.rpe)>0)metrics.push("RPE "+w.rpe);
+        return '<div class="history-entry"><b>'+esc(w.type)+'</b>'+
+          (metrics.length?'<div class="tiny">'+metrics.map(esc).join(" • ")+'</div>':'')+
+          (w.notes?'<div class="history-notes">'+esc(w.notes)+'</div>':'')+'</div>';
+      }).join("")+'</div>');
+  }
+  if(completedItems.length){
+    sections.push('<div class="history-block"><div class="history-label">COMPLETED</div><ul class="history-done">'+completedItems.map(x=>'<li>'+esc(x)+'</li>').join("")+'</ul></div>');
+  }
+  const movement=[];
+  if(Number(daily.dailySteps)>0)movement.push(Number(daily.dailySteps).toLocaleString()+" steps");
+  if(daily.officeStairs)movement.push("Office stairs");
+  if(movement.length)sections.push('<div class="history-block"><div class="history-label">MOVEMENT</div><div>'+movement.map(esc).join(" • ")+'</div></div>');
+  if(checkinRows.length||checkin.notes){
+    sections.push('<div class="history-block"><div class="history-label">CHECK-IN</div>'+
+      (checkinRows.length?'<div class="history-metrics">'+checkinRows.map(([n,v,u])=>'<span><b>'+esc(v)+'</b> '+esc(u)+'<small>'+esc(n)+'</small></span>').join("")+'</div>':'')+
+      (checkin.notes?'<div class="history-notes">'+esc(checkin.notes)+'</div>':'')+'</div>');
+  }
+  box.innerHTML='<div class="history-head"><div><div class="section-kicker">DAY HISTORY</div><h3>'+esc(fmt(date))+'</h3></div><button class="history-close secondary" type="button" aria-label="Close day history">×</button></div>'+
+    (sections.length?sections.join(""):'<p class="muted">No completed activity recorded for this date.</p>');
+  box.classList.remove("hidden");
+  box.querySelector(".history-close").onclick=()=>{selectedHistoryDate=null;box.classList.add("hidden");document.querySelectorAll(".cal-day.selected").forEach(x=>x.classList.remove("selected"));};
+}
+function selectCalendarDate(date){
+  if(date>todayISO())return;
+  selectedHistoryDate=date;
+  document.querySelectorAll(".cal-day").forEach(x=>x.classList.toggle("selected",x.dataset.date===date));
+  renderCalendarDayDetails(date);
+}
 function renderDashboard(){
   const today=todayISO(),todayPct=completion(today);
   $("todayPct").textContent=todayPct+"%";$("todayRing").style.setProperty("--p",todayPct);
@@ -94,12 +146,14 @@ function renderDashboard(){
       const inPlan=d>=calStart&&d<=calEnd;
       if(!inPlan){cells.push('<div class="cal-outside" aria-hidden="true"><span class="date-num">'+day+'</span></div>');continue}
       const pct=completion(d),hasLog=data.workouts.some(x=>x.date===d);
-      let cls="cal-day";if(d>today)cls+=" future";else if(pct===100)cls+=" done";else if(pct>0)cls+=" partial";if(d===today)cls+=" today";
-      cells.push('<div class="'+cls+'" data-date="'+d+'" title="'+fmt(d)+' — '+pct+'%"><span class="date-num">'+day+'</span>'+(d<=today?'<span class="pct">'+pct+'%</span>':'')+(hasLog?'<span class="dot"></span>':'')+'</div>');
+      let cls="cal-day";if(d>today)cls+=" future";else if(pct===100)cls+=" done";else if(pct>0)cls+=" partial";if(d===today)cls+=" today";if(d===selectedHistoryDate)cls+=" selected";
+      cells.push('<div class="'+cls+'" data-date="'+d+'" '+(d<=today?'role="button" tabindex="0" aria-label="'+fmt(d)+' history"':'aria-hidden="true"')+' title="'+fmt(d)+' — '+pct+'%"><span class="date-num">'+day+'</span>'+(d<=today?'<span class="pct">'+pct+'%</span>':'')+(hasLog?'<span class="dot"></span>':'')+'</div>');
     }
     return '<section class="calendar-month"><div class="calendar-month-title">'+monthName+'</div><div class="month-grid">'+cells.join("")+'</div></section>';
   });
   $("trainingCalendar").innerHTML=months.join("");
+  document.querySelectorAll(".cal-day[data-date]").forEach(el=>{if(el.dataset.date<=today){el.onclick=()=>selectCalendarDate(el.dataset.date);el.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();selectCalendarDate(el.dataset.date)}}}});
+  if(selectedHistoryDate)renderCalendarDayDetails(selectedHistoryDate);
   const hikes=data.workouts.filter(x=>x.type==="Hike"),bestHours=hikes.length?Math.max(...hikes.map(x=>(x.duration||0)/60)):0,bestAscent=hikes.length?Math.max(...hikes.map(x=>x.ascent||0)):0,bestPack=hikes.length?Math.max(...hikes.map(x=>x.pack||0)):0;
   $("benchmarkBars").innerHTML=[["Longest hike",bestHours,6.5,"h"],["Vertical ascent",bestAscent,1200,"m"],["Pack carried",bestPack,6.5,"kg"]].map(([n,v,t,u])=>{const p=Math.min(100,Math.round(v/t*100));return '<div class="bench-row"><div class="bench-head"><span>'+n+'</span><span>'+(v?(u==="h"?v.toFixed(1):v.toFixed(0)):0)+' '+u+' / '+t+' '+u+'</span></div><div class="bar"><span style="width:'+p+'%"></span></div></div>'}).join("");
   const logs=[...data.workouts].sort((x,y)=>y.date.localeCompare(x.date)).slice(0,12);

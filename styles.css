@@ -521,3 +521,37 @@ body.light-theme .month-grid .cal-day.done{
 body.light-theme .traffic.green{background:#e5f5ed}
 body.light-theme .traffic.amber{background:#fff5db}
 body.light-theme .traffic.red{background:#fde9ec}
+
+
+/* v5.2 Calendar day history */
+.cal-day[role="button"]{cursor:pointer}
+.cal-day[role="button"]:focus-visible{outline:2px solid var(--gh-blue);outline-offset:2px}
+.month-grid .cal-day.selected{
+  outline:2px solid var(--gh-blue)!important;
+  outline-offset:2px;
+  box-shadow:0 0 0 4px color-mix(in srgb,var(--gh-blue) 12%,transparent)
+}
+.calendar-day-details{
+  margin-top:14px;padding:16px;border:1px solid var(--border);border-radius:14px;
+  background:var(--surface-soft)
+}
+.history-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.history-head h3{margin:2px 0 0;font-size:18px}
+.history-close{width:38px;height:38px;min-height:38px;padding:0;border-radius:50%;font-size:22px;line-height:1}
+.history-block{padding:13px 0;border-top:1px solid var(--border)}
+.history-block:first-of-type{margin-top:8px}
+.history-label{font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--muted);margin-bottom:7px}
+.history-entry+ .history-entry{margin-top:12px}
+.history-notes{margin-top:5px;color:var(--text);line-height:1.45}
+.history-done{margin:0;padding-left:19px}
+.history-done li+li{margin-top:5px}
+.history-metrics{display:flex;flex-wrap:wrap;gap:8px}
+.history-metrics span{
+  display:flex;flex-direction:column;min-width:86px;padding:9px 10px;border:1px solid var(--border);
+  border-radius:10px;background:var(--card)
+}
+.history-metrics small{margin-top:2px;color:var(--muted);font-size:9px;text-transform:uppercase;letter-spacing:.04em}
+@media(max-width:620px){
+  .calendar-day-details{padding:14px}
+  .history-metrics span{min-width:calc(50% - 4px)}
+}
