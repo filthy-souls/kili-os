@@ -121,6 +121,16 @@ test('Safe shift never moves Sljeme to a weekday and can be undone', async ({pag
   expect(errors).toEqual([]);
 });
 
+
+test('Imported sensor health does not replace the manual check-in form', async ({page}) => {
+  const errors=await boot(page,{clear:true});
+  await expect(page.locator('#saveCheckin')).toBeVisible();
+  const s=await state(page);
+  expect(s.health['2026-10-11'].restingHr).toBe(59.1);
+  expect(s.checks['2026-10-11']).toBeUndefined();
+  expect(errors).toEqual([]);
+});
+
 test('Quick check-in becomes a saved summary, shows confirmation, persists and can be undone', async ({page}) => {
   const errors=await boot(page,{clear:false});
   const values={

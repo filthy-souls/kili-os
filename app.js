@@ -8,7 +8,7 @@ const todayISO=()=>new Date().toLocaleDateString("en-CA");
 const fmt=s=>new Date(s+"T12:00:00").toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 function addDate(s,n){const d=new Date(s+"T12:00:00");d.setDate(d.getDate()+n);return d.toLocaleDateString("en-CA")}
-function normalize(x){x=x||{};x.settings=Object.assign({stepGoal:8000,themeMode:"auto"},x.settings||{});x.checks=x.checks||{};x.daily=x.daily||{};x.workouts=Array.isArray(x.workouts)?x.workouts:[];x.scheduleState=x.scheduleState||{globalShiftDays:0,actions:[]};x.scheduleState.actions=x.scheduleState.actions||[];return x}
+function normalize(x){x=x||{};x.settings=Object.assign({stepGoal:8000,themeMode:"auto"},x.settings||{});x.checks=x.checks||{};x.health=x.health||{};x.daily=x.daily||{};x.workouts=Array.isArray(x.workouts)?x.workouts:[];x.scheduleState=x.scheduleState||{globalShiftDays:0,actions:[]};x.scheduleState.actions=x.scheduleState.actions||[];return x}
 function loadLocal(){try{data=normalize(JSON.parse(localStorage.getItem(KEY))||data)}catch(e){data=normalize(data)}}
 function cache(){localStorage.setItem(KEY,JSON.stringify(data))}
 function getKey(){return localStorage.getItem(SYNC_KEY)||""}
@@ -97,11 +97,16 @@ function renderCalendarDayDetails(date){
   const workouts=data.workouts.filter(w=>w.date===date);
   const daily=data.daily[date]||{},checks=daily.checks||{},p=effectivePlan(date);
   const completedItems=((p&&p.items)||[]).filter((_,i)=>checks[i]);
-  const checkin=data.checks[date]||{};
+  const checkin=data.checks[date]||{},health=(data.health||{})[date]||{};
   const checkinRows=[
     ["Sleep",checkin.sleep,"h"],["Weight",checkin.weight,"kg"],["Energy",checkin.energy,"/10"],
-    ["Resting HR",checkin.restingHr,"bpm"],["HRV",checkin.hrv,"ms"],["Readiness",checkin.readiness,"/100"],["Sleep score",checkin.sleepScore,"/100"],["Cardio load",checkin.cardioLoad,""],["ACWR",checkin.acwr,""],["Soreness",checkin.soreness,"/10"],
+    ["Resting HR",checkin.restingHr,"bpm"],["Soreness",checkin.soreness,"/10"],
     ["Shin",checkin.shin,"/10"],["Joint pain",checkin.jointPain,"/10"]
+  ].filter(([,v])=>v!==null&&v!==undefined&&v!=="");
+  const healthRows=[
+    ["Sleep",health.sleep,"h"],["Sleep score",health.sleepScore,"/100"],["Resting HR",health.restingHr,"bpm"],
+    ["HRV",health.hrv,"ms"],["Readiness",health.readiness,"/100"],["Cardio load",health.cardioLoad,""],
+    ["ACWR",health.acwr,""],["Calories",health.caloriesBurned,"kcal"],["Health steps",health.healthSteps,"steps"]
   ].filter(([,v])=>v!==null&&v!==undefined&&v!=="");
   const sections=[];
   if(workouts.length){
@@ -131,6 +136,11 @@ function renderCalendarDayDetails(date){
   if(Number(daily.dailySteps)>0)movement.push(Number(daily.dailySteps).toLocaleString()+" steps");
   if(daily.officeStairs)movement.push("Office stairs");
   if(movement.length)sections.push('<div class="history-block"><div class="history-label">MOVEMENT</div><div>'+movement.map(esc).join(" • ")+'</div></div>');
+  if(healthRows.length||health.notes){
+    sections.push('<div class="history-block"><div class="history-label">HEALTH</div>'+
+      (healthRows.length?'<div class="history-metrics">'+healthRows.map(([n,v,u])=>'<span><b>'+esc(v)+'</b> '+esc(u)+'<small>'+esc(n)+'</small></span>').join("")+'</div>':'')+
+      (health.notes?'<div class="history-notes">'+esc(health.notes)+'</div>':'')+'</div>');
+  }
   if(checkinRows.length||checkin.notes){
     sections.push('<div class="history-block"><div class="history-label">CHECK-IN</div>'+
       (checkinRows.length?'<div class="history-metrics">'+checkinRows.map(([n,v,u])=>'<span><b>'+esc(v)+'</b> '+esc(u)+'<small>'+esc(n)+'</small></span>').join("")+'</div>':'')+
