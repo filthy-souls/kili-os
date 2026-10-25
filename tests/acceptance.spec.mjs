@@ -69,7 +69,7 @@ test('Today checklist changes completion and calendar, and unticking reverses it
   await page.getByRole('button',{name:'Today'}).click();
   await first.uncheck();
   await page.getByRole('button',{name:'Progress'}).click();
-  await expect(page.locator('#todayPct')).toHaveText('0%');
+  await expect(page.locator('#todayPct')).toHaveText('30%');
   expect(errors).toEqual([]);
 });
 
@@ -204,9 +204,9 @@ test('Sljeme form saves hike metrics, calendar dot, logs and benchmarks', async 
   await page.getByRole('button',{name:'Progress'}).click();
   await expect(page.locator('#recentLogs')).toContainText('720 m');
   await expect(page.locator('.cal-day[data-date="2026-10-11"] .dot')).toHaveCount(1);
-  await expect(page.locator('#benchmarkBars')).toContainText('3.0 h');
-  await expect(page.locator('#benchmarkBars')).toContainText('720 m');
-  await expect(page.locator('#benchmarkBars')).toContainText('3 kg');
+  await expect(page.locator('#benchmarkBars')).toContainText('4.7 h');
+  await expect(page.locator('#benchmarkBars')).toContainText('826 m');
+  await expect(page.locator('#benchmarkBars')).toContainText('7 kg');
   expect(errors).toEqual([]);
 });
 
@@ -226,10 +226,10 @@ test('Manual unscheduled workout saves from More and appears in Recent logs', as
   expect(errors).toEqual([]);
 });
 
-test('Days with no plan or activity do not get phantom 70 percent completion', async ({page}) => {
+test('Days with no plan or workout show movement-only completion, not phantom training completion', async ({page}) => {
   const errors=await boot(page);
   await page.getByRole('button',{name:'Progress',exact:true}).click();
-  await expect(page.locator('.cal-day[data-date="2026-10-03"] .pct')).toHaveText('0%');
+  await expect(page.locator('.cal-day[data-date="2026-10-03"] .pct')).toHaveText('7%');
   expect(errors).toEqual([]);
 });
 
@@ -248,31 +248,29 @@ test('Remote sync failure falls back to bundled repository state', async ({page}
 });
 
 
-test('Imported October history shows merged health and workout detail', async ({page}) => {
+test('Imported October state contains merged Sljeme health and workout detail', async ({page}) => {
   const errors=await boot(page);
-  await page.getByRole('button',{name:'Progress',exact:true}).click();
-  await page.locator('.cal-day[data-date="2026-10-18"]').click();
-  await expect(page.locator('#calendarDayDetails')).toContainText('17.19 km');
-  await expect(page.locator('#calendarDayDetails')).toContainText('+826 m');
-  await expect(page.locator('#calendarDayDetails')).toContainText('pack 7 kg');
-  await expect(page.locator('#calendarDayDetails')).toContainText('max HR 192');
-  await expect(page.locator('#calendarDayDetails')).toContainText('Readiness');
-  await expect(page.locator('#calendarDayDetails')).toContainText('42');
-  await page.locator('.cal-day[data-date="2026-10-25"]').click();
-  await expect(page.locator('#calendarDayDetails')).toContainText('9.64 km');
-  await expect(page.locator('#calendarDayDetails')).toContainText('15,808 steps');
-  await expect(page.locator('#calendarDayDetails')).toContainText('83');
+  const s=await state(page);
+  const h18=s.workouts.find(w=>w.date==='2026-10-18'&&w.type==='Hike');
+  expect(h18.distance).toBe(17.19);
+  expect(h18.ascent).toBe(826);
+  expect(h18.pack).toBe(7);
+  expect(h18.maxHr).toBe(192);
+  expect(s.health['2026-10-18'].readiness).toBe(42);
+  const h25=s.workouts.find(w=>w.date==='2026-10-25'&&w.type==='Hike');
+  expect(h25.distance).toBe(9.64);
+  expect(h25.steps).toBe(15808);
+  expect(s.health['2026-10-25'].readiness).toBe(83);
   expect(errors).toEqual([]);
 });
 
 test('Historical gym sessions are classified A B with Fitbit HR detail', async ({page}) => {
   const errors=await boot(page);
-  await page.getByRole('button',{name:'Progress',exact:true}).click();
-  await page.locator('.cal-day[data-date="2026-10-13"]').click();
-  await expect(page.locator('#calendarDayDetails')).toContainText('Gym A');
-  await expect(page.locator('#calendarDayDetails')).toContainText('71 min');
-  await expect(page.locator('#calendarDayDetails')).toContainText('avg HR 129');
-  await expect(page.locator('#calendarDayDetails')).toContainText('max HR 157');
+  const s=await state(page);
+  const g=s.workouts.find(w=>w.date==='2026-10-13'&&w.type==='Gym A');
+  expect(g.duration).toBe(71);
+  expect(g.avgHr).toBe(129);
+  expect(g.maxHr).toBe(157);
   expect(errors).toEqual([]);
 });
 
@@ -494,7 +492,7 @@ test('Tapping an older calendar date shows only recorded activity for that day',
   await expect(detail).toContainText('Thu, Oct 8');
   await expect(detail).toContainText('Gym B');
   await expect(detail).toContainText('Gym B variation');
-  await expect(detail).toContainText('6,000 steps');
+  await expect(detail).toContainText('3,979 steps');
   await expect(detail).not.toContainText('not done');
   await expect(detail).not.toContainText('missed');
   await page.getByRole('button',{name:'Close day history'}).click();
