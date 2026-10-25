@@ -237,6 +237,51 @@ test('Remote sync failure falls back to bundled repository state', async ({page}
   expect(errors).toEqual([]);
 });
 
+
+test('Imported October history shows merged health and workout detail', async ({page}) => {
+  const errors=await boot(page);
+  await page.getByRole('button',{name:'Progress',exact:true}).click();
+  await page.locator('.cal-day[data-date="2026-10-18"]').click();
+  await expect(page.locator('#calendarDayDetails')).toContainText('17.19 km');
+  await expect(page.locator('#calendarDayDetails')).toContainText('+826 m');
+  await expect(page.locator('#calendarDayDetails')).toContainText('pack 7 kg');
+  await expect(page.locator('#calendarDayDetails')).toContainText('max HR 192');
+  await expect(page.locator('#calendarDayDetails')).toContainText('Readiness');
+  await expect(page.locator('#calendarDayDetails')).toContainText('42');
+  await page.locator('.cal-day[data-date="2026-10-25"]').click();
+  await expect(page.locator('#calendarDayDetails')).toContainText('9.64 km');
+  await expect(page.locator('#calendarDayDetails')).toContainText('15,808 steps');
+  await expect(page.locator('#calendarDayDetails')).toContainText('83');
+  expect(errors).toEqual([]);
+});
+
+test('Historical gym sessions are classified A B with Fitbit HR detail', async ({page}) => {
+  const errors=await boot(page);
+  await page.getByRole('button',{name:'Progress',exact:true}).click();
+  await page.locator('.cal-day[data-date="2026-10-13"]').click();
+  await expect(page.locator('#calendarDayDetails')).toContainText('Gym A');
+  await expect(page.locator('#calendarDayDetails')).toContainText('71 min');
+  await expect(page.locator('#calendarDayDetails')).toContainText('avg HR 129');
+  await expect(page.locator('#calendarDayDetails')).toContainText('max HR 157');
+  expect(errors).toEqual([]);
+});
+
+test('Updated plan adds two easy runs, HR controlled Sljeme and triceps variety', async ({page}) => {
+  const errors=await boot(page);
+  const p=await page.evaluate(async()=>await (await fetch('plan.json?v=6.2')).json());
+  const w4=p.weeks.find(w=>w.week===4),w5=p.weeks.find(w=>w.week===5),w8=p.weeks.find(w=>w.week===8);
+  expect(w4.days.Monday.title).toContain('Run re-entry');
+  expect(w4.days.Friday.title).toContain('Easy run');
+  expect(w4.days.Sunday.items.join(' ')).toContain('150 bpm');
+  expect(w5.days.Wednesday.title).toBe('Easy run');
+  expect(w5.days.Friday.title).toBe('Easy run');
+  expect(w5.days.Tuesday.items.join(' ')).toContain('Overhead cable triceps extension');
+  expect(w5.days.Thursday.items.join(' ')).toContain('Rope triceps pushdown');
+  expect(w8.days.Saturday.items.join(' ')).toContain('1000–1300 m');
+  expect(w8.days.Sunday.title).toContain('second day');
+  expect(errors).toEqual([]);
+});
+
 test('Progress renders historical percentages and the full 73-day calendar', async ({page}) => {
   const errors=await boot(page);
   await page.getByRole('button',{name:'Progress'}).click();

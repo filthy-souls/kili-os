@@ -25,7 +25,7 @@ async function pull(){
       if(cached){
         state=JSON.parse(cached);
       }else{
-        const r=await fetch("data/state.json?v=6.1",{cache:"no-store"});
+        const r=await fetch("data/state.json?v=6.2",{cache:"no-store"});
         if(!r.ok)throw new Error("Local seed data unavailable");
         state=await r.json();
       }
@@ -38,7 +38,7 @@ async function pull(){
   }catch(e){
     if(!LOCAL_PREVIEW){
       try{
-        const fallback=await fetch("data/state.json?v=6.1",{cache:"no-store"});
+        const fallback=await fetch("data/state.json?v=6.2",{cache:"no-store"});
         if(fallback.ok){
           const state=await fallback.json();
           if(state&&!dirty){data=normalize(state);cache();renderAll()}
@@ -100,7 +100,7 @@ function renderCalendarDayDetails(date){
   const checkin=data.checks[date]||{};
   const checkinRows=[
     ["Sleep",checkin.sleep,"h"],["Weight",checkin.weight,"kg"],["Energy",checkin.energy,"/10"],
-    ["Resting HR",checkin.restingHr,"bpm"],["Soreness",checkin.soreness,"/10"],
+    ["Resting HR",checkin.restingHr,"bpm"],["HRV",checkin.hrv,"ms"],["Readiness",checkin.readiness,"/100"],["Sleep score",checkin.sleepScore,"/100"],["Cardio load",checkin.cardioLoad,""],["ACWR",checkin.acwr,""],["Soreness",checkin.soreness,"/10"],
     ["Shin",checkin.shin,"/10"],["Joint pain",checkin.jointPain,"/10"]
   ].filter(([,v])=>v!==null&&v!==undefined&&v!=="");
   const sections=[];
@@ -113,6 +113,11 @@ function renderCalendarDayDetails(date){
         if(Number(w.ascent)>0)metrics.push("+"+w.ascent+" m");
         if(Number(w.pack)>0)metrics.push("pack "+w.pack+" kg");
         if(Number(w.avgHr)>0)metrics.push("avg HR "+w.avgHr);
+        if(Number(w.maxHr)>0)metrics.push("max HR "+w.maxHr);
+        if(Number(w.movingMinutes)>0)metrics.push(w.movingMinutes+" min moving");
+        if(Number(w.steps)>0)metrics.push(Number(w.steps).toLocaleString()+" steps");
+        if(Number(w.calories)>0)metrics.push(w.calories+" kcal");
+        if(w.pace)metrics.push(w.pace);
         if(Number(w.rpe)>0)metrics.push("RPE "+w.rpe);
         return '<div class="history-entry"><b>'+esc(w.type)+'</b>'+
           (metrics.length?'<div class="tiny">'+metrics.map(esc).join(" • ")+'</div>':'')+
@@ -296,5 +301,5 @@ function initDevPreview(){
   apply(localStorage.getItem("uhuruDevViewport")==="phone"?"phone":"desktop");
 }
 function initTabs(){document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button,.tab").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.tab).classList.add("active")})}
-window.addEventListener("load",async()=>{plan=await fetch("plan.json?v=6.1",{cache:"no-store"}).then(r=>r.json());const hadLocal=!!localStorage.getItem(KEY);loadLocal();if(LOCAL_PREVIEW&&!hadLocal){try{const seed=await fetch("data/state.json?v=6.1",{cache:"no-store"}).then(r=>r.json());data=normalize(seed);cache()}catch(e){}}initTabs();initDevPreview();$("logDate").value=todayISO();renderAll();$("dailySteps").oninput=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].dailySteps=Math.max(0,+e.target.value||0);save();renderSteps();renderDashboard()};$("officeStairs").onchange=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].officeStairs=e.target.checked;save()};$("saveWorkout").onclick=saveWorkout;$("moveSkipBtn").onclick=moveToday;$("skipTodayBtn").onclick=skipToday;$("undoPostponeBtn").onclick=undoLast;$("shiftAllBtn").onclick=shiftAll;$("gen3").onclick=()=>generateSummary(3,"3-DAY CHECK-IN");$("genWeek").onclick=()=>generateSummary(7,"SUNDAY / 7-DAY CHECK-IN");$("copySummary").onclick=()=>navigator.clipboard.writeText($("summaryText").value);$("shareSummary").onclick=async()=>{if(navigator.share)await navigator.share({title:"Kili training update",text:$("summaryText").value});else navigator.clipboard.writeText($("summaryText").value)};$("exportData").onclick=exportData;$("importData").onchange=e=>e.target.files[0]&&importData(e.target.files[0]);$("saveGoals").onclick=()=>{data.settings.stepGoal=Math.max(1000,+$("stepGoalSetting").value||8000);save();renderAll()};$("themeMode").onchange=e=>{data.settings.themeMode=e.target.value;save();applyTheme()};if($("saveSyncKey"))$("saveSyncKey").onclick=()=>{const v=$("syncKey").value.trim();if(v)localStorage.setItem(SYNC_KEY,v);$("syncKey").value="";dirty?push(true):pull()};if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js?v=6.1").then(r=>r.update()).catch(()=>{});pull();setInterval(()=>{if(!dirty)pull()},15*60*1000)});
+window.addEventListener("load",async()=>{plan=await fetch("plan.json?v=6.2",{cache:"no-store"}).then(r=>r.json());const hadLocal=!!localStorage.getItem(KEY);loadLocal();if(LOCAL_PREVIEW&&!hadLocal){try{const seed=await fetch("data/state.json?v=6.2",{cache:"no-store"}).then(r=>r.json());data=normalize(seed);cache()}catch(e){}}initTabs();initDevPreview();$("logDate").value=todayISO();renderAll();$("dailySteps").oninput=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].dailySteps=Math.max(0,+e.target.value||0);save();renderSteps();renderDashboard()};$("officeStairs").onchange=e=>{const d=todayISO();data.daily[d]=data.daily[d]||{};data.daily[d].officeStairs=e.target.checked;save()};$("saveWorkout").onclick=saveWorkout;$("moveSkipBtn").onclick=moveToday;$("skipTodayBtn").onclick=skipToday;$("undoPostponeBtn").onclick=undoLast;$("shiftAllBtn").onclick=shiftAll;$("gen3").onclick=()=>generateSummary(3,"3-DAY CHECK-IN");$("genWeek").onclick=()=>generateSummary(7,"SUNDAY / 7-DAY CHECK-IN");$("copySummary").onclick=()=>navigator.clipboard.writeText($("summaryText").value);$("shareSummary").onclick=async()=>{if(navigator.share)await navigator.share({title:"Kili training update",text:$("summaryText").value});else navigator.clipboard.writeText($("summaryText").value)};$("exportData").onclick=exportData;$("importData").onchange=e=>e.target.files[0]&&importData(e.target.files[0]);$("saveGoals").onclick=()=>{data.settings.stepGoal=Math.max(1000,+$("stepGoalSetting").value||8000);save();renderAll()};$("themeMode").onchange=e=>{data.settings.themeMode=e.target.value;save();applyTheme()};if($("saveSyncKey"))$("saveSyncKey").onclick=()=>{const v=$("syncKey").value.trim();if(v)localStorage.setItem(SYNC_KEY,v);$("syncKey").value="";dirty?push(true):pull()};if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js?v=6.2").then(r=>r.update()).catch(()=>{});pull();setInterval(()=>{if(!dirty)pull()},15*60*1000)});
 window.addEventListener("online",()=>dirty?push(true):pull());window.addEventListener("offline",()=>setSync("offline","Offline","Changes cached locally"));
