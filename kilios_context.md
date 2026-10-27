@@ -1,0 +1,19 @@
+# KiliOS Master Context
+Updated: 2026-10-27 (Europe/Zagreb)
+Repository: filthy-souls/kili-os. Main is production; develop is development.
+Historical detailed reference: docs/PROJECT_UHURU_CONTEXT.md (snapshot 2026-10-25). This file is the current master index; consult the historical reference for full training benchmarks and past project decisions.
+
+## Objective
+KiliOS (formerly Project Uhuru) supports training for Kilimanjaro via the Lemosho route starting 2026-12-14 and a Netlify-hosted training PWA. Retain continuity between conversations; confirm current source and records before making claims.
+
+## Evidence and training
+The recorded training schedule is in plan.json; app records are in data/state.json. Use Strava GPS data for hiking distance/elevation, Fitbit/Google Health for physiological metrics and explicit user reports for carried loads, subjective exertion, symptoms, and preferences. Deduplicate overlapping imports and distinguish planned from completed. Hiking restricted to weekends at Sljeme; weekdays can include gym, walking, and recovery-dependent running. Gym A/B approximately twice weekly; avoid squats, deadlifts, hip thrusts and equipment previously identified as unavailable. Step target: 8,000/day. Maintain Sljeme benchmarks from October 11, 18 and 25, 2026, available in the historical reference. Prefer sustainable aerobic effort, downhill durability, strength and recovery rather than chasing speed records. The previously discussed 150 bpm uphill ceiling is flexible guidance, not a medical limit. Previous altitude experience does not guarantee protection against altitude illness. On 2026-10-26, shin/ankle discomfort was reported with running; cause not confirmed. On 2026-10-27, ordinary limited walking was reported symptom-free. Reassess symptoms before running progression.
+
+## Application
+Netlify static PWA. Inspect app.js, index.html, plan.json, data/state.json, netlify/functions/uhuru-data.mjs, tests/acceptance.spec.mjs and .github/workflows/develop-acceptance.yml for actual current behavior. Preserve Today/Progress/Plan, calendar, tomorrow preview, check-ins, workout logs, steps, schedule controls, undo, summaries, import/export, themes, responsive layouts, and GitHub-backed sync/localStorage cache. Implement on develop, test and verify CI against exact commit SHA; promote to main only when explicitly authorized. Do not remove functionality or rewrite user data without justification. Distinguish mocked tests from live system checks.
+
+## Footwear decisions — 2026-10-27
+Purchased Skechers Aero Burst for road running and walking, €136, after comparing in person and finding it substantially more comfortable than HOKA Clifton 10. Purchased Timberland Parker Street Mid for daily wear, including planned long city-walking days of 15,000–20,000 steps, colder weather and occasional light snow, €108. It is NOT a Kilimanjaro boot. Its OrthoLite footbed, EVA midsole and TimberFlex design support walking comfort; actual all-day comfort must be established by gradual use. Waterproofing is not specified; wet slush or ice warrant caution. Existing Adidas Stan Smith shoes are planned for machine-based Gym A/B instead of buying Dropset 4 or Control, provided they remain sufficiently stable and grippy. Technical trekking boots for Sljeme/Kilimanjaro are a separate decision.
+
+## Maintenance and outstanding actions
+Before significant work fetch latest context and relevant source files. Preserve old decisions, add dates for meaningful changes, avoid duplication and empty commits, and verify GitHub writes. Do not commit credentials or raw sensitive health data. Keep monitoring shin symptoms, loaded Sljeme aerobic efficiency, hiking-step measurement errors, and software sync/CI regressions. A nightly 00:00 Europe/Zagreb context review requires a separately configured automation; do not assume access to all historical chats.
