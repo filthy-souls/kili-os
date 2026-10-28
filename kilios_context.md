@@ -1,5 +1,5 @@
 # KiliOS — Master Operational Context
-**Updated:** 2026-10-27, Europe/Zagreb
+**Updated:** 2026-10-28, Europe/Zagreb
 **Project:** KiliOS (formerly Project Uhuru)
 **Repository:** filthy-souls/kili-os (public at last check)
 **Branches:** main = production/default; develop = development/testing
@@ -100,12 +100,24 @@ Netlify static PWA, default/production branch main, develop branch for changes. 
 This file is the high-level current operational guide. docs/PROJECT_UHURU_CONTEXT.md is the long-form history and should remain intact. For any new significant change: record event date, objective/user-reported/derived status, source, decision and rationale, effect on training/application, next action and verification state. Keep older values and corrections with provenance rather than silently replacing. Use at most one coherent GitHub update in a nightly delta batch, and none on a no-change day. Nightly review should be scheduled separately at **00:00 Europe/Zagreb**, correct across DST changes. The scheduled agent may access GitHub but may *not* have access to every conversation: acknowledge coverage limitations; do not fabricate today's decisions. If chat is about to max out, user may explicitly request immediate handoff; that is an exception to nightly batching.
 
 ## 9. Current outstanding work at baseline
-1. First establish whether ordinary flat walking remains comfortable; if so, use a short easy walk with symptom monitoring rather than assuming readiness for 4–5 km. Review during/after and next-morning shin/ankle response before Gym A/B leg loading or running re-entry. Heel walking (~20 feet) reproduced shin sensation on Oct 27; diagnosis unconfirmed.
+1. **2026-10-28 priority:** symptom-guided two-week shin recovery with day-7/day-14 reassessment. Running, weighted Sljeme, 45-degree leg press, elevated pistol squats and forcing 8k steps are temporarily paused in conversation-level advice. Stored plan.json has NOT been modified; do not treat its week-4 running/leg sessions as currently cleared. Diagnosis unconfirmed.
 2. Protect weekend Sljeme consistency, 8k regular movement, adequate recovery and a realistic peak block before taper.
 3. Track GPS/HR and duplicate-import issues; don't treat pole-associated low Fitbit steps as no physical work.
 4. Inspect source/CI, live sync and data import behavior before engineering changes; issues described historically may be resolved.
 5. Maintain shoe choice distinction: Skechers road running/walking; Timberland city walks/light winter; Stan Smith gym; Vans MTE wishlist; technical GTX hiking boot still separate.
 6. Preserve exact operational decisions and future progress only when material; collect daily deltas via automation, not per message.
+
+## 11. 2026-10-28 nightly delta — shin recovery and training implications
+**Evidence:** accessible October 28 KiliOS conversation context; user reports and assistant-proposed plan, not clinical examination or completed workout records. This section supersedes older week-4 training suggestions while symptoms persist; it does **not** edit plan.json or data/state.json.
+
+- **Symptom update:** user described activity-provoked discomfort along the outer shin, left greater than right, about 4–5/10. Discomfort reportedly settles roughly 5 minutes after short walks and 10 minutes after the attempted run. No swelling, numbness, weakness, fracture or sprain was reported in that assessment; earlier intermittent prickling remains relevant history. Cause unconfirmed; do not diagnose shin splints or assume cold is causal.
+- **Activity status:** the previous ~20-foot heel-walking provocation was not a completed walk. User mentioned trying **one set** of elevated pistol-squat-style work; this is not evidence of tolerating a full session. No new completed 4–5 km walk, workout, Sljeme hike, rehab session, distance, HR or recovery outcome was confirmed.
+- **Rehabilitation decision:** user requested a structured **two-week home program** with review at end of week 1 and week 2, and possible *slow* return to running in week 3 **only if recovery criteria are met**. Week 1 emphasizes gentle, pain-free mobility/strength and controlled walking; week 2 progression is contingent on week-1 symptoms. Discussed run-readiness checks included ~30 minutes pain-free flat walking, stairs and strengthening without symptoms, and no concerning focal bone tenderness, rest pain, swelling or persistent neurological signs. A short walk/jog trial in week 3 was *proposed*, not approved unconditionally. User also requested a standalone HTML page in the other chat; no GitHub application integration is claimed.
+- **Temporary activity guidance:** the latest conversation-level advice pauses running, loaded Sljeme, 45-degree leg press, elevated pistol squats and forcing the 8,000-step goal while symptoms remain provokable. Gentle symptom-free mobility, quad sets, straight-leg raises, heel raises and upper-body work were discussed. This temporarily conflicts with the stored Oct 26–Nov 1 plan, which remains unchanged; do not automatically recommend its running, leg-press or weighted-Sljeme entries. No claim that any proposed exercises were completed.
+- **Cold/warm-up hypothesis:** user suspects cold/insufficient warm-up. Proposed controlled, *non-running* comparison: 6–8 minutes indoors (ankle pumps, gentle knee bends, easy walking), then at most ~5 minutes comfortable flat walking, observing symptoms. **No trial result confirmed.** Medical assessment was encouraged for persistent/worsening or red-flag symptoms; user also requested a contingency if GP/sports-medicine access is not possible.
+- **Next assessment:** review pain with ordinary walking, location/focality, post-activity response and next morning; reassess on days 7 and 14 before considering running or loaded hiking. Do not mistake absence of a logged activity for proof of inactivity.
+
+**GitHub verification before this documentation-only update:** plan.json blob 9801da7f72e5bfca4f51023dd7635b5b1be9981e; data/state.json blob 899b3e799708945f14333b62ed86de41ead2115a; last daily record Oct 25; develop still at Oct 25 handoff commit 292fa8f0333b1982f3fbc28dcd13a0c33660b2bd. Main was ahead of develop by four documentation-only commits. No new app/test/deployment result found. Access to every project conversation is not guaranteed.
 
 ## 10. Consolidation change log
 - 2026-10-25: Original extensive project handoff recorded in docs/PROJECT_UHURU_CONTEXT.md.
@@ -113,3 +125,5 @@ This file is the high-level current operational guide. docs/PROJECT_UHURU_CONTEX
 - 2026-10-27: Shoes bought/repurposed and winter wishlist clarified; no major training completion confirmed; no claim of 4–5 km walk completed.
 - 2026-10-27: User selected nightly delta updates rather than one commit per ChatGPT reply; master context restructured as comprehensive operational synthesis linked to historical evidence.
 - 2026-10-27 (nightly delta): User reported shin sensation during ~20 feet of heel walking at home, not a completed exercise walk. User wanted to attempt an ordinary walk; assistant advised a cautious flat, conversational-pace walk only if normal gait is comfortable, with symptom-based stopping. No walk completion or metrics confirmed. Source: KiliOS conversation; GitHub plan.json and data/state.json unchanged since the historical baseline. No app/development commits after the consolidation; main had documentation-only commits, develop unchanged.
+
+- 2026-10-28 (nightly delta): See section 11 for symptom update, two-week rehabilitation decision, conditional running return and warm-up comparison; no completed new activity or code changes confirmed.
