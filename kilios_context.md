@@ -182,3 +182,15 @@ This file is the high-level current operational guide. docs/PROJECT_UHURU_CONTEX
 - 2026-10-31 (nightly delta): See section 14: requested sports-medicine clinic options without confirmed booking; Garmin Forerunner 570 favored over Venu 4 for swim/run features with late-Nov/early-Dec purchase target, no purchase or milestones confirmed. No new completed training or app development verified.
 - 2026-11-01 (nightly delta): See section 15: wearable bulk/comfort constraint reinforced, Garmin Cirqa considered for in-store try-on versus Forerunner 570, phone-GPS acceptable daily but phone battery preservation on Kilimanjaro makes independent GPS relevant; no device purchase, training completion, symptom resolution or code change confirmed.
 - 2026-11-02 (nightly delta): See section 16: Decathlon MH500 38 L vs MH900 38 L daypack shortlist, strong preference for an included rain cover, need for verified fit/ventilation/pocket comparisons and reviews; no purchase or training completion confirmed. No app or training-data change.
+
+## 17. 2026-11-04 nightly delta — home rehabilitation and planned Sljeme return
+**Evidence:** accessible Nov 4 KiliOS-related conversation; user report, not instrumented exercise data. Repository comparison against Nov 2 documentation baseline.
+
+- **Completed home routine (user-reported, not quantified):** user states they have been doing toe raises, heel raises, toe walking and heel walking at home **every evening**, and applying ice. Exact start date, sets/repetitions, duration and symptom response are not provided; do not infer resolution or therapeutic effectiveness.
+- **Activity interruption:** user describes an approximately **10-day break from training/Sljeme** because of shin symptoms. This is approximate retrospective reporting, not proof of no ordinary walking or every other activity during that period.
+- **Return intention:** user said they were **going back up Sljeme** and requested a warm-up. This establishes an intended hike, **not a completed ascent**, load, distance, HR, pace or successful pain-free return. No post-hike outcome was accessible at review time. Previous ankle instability/pulling concerns remain unresolved; do not automatically reinstate weighted hiking or running.
+- **Next verification:** obtain actual hike completion and symptoms during/after and the following morning, plus whether the routine changes pain with normal walking. Reassess training progression based on response, not intention alone.
+- **Repository:** no new application-development commits identified since Nov 2 context commit; plan.json and data/state.json retained their prior blob SHAs. Historical reference untouched. Access is limited to visible conversations and repository data, not all project chats, wearable exports or offline activities.
+
+## 10. Consolidation change log — continuation
+- 2026-11-04: See section 17: nightly home toe/heel raise and walking drills plus ice reported; roughly 10-day training interruption; Sljeme return intended but completion and symptom response unverified.
