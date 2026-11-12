@@ -1,5 +1,5 @@
 # KiliOS — Master Operational Context
-**Updated:** 2026-10-31, Europe/Zagreb
+**Updated:** 2026-11-12, Europe/Zagreb
 **Project:** KiliOS (formerly Project Uhuru)
 **Repository:** filthy-souls/kili-os (public at last check)
 **Branches:** main = production/default; develop = development/testing
@@ -103,7 +103,7 @@ This file is the high-level current operational guide. docs/PROJECT_UHURU_CONTEX
 1. **2026-10-31 status:** user has requested sports-medicine clinic options for evaluation but no appointment or examination is confirmed. Prior 2026-10-29 report: discomfort at the front/outside lower shin near the ankle and around the outer ankle bone, with a sensation of the ankle 'giving way' (whether true mechanical buckling or pain-related weakness remains unclear). This changes the risk assessment versus shin soreness alone: arrange prompt GP/sports-medicine/physiotherapy assessment, especially if instability persists. Do not use a brace to justify running or loaded hiking. The prior symptom-guided two-week rehab plan is provisional and should not override worsening symptoms. Running, weighted Sljeme, 45-degree leg press, elevated pistol squats and forcing 8k steps remain paused in conversation-level advice. Stored plan.json has NOT been modified; do not treat its week-4 running/leg sessions as cleared. Diagnosis unconfirmed.
 2. Protect weekend Sljeme consistency, 8k regular movement, adequate recovery and a realistic peak block before taper.
 3. Track GPS/HR and duplicate-import issues; don't treat pole-associated low Fitbit steps as no physical work.
-4. **CI/security status (2026-11-12):** GitHub's scheduled CodeQL analysis on `main` commit `fdb831039a1c3c73e922e1cc587402bbe6aaeaf0` completed successfully on 2026-11-07 for JavaScript/TypeScript and GitHub Actions. This is static analysis only, not the Playwright acceptance suite or live production verification. Continue to inspect source/CI, live sync and data import behavior before engineering changes; historical issues may be resolved.
+4. **Latest CI/security status (2026-11-12):** GitHub Actions CodeQL run `43116812652` on `main` commit `20ca9bfe6f05c8562560ed35886074e51335c2f8` completed successfully on 2026-11-11 for JavaScript/TypeScript and GitHub Actions. This is static analysis only, not the Playwright acceptance suite or live production verification. Continue to inspect source/CI, live sync and data import behavior before engineering changes; historical issues may be resolved.
 5. Maintain shoe choice distinction: Skechers road running/walking; Timberland city walks/light winter; Stan Smith gym; Vans MTE wishlist; technical GTX hiking boot still separate.
 6. Preserve exact operational decisions and future progress only when material; collect daily deltas via automation, not per message.
 
@@ -202,3 +202,11 @@ This file is the high-level current operational guide. docs/PROJECT_UHURU_CONTEX
 - The scheduled CodeQL workflow completed with **success** for both `Analyze (javascript-typescript)` and `Analyze (actions)` jobs. This records a successful static code-analysis run only; it is **not** evidence that the Playwright acceptance suite ran or that live production sync/functionality was smoke-tested.
 - No newer application-source commit was found. `main` remains at `fdb8310`; `develop` remains at `292fa8f`. Comparing branches shows `main` 11 commits ahead, with `kilios_context.md` as the only differing file. `plan.json` and `data/state.json` blob SHAs remain `9801da7f72e5bfca4f51023dd7635b5b1be9981e` and `899b3e799708945f14333b62ed86de41ead2115a`; the latest app-recorded daily/workout date remains 2026-10-25.
 - No accessible KiliOS conversation/activity evidence since the 2026-11-11 review established a new completed activity, measurement, symptom/recovery change, equipment decision, or app decision. This is a visibility limit, not evidence of inactivity; inaccessible conversations and unuploaded/offline activity are not covered.
+
+
+## 19. 2026-11-12 nightly delta — successful push-triggered CodeQL analysis
+**Evidence:** GitHub Actions run `43116812652`, associated with `main` commit `20ca9bfe6f05c8562560ed35886074e51335c2f8`. Run created 2026-11-11 23:03:30 UTC and completed 23:04:43 UTC (2026-11-12, Europe/Zagreb).
+
+- The push-triggered CodeQL workflow completed with **success** for both `Analyze (javascript-typescript)` and `Analyze (actions)`. This confirms static analysis completed for that commit; it does **not** establish that Playwright acceptance tests ran or that live production sync/functionality was tested.
+- Repository snapshot: `main` is at `20ca9bfe6f05c8562560ed35886074e51335c2f8`; `develop` remains at `292fa8f0333b1982f3fbc28dcd13a0c33660b2bd`. Comparison shows `main` 12 commits ahead, 0 behind, with `kilios_context.md` as the only differing file. No application-source changes were identified. `plan.json` and `data/state.json` remain unchanged at blob SHAs `9801da7f72e5bfca4f51023dd7635b5b1be9981e` and `899b3e799708945f14333b62ed86de41ead2115a`; latest app-recorded daily/workout date remains 2026-10-25.
+- No accessible KiliOS conversation/activity evidence since the previous review established a new completed activity, training measurement, symptom/recovery change, equipment decision, or application decision. This is a visibility limit, not evidence of inactivity; inaccessible conversations, offline activities and unuploaded wearable data are not covered.
